@@ -1,0 +1,253 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+
+[CustomEditor(typeof(StageDatabase))]
+public class StageDatabaseEditor : Editor
+{
+    private Vector2 scrollPosition;
+    private int selectedStageIndex = 0;
+
+    public override void OnInspectorGUI()
+    {
+        StageDatabase database = (StageDatabase)target;
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("ステージデータベース", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
+
+        // ステージ数の設定
+        int stageCount = EditorGUILayout.IntField("ステージ数", database.stages.Count);
+        if (stageCount != database.stages.Count)
+        {
+            Undo.RecordObject(database, "ステージ数を変更");
+            while (database.stages.Count < stageCount)
+            {
+                database.stages.Add(new StageDatabase.StageData());
+            }
+            while (database.stages.Count > stageCount)
+            {
+                database.stages.RemoveAt(database.stages.Count - 1);
+            }
+            EditorUtility.SetDirty(database);
+        }
+
+        if (database.stages.Count == 0)
+        {
+            EditorGUILayout.HelpBox("ステージがありません。ステージ数を設定してください。", MessageType.Info);
+            return;
+        }
+
+        EditorGUILayout.Space();
+
+        // ステージ選択
+        string[] stageNames = new string[database.stages.Count];
+        for (int i = 0; i < database.stages.Count; i++)
+        {
+            stageNames[i] = $"ステージ {i + 1}: {database.stages[i].stageName}";
+        }
+
+        selectedStageIndex = EditorGUILayout.Popup("選択中のステージ", selectedStageIndex, stageNames);
+        selectedStageIndex = Mathf.Clamp(selectedStageIndex, 0, database.stages.Count - 1);
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+        if (selectedStageIndex >= 0 && selectedStageIndex < database.stages.Count)
+        {
+            StageDatabase.StageData stageData = database.stages[selectedStageIndex];
+
+            // ステージ名の編集
+            EditorGUILayout.Space();
+            string newStageName = EditorGUILayout.TextField("ステージ名", stageData.stageName);
+            if (newStageName != stageData.stageName)
+            {
+                Undo.RecordObject(database, "ステージ名を変更");
+                stageData.stageName = newStageName;
+                EditorUtility.SetDirty(database);
+            }
+
+            EditorGUILayout.Space();
+
+            // グリッドサイズの設定
+            EditorGUILayout.LabelField("グリッドサイズ", EditorStyles.boldLabel);
+            
+            // 現在のグリッドサイズを取得
+            int currentWidth = stageData.massStatus.Count > 0 && stageData.massStatus[0] != null 
+                ? stageData.massStatus[0].columns.Count 
+                : 0;
+            int currentHeight = stageData.massStatus.Count;
+            
+            // グリッドサイズの入力フィールド
+            int gridWidth = EditorGUILayout.IntField("幅 (W)", currentWidth);
+            int gridHeight = EditorGUILayout.IntField("高さ (H)", currentHeight);
+            gridWidth = Mathf.Max(1, gridWidth);
+            gridHeight = Mathf.Max(1, gridHeight);
+
+            // サイズが変更されたらリアルタイムで適用
+            if (gridWidth != currentWidth || gridHeight != currentHeight)
+            {
+                Undo.RecordObject(database, "グリッドサイズを変更");
+                ResizeGrid(stageData.massStatus, gridWidth, gridHeight);
+                ResizeGrid(stageData.rockStatus, gridWidth, gridHeight);
+                EditorUtility.SetDirty(database);
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+            // MassStatusの編集（更新されたサイズを使用）
+            EditorGUILayout.LabelField("MassStatus ('.'でMassを配置)", EditorStyles.boldLabel);
+            DrawGridEditor(database, stageData.massStatus, gridWidth, gridHeight, "Mass");
+
+            EditorGUILayout.Space();
+
+            // RockStatusの編集（更新されたサイズを使用）
+            EditorGUILayout.LabelField("RockStatus ('#'でRockを配置)", EditorStyles.boldLabel);
+            DrawGridEditor(database, stageData.rockStatus, gridWidth, gridHeight, "Rock");
+
+            EditorGUILayout.Space();
+
+            // クリアボタン
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("MassStatusをクリア"))
+            {
+                Undo.RecordObject(database, "MassStatusをクリア");
+                ClearGrid(stageData.massStatus);
+                EditorUtility.SetDirty(database);
+            }
+            if (GUILayout.Button("RockStatusをクリア"))
+            {
+                Undo.RecordObject(database, "RockStatusをクリア");
+                ClearGrid(stageData.rockStatus);
+                EditorUtility.SetDirty(database);
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+    }
+
+    private void DrawGridEditor(StageDatabase database, List<StageDatabase.RowData> grid, int width, int height, string label)
+    {
+        // ResizeGridの呼び出しを削除 - これが原因でデータがリセットされていました
+        
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(300));
+
+        EditorGUILayout.BeginVertical();
+
+        // 列ヘッダー
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("", GUILayout.Width(50));
+        for (int w = 0; w < width; w++)
+        {
+            EditorGUILayout.LabelField(w.ToString(), GUILayout.Width(20), GUILayout.Height(20));
+        }
+        EditorGUILayout.EndHorizontal();
+
+        // グリッドの各行
+        for (int h = height - 1; h >= 0; h--)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(h.ToString(), GUILayout.Width(50), GUILayout.Height(20));
+
+            // 行が存在するかチェック
+            if (h < grid.Count && grid[h] != null && grid[h].columns != null)
+            {
+                for (int w = 0; w < width; w++)
+                {
+                    if (w < grid[h].columns.Count)
+                    {
+                        string value = grid[h].columns[w] ?? "";
+                        string newValue = EditorGUILayout.TextField(value, GUILayout.Width(20), GUILayout.Height(20));
+                        
+                        // 1文字のみ許可
+                        if (newValue.Length > 1)
+                        {
+                            newValue = newValue.Substring(0, 1);
+                        }
+                        
+                        if (newValue != value)
+                        {
+                            Undo.RecordObject(database, $"{label}Statusを編集");
+                            grid[h].columns[w] = newValue;
+                            EditorUtility.SetDirty(database);
+                        }
+                    }
+                    else
+                    {
+                        // 幅が足りない場合は空のセルを表示
+                        EditorGUILayout.TextField("", GUILayout.Width(20), GUILayout.Height(20));
+                    }
+                }
+            }
+            else
+            {
+                // 行が存在しない場合は空のセルを表示
+                for (int w = 0; w < width; w++)
+                {
+                    EditorGUILayout.TextField("", GUILayout.Width(20), GUILayout.Height(20));
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+        }
+
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.EndScrollView();
+
+        // 説明テキスト
+        EditorGUILayout.HelpBox(
+            label == "Mass" 
+                ? "'.' を入力するとMassが生成されます。空欄の場合は何も生成されません。" 
+                : "'#' を入力するとRockが生成されます。空欄の場合は何も生成されません。",
+            MessageType.Info);
+    }
+
+    private void ResizeGrid(List<StageDatabase.RowData> grid, int width, int height)
+    {
+        // 高さの調整
+        while (grid.Count < height)
+        {
+            grid.Add(new StageDatabase.RowData());
+        }
+        while (grid.Count > height)
+        {
+            grid.RemoveAt(grid.Count - 1);
+        }
+
+        // 幅の調整
+        for (int h = 0; h < grid.Count; h++)
+        {
+            if (grid[h] == null)
+            {
+                grid[h] = new StageDatabase.RowData();
+            }
+            if (grid[h].columns == null)
+            {
+                grid[h].columns = new List<string>();
+            }
+            while (grid[h].columns.Count < width)
+            {
+                grid[h].columns.Add("");
+            }
+            while (grid[h].columns.Count > width)
+            {
+                grid[h].columns.RemoveAt(grid[h].columns.Count - 1);
+            }
+        }
+    }
+
+    private void ClearGrid(List<StageDatabase.RowData> grid)
+    {
+        for (int h = 0; h < grid.Count; h++)
+        {
+            if (grid[h] != null && grid[h].columns != null)
+            {
+                for (int w = 0; w < grid[h].columns.Count; w++)
+                {
+                    grid[h].columns[w] = "";
+                }
+            }
+        }
+    }
+}
+
