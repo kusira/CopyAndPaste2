@@ -19,6 +19,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     private readonly List<Vector2Int> rotatedOffsets = new List<Vector2Int>();
     private bool hasCopy = false;
     private int rotationIndex = 0; // 0,1,2,3 = 0,90,180,270
+    private Vector3 initialScale;
 
     // デバッグ表示用
     [SerializeField] private bool debugHasCopy = false;
@@ -80,6 +81,9 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // グリッド情報を取得
         UpdateGridInfo();
+
+        // 初期スケールを保存
+        initialScale = transform.localScale;
     }
 
     private void Update()
@@ -157,10 +161,8 @@ public class RangeSelectorBehavior : MonoBehaviour
         Vector3 snappedPosition = SnapToGrid(mouseWorldPosition);
 
         // グリッドの範囲内かチェック
-        if (IsPositionInGrid(snappedPosition))
-        {
-            transform.position = snappedPosition;
-        }
+        // グリッド範囲内に収まるようにクランプ
+        transform.position = ClampToGrid(snappedPosition);
 
         // 選択矩形をデバッグ更新（コピー状態に依存せず常に）
         UpdateSelectionBoundsFromTransform();
@@ -189,7 +191,7 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // ホイールで回転（90度単位）
         float scroll = mouse.scroll.ReadValue().y;
-        if (hasCopy && Mathf.Abs(scroll) > 0.01f)
+        if (Mathf.Abs(scroll) > 0.01f)
         {
             Debug.Log($"マウスホイール：Rockパターンを回転します（スクロール値={scroll}）");
 
@@ -245,6 +247,7 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // RangeSelectorのサイズ（セル数）を取得
         Vector3 scale = transform.localScale;
+        initialScale = scale; // 回転用に初期スケールを保存
         int selWidth = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.x)));
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
 
@@ -252,18 +255,21 @@ public class RangeSelectorBehavior : MonoBehaviour
         Vector3 localPos = transform.position - gridParentPosition;
         // GridGeneratorと同じ計算式: position = parentPosition + (offsetX + w, offsetY + h)
         // 逆算: w = localPos.x - offsetX, h = localPos.y - offsetY
-        int centerX = Mathf.RoundToInt(localPos.x - gridOffset.x);
-        int centerY = Mathf.RoundToInt(localPos.y - gridOffset.y);
+        float floatCenterX = localPos.x - gridOffset.x;
+        float floatCenterY = localPos.y - gridOffset.y;
+        
+        int centerX = Mathf.FloorToInt(floatCenterX + 0.5f);
+        int centerY = Mathf.FloorToInt(floatCenterY + 0.5f);
 
         Debug.Log($"コピー開始: RangeSelector位置({transform.position.x}, {transform.position.y}), ローカル位置({localPos.x}, {localPos.y}), オフセット({gridOffset.x}, {gridOffset.y}), 中心セル({centerX}, {centerY}), サイズ({selWidth}, {selHeight})");
 
         // 選択範囲の矩形（グリッドインデックス）
         float halfW = (selWidth - 1) * 0.5f;
         float halfH = (selHeight - 1) * 0.5f;
-        int minX = Mathf.RoundToInt(centerX - halfW);
-        int maxX = Mathf.RoundToInt(centerX + halfW);
-        int minY = Mathf.RoundToInt(centerY - halfH);
-        int maxY = Mathf.RoundToInt(centerY + halfH);
+        int minX = Mathf.RoundToInt(floatCenterX - halfW);
+        int maxX = Mathf.RoundToInt(floatCenterX + halfW);
+        int minY = Mathf.RoundToInt(floatCenterY - halfH);
+        int maxY = Mathf.RoundToInt(floatCenterY + halfH);
 
         Debug.Log($"コピー範囲: ({minX}, {minY}) ～ ({maxX}, {maxY})");
 
@@ -317,8 +323,10 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // 現在の中心セル
         Vector3 localPos = transform.position - gridParentPosition;
-        int centerX = Mathf.RoundToInt(localPos.x - gridOffset.x);
-        int centerY = Mathf.RoundToInt(localPos.y - gridOffset.y);
+        float floatCenterX = localPos.x - gridOffset.x;
+        float floatCenterY = localPos.y - gridOffset.y;
+        int centerX = Mathf.FloorToInt(floatCenterX + 0.5f);
+        int centerY = Mathf.FloorToInt(floatCenterY + 0.5f);
 
         // 変化がなければプレビュー再生成をスキップ
         if (!previewDirty && centerX == lastPreviewCenterX && centerY == lastPreviewCenterY && rotationIndex == lastPreviewRotationIndex)
@@ -452,8 +460,10 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // 現在の中心セル
         Vector3 localPos = transform.position - gridParentPosition;
-        int centerX = Mathf.RoundToInt(localPos.x - gridOffset.x);
-        int centerY = Mathf.RoundToInt(localPos.y - gridOffset.y);
+        float floatCenterX = localPos.x - gridOffset.x;
+        float floatCenterY = localPos.y - gridOffset.y;
+        int centerX = Mathf.FloorToInt(floatCenterX + 0.5f);
+        int centerY = Mathf.FloorToInt(floatCenterY + 0.5f);
 
         // 回転済みオフセットが無ければ更新
         if (rotatedOffsets.Count == 0)
@@ -553,12 +563,27 @@ public class RangeSelectorBehavior : MonoBehaviour
     /// <summary>
     /// RangeSelector本体の回転（見た目）をrotationIndexに合わせて更新します
     /// </summary>
+    /// <summary>
+    /// RangeSelector本体の回転（見た目）をrotationIndexに合わせて更新します
+    /// 都合上、Z回転ではなくTransformのスケール変更（XY入れ替え）で表現します
+    /// </summary>
     private void UpdateSelectorRotation()
     {
         // 0,1,2,3 → 0°,90°,180°,270°
         int rot = ((rotationIndex % 4) + 4) % 4;
-        float angle = 90f * rot;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+        // 90度または270度の場合は縦横を入れ替える
+        if (rot % 2 != 0)
+        {
+            transform.localScale = new Vector3(initialScale.y, initialScale.x, initialScale.z);
+        }
+        else
+        {
+            transform.localScale = initialScale;
+        }
+
+        // 回転自体は常に0
+        transform.rotation = Quaternion.identity;
     }
 
     /// <summary>
@@ -573,15 +598,15 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // 中心セル（GridGeneratorの座標系に合わせる）
         Vector3 localPos = transform.position - gridParentPosition;
-        int centerX = Mathf.RoundToInt(localPos.x - gridOffset.x);
-        int centerY = Mathf.RoundToInt(localPos.y - gridOffset.y);
+        float floatCenterX = localPos.x - gridOffset.x;
+        float floatCenterY = localPos.y - gridOffset.y;
 
         float halfW = (selWidth - 1) * 0.5f;
         float halfH = (selHeight - 1) * 0.5f;
-        debugSelMinX = Mathf.RoundToInt(centerX - halfW);
-        debugSelMaxX = Mathf.RoundToInt(centerX + halfW);
-        debugSelMinY = Mathf.RoundToInt(centerY - halfH);
-        debugSelMaxY = Mathf.RoundToInt(centerY + halfH);
+        debugSelMinX = Mathf.RoundToInt(floatCenterX - halfW);
+        debugSelMaxX = Mathf.RoundToInt(floatCenterX + halfW);
+        debugSelMinY = Mathf.RoundToInt(floatCenterY - halfH);
+        debugSelMaxY = Mathf.RoundToInt(floatCenterY + halfH);
     }
 
     /// <summary>
@@ -656,22 +681,38 @@ public class RangeSelectorBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 位置がグリッドの範囲内かチェックします
+    /// グリッド範囲内に位置を制限（パディング考慮）
     /// </summary>
-    private bool IsPositionInGrid(Vector3 worldPosition)
+    private Vector3 ClampToGrid(Vector3 worldPosition)
     {
-        // グリッドの親位置を基準にローカル座標に変換
-        Vector3 localPosition = worldPosition - gridParentPosition;
+        Vector3 local = worldPosition - gridParentPosition;
 
-        // グリッドの範囲を計算
-        float minX = gridOffset.x;
-        float maxX = gridOffset.x + gridWidth - 1;
-        float minY = gridOffset.y;
-        float maxY = gridOffset.y + gridHeight - 1;
+        // セレクターの半サイズ
+        Vector3 scale = transform.localScale;
+        float halfW = Mathf.Abs(scale.x) * 0.5f;
+        float halfH = Mathf.Abs(scale.y) * 0.5f;
 
-        // 範囲内かチェック
-        return localPosition.x >= minX && localPosition.x <= maxX &&
-               localPosition.y >= minY && localPosition.y <= maxY;
+        // グリッドの物理的な端（セルの外枠）
+        // gridOffsetは(0,0)セルの中心。セル幅1なので、左端は -0.5
+        float gridLeft = gridOffset.x - 0.5f;
+        float gridBottom = gridOffset.y - 0.5f;
+        float gridRight = gridOffset.x + gridWidth - 0.5f;
+        float gridTop = gridOffset.y + gridHeight - 0.5f;
+
+        // セレクター中心の可動範囲
+        float minX = gridLeft + halfW;
+        float maxX = gridRight - halfW;
+        float minY = gridBottom + halfH;
+        float maxY = gridTop - halfH;
+
+        // セレクターがグリッドより大きい場合の考慮（中心に固定など）
+        if (minX > maxX) minX = maxX = (gridLeft + gridRight) * 0.5f;
+        if (minY > maxY) minY = maxY = (gridBottom + gridTop) * 0.5f;
+
+        float cx = Mathf.Clamp(local.x, minX, maxX);
+        float cy = Mathf.Clamp(local.y, minY, maxY);
+
+        return gridParentPosition + new Vector3(cx, cy, worldPosition.z);
     }
 }
 
