@@ -211,9 +211,9 @@ public class RangeSelectorBehavior : MonoBehaviour
             }
             else
             {
-                // RangeSelector削除
+                // RangeSelector削除（アイテムを表示に戻す）
                 Debug.Log("右クリック：RangeSelectorを削除します");
-                Destroy(gameObject);
+                DestroySelector();
             }
         }
 
@@ -568,6 +568,9 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // プレビュー更新
         UpdatePreviewAndValidity();
+
+        // 貼り付け成功したら削除（アイテムごと）
+        DestroySelectorAndItem();
     }
 
     /// <summary>
@@ -951,6 +954,38 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         Debug.LogWarning("ステージデータを取得できませんでした（RangeSelectorBehavior）");
         return null;
+    }
+    
+
+    // アイテム参照（RangeSelectorItemBehaviorから設定される）
+    private RangeSelectorItemBehavior sourceItem;
+
+    public void SetSourceItem(RangeSelectorItemBehavior item)
+    {
+        sourceItem = item;
+        if (sourceItem != null)
+        {
+            sourceItem.SetAlpha(0.3f); // 選択中は薄くする
+        }
+    }
+
+    private void DestroySelector()
+    {
+        if (sourceItem != null)
+        {
+            sourceItem.SetAlpha(1.0f); // 削除時は元に戻す
+        }
+        Destroy(gameObject);
+    }
+
+    private void DestroySelectorAndItem()
+    {
+        if (sourceItem != null)
+        {
+            // アイテムもろとも削除
+            Destroy(sourceItem.gameObject);
+        }
+        Destroy(gameObject);
     }
 }
 

@@ -84,8 +84,29 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
             // 同じサイズにスケールを設定
             instance.transform.localScale = new Vector3(selectorWidth, selectorHeight, 1f);
             instance.name = "RangeSelector";
+
+            // Selectorに自身を登録
+            var behavior = instance.GetComponent<RangeSelectorBehavior>();
+            if (behavior != null)
+            {
+                behavior.SetSourceItem(this);
+            }
             
             Debug.Log($"RangeSelectorを生成しました: サイズ({selectorWidth}, {selectorHeight}), ワールド位置({worldPosition.x}, {worldPosition.y}), ローカル位置({localCenterX}, {localCenterY}), グリッドサイズ({gridWidth}, {gridHeight})");
+        }
+    }
+
+    /// <summary>
+    /// アイテムの透明度を設定します
+    /// </summary>
+    public void SetAlpha(float alpha)
+    {
+        var sr = GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            Color c = sr.color;
+            c.a = alpha;
+            sr.color = c;
         }
     }
 

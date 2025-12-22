@@ -20,44 +20,52 @@ MonoBehaviour:
       - .
       - .
       - .
-    - columns:
-      - .
-      - .
-      - .
       - .
     - columns:
       - .
       - .
       - .
+      - .
+      - .S
+    - columns:
+      - .S
+      - .S
+      - .
+      - .S
       - .
     - columns:
       - .S
       - .S
+      - .
       - .
       - .
     rockStatus:
     - columns:
-      - '#'
-      - '#S'
-      - '#'
-      - '#S'
+      - 
+      - 
+      - 
+      - 
+      - 
     - columns:
-      - '#'
-      - '#'
-      - '#'
-      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
     - columns:
       - 
       - 
       - '#'
       - '#'
+      - 
     - columns:
-      - '#'
-      - '#'
-      - '#'
-      - '#'
+      - 
+      - 
+      - '#S'
+      - '#S'
+      - 
     rangeSelectorItems:
     - height: 2
-      width: 2
+      width: 1
     - height: 2
       width: 3
