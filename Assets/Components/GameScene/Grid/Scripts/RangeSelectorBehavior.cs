@@ -16,8 +16,8 @@ public class RangeSelectorBehavior : MonoBehaviour
     private Vector3 gridOffset;
 
     // コピーされたRockパターン（中心からのオフセット）
-    private readonly List<Vector2Int> copiedOffsets = new List<Vector2Int>();
-    private readonly List<Vector2Int> rotatedOffsets = new List<Vector2Int>();
+    private readonly List<RangeSelectorHelper.CopiedRockData> copiedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
+    private readonly List<RangeSelectorHelper.CopiedRockData> rotatedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
     private bool hasCopy = false;
     private int rotationIndex = 0; // 0,1,2,3 = 0,90,180,270
     private Vector3 initialScale;
@@ -27,7 +27,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     [SerializeField] private int debugCopiedCount = 0;
     [SerializeField] private int debugRotationIndex = 0;
     [SerializeField] private string debugStateMessage = "未コピー";
-    [SerializeField, HideInInspector] private List<Vector2Int> debugSnapshotOffsets = new List<Vector2Int>();
+    [SerializeField, HideInInspector] private List<RangeSelectorHelper.CopiedRockData> debugSnapshotOffsets = new List<RangeSelectorHelper.CopiedRockData>();
     [SerializeField, HideInInspector] private int debugMinX = 0;
     [SerializeField, HideInInspector] private int debugMaxX = 0;
     [SerializeField, HideInInspector] private int debugMinY = 0;
@@ -366,8 +366,9 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         Transform previewParent = transform.parent != null ? transform.parent : transform;
 
-        foreach (var o in rotatedOffsets)
+        foreach (var data in rotatedOffsets)
         {
+            Vector2Int o = data.offset;
             int gx = centerX + o.x;
             int gy = centerY + o.y;
 
@@ -402,7 +403,11 @@ public class RangeSelectorBehavior : MonoBehaviour
                 gx < rockStatus[gy].columns.Count)
             {
                 string rv = rockStatus[gy].columns[gx];
-                if (!string.IsNullOrEmpty(rv) && rv == "#")
+                char baseChar;
+                List<string> dummyKeys = new List<string>();
+                RangeSelectorHelper.ParseCell(rv, out baseChar, dummyKeys);
+
+                if (baseChar == '#')
                 {
                     canPaste = false;
                 }
@@ -421,6 +426,13 @@ public class RangeSelectorBehavior : MonoBehaviour
                     Color c = sr.color;
                     c.a = 0.5f;
                     sr.color = c;
+                }
+
+                // プレビューにもパターンを適用
+                var assigner = preview.GetComponent<RockPatternAssigner>();
+                if (assigner != null)
+                {
+                    assigner.ApplyPatterns(data.value);
                 }
             }
         }
@@ -613,7 +625,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     /// <summary>
     /// デバッグ用に現在のコピー形状を保存します
     /// </summary>
-    private void UpdateDebugSnapshot(List<Vector2Int> offsets)
+    private void UpdateDebugSnapshot(List<RangeSelectorHelper.CopiedRockData> offsets)
     {
         debugSnapshotOffsets.Clear();
         debugSnapshotOffsets.AddRange(offsets);
@@ -624,10 +636,11 @@ public class RangeSelectorBehavior : MonoBehaviour
             return;
         }
 
-        debugMinX = debugMaxX = offsets[0].x;
-        debugMinY = debugMaxY = offsets[0].y;
-        foreach (var o in offsets)
+        debugMinX = debugMaxX = offsets[0].offset.x;
+        debugMinY = debugMaxY = offsets[0].offset.y;
+        foreach (var data in offsets)
         {
+            Vector2Int o = data.offset;
             if (o.x < debugMinX) debugMinX = o.x;
             if (o.x > debugMaxX) debugMaxX = o.x;
             if (o.y < debugMinY) debugMinY = o.y;

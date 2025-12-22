@@ -12,4 +12,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d6f919cce7c8447abdc63f08374f50, type: 3}
   m_Name: StageDatabase
   m_EditorClassIdentifier: Assembly-CSharp::StageDatabase
-  stages: []
+  stages:
+  - stageName: Stage 1
+    massStatus:
+    - columns:
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .S
+      - .S
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - '#'
+      - '#S'
+      - '#'
+      - '#S'
+    - columns:
+      - '#'
+      - '#'
+      - '#'
+      - '#'
+    - columns:
+      - 
+      - 
+      - '#'
+      - '#'
+    - columns:
+      - '#'
+      - '#'
+      - '#'
+      - '#'
+    rangeSelectorItems:
+    - height: 2
+      width: 2
+    - height: 2
+      width: 3

@@ -22,17 +22,10 @@ public class MassPatternAssigner : MonoBehaviour
     private Transform patternTransform;
     private SpriteRenderer patternRenderer;
     
-    // Mass本体のSprite制御用
-    [Header("Mass Sprite Settings")]
-    [SerializeField] private Sprite normalSprite;
-    [SerializeField] private Sprite cantPutSprite;
-    private SpriteRenderer massRenderer;
-
     private void Awake()
     {
         BuildDict();
         CachePatternRenderer();
-        massRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void BuildDict()
@@ -71,13 +64,9 @@ public class MassPatternAssigner : MonoBehaviour
         var keys = new List<string>();
         RangeSelectorHelper.ParseCell(cellValue, out baseChar, keys);
 
-        // Mass本体のSpriteとTagを設定
+        // Mass本体のTagを設定
         if (baseChar == '.')
         {
-            if (massRenderer != null && normalSprite != null)
-            {
-                massRenderer.sprite = normalSprite;
-            }
             gameObject.tag = "Mass";
 
             // 何もキーがない場合はSpriteを外す
@@ -102,11 +91,6 @@ public class MassPatternAssigner : MonoBehaviour
         }
         else
         {
-            // '.' 以外は配置不可マスとする
-            if (massRenderer != null && cantPutSprite != null)
-            {
-                massRenderer.sprite = cantPutSprite;
-            }
             gameObject.tag = "Untagged";
             
             // パターンは表示しない

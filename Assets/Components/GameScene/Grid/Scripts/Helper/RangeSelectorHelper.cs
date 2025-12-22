@@ -8,6 +8,22 @@ using UnityEngine;
 public static class RangeSelectorHelper
 {
     /// <summary>
+    /// コピーしたRockのデータを保持する構造体
+    /// </summary>
+    [System.Serializable]
+    public struct CopiedRockData
+    {
+        public Vector2Int offset;
+        public string value; // "#", "#S" など
+
+        public CopiedRockData(Vector2Int offset, string value)
+        {
+            this.offset = offset;
+            this.value = value;
+        }
+    }
+
+    /// <summary>
     /// 左上の座標が0.5刻みでずれている場合、中心座標を補正して左上を整数に揃えます。
     /// centerX/centerY はワールド座標の中心、width/height はセル数。
     /// </summary>
@@ -62,7 +78,7 @@ public static class RangeSelectorHelper
         StageDatabase.StageData stageData,
         int minX, int minY, int maxX, int maxY,
         int centerX, int centerY,
-        List<Vector2Int> copiedOffsets)
+        List<CopiedRockData> copiedOffsets)
     {
         copiedOffsets.Clear();
 
@@ -82,11 +98,15 @@ public static class RangeSelectorHelper
                 if (x < 0 || x >= row.columns.Count) continue;
 
                 string v = row.columns[x];
-                if (!string.IsNullOrEmpty(v) && v == "#")
+                char baseChar;
+                List<string> dummyKeys = new List<string>();
+                ParseCell(v, out baseChar, dummyKeys);
+                
+                if (baseChar == '#')
                 {
                     int dx = x - centerX;
                     int dy = y - centerY;
-                    copiedOffsets.Add(new Vector2Int(dx, dy));
+                    copiedOffsets.Add(new CopiedRockData(new Vector2Int(dx, dy), v));
                 }
             }
         }
@@ -96,17 +116,18 @@ public static class RangeSelectorHelper
     /// コピー済みオフセット群を回転させ、回転後のオフセットリストを構築します。
     /// </summary>
     public static void RotateOffsets(
-        List<Vector2Int> sourceOffsets,
+        List<CopiedRockData> sourceOffsets,
         int rotationIndex,
-        List<Vector2Int> rotatedOffsets)
+        List<CopiedRockData> rotatedOffsets)
     {
         rotatedOffsets.Clear();
         if (sourceOffsets == null) return;
 
         int rot = ((rotationIndex % 4) + 4) % 4;
 
-        foreach (var o in sourceOffsets)
+        foreach (var data in sourceOffsets)
         {
+            Vector2Int o = data.offset;
             Vector2Int r;
             switch (rot)
             {
@@ -131,7 +152,7 @@ public static class RangeSelectorHelper
                         Mathf.RoundToInt(o.y));
                     break;
             }
-            rotatedOffsets.Add(r);
+            rotatedOffsets.Add(new CopiedRockData(r, data.value));
         }
     }
 
@@ -139,7 +160,7 @@ public static class RangeSelectorHelper
     /// 貼り付けが可能かどうかを判定します。
     /// </summary>
     public static bool CanPaste(
-        List<Vector2Int> rotatedOffsets,
+        List<CopiedRockData> rotatedOffsets,
         int centerX, int centerY,
         int gridWidth, int gridHeight,
         List<StageDatabase.RowData> massStatus,
@@ -150,8 +171,9 @@ public static class RangeSelectorHelper
             return false;
         }
 
-        foreach (var o in rotatedOffsets)
+        foreach (var data in rotatedOffsets)
         {
+            Vector2Int o = data.offset;
             int gx = centerX + o.x;
             int gy = centerY + o.y;
 
@@ -180,7 +202,11 @@ public static class RangeSelectorHelper
                 gx < rockStatus[gy].columns.Count)
             {
                 string rv = rockStatus[gy].columns[gx];
-                if (!string.IsNullOrEmpty(rv) && rv == "#")
+                char rockBaseChar;
+                List<string> dummyKeys = new List<string>();
+                ParseCell(rv, out rockBaseChar, dummyKeys);
+
+                if (rockBaseChar == '#')
                 {
                     return false;
                 }
@@ -194,14 +220,15 @@ public static class RangeSelectorHelper
     /// 実際にRockStatusへ貼り付けを行います。
     /// </summary>
     public static void ApplyPaste(
-        List<Vector2Int> rotatedOffsets,
+        List<CopiedRockData> rotatedOffsets,
         int centerX, int centerY,
         List<StageDatabase.RowData> rockStatus)
     {
         if (rotatedOffsets == null || rockStatus == null) return;
 
-        foreach (var o in rotatedOffsets)
+        foreach (var data in rotatedOffsets)
         {
+            Vector2Int o = data.offset;
             int gx = centerX + o.x;
             int gy = centerY + o.y;
 
@@ -220,7 +247,7 @@ public static class RangeSelectorHelper
                 rockStatus[gy].columns.Add(string.Empty);
             }
 
-            rockStatus[gy].columns[gx] = "#";
+            rockStatus[gy].columns[gx] = data.value;
         }
     }
 }

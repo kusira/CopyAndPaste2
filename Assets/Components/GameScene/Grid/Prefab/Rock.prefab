@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RockPatternAssigner
   patternTable:
-  - key: Star
+  - key: S
     sprite: {fileID: 6981481357855213104, guid: 60e27eb06ec728347b3b1835ba9f1627, type: 3}
 --- !u!1 &7370561605131840916
 GameObject:

@@ -63,6 +63,12 @@ public class RockPatternAssigner : MonoBehaviour
         char baseChar;
         var keys = new List<string>();
         RangeSelectorHelper.ParseCell(cellValue, out baseChar, keys);
+        
+        // Tagを設定
+        if (baseChar == '#')
+        {
+            gameObject.tag = "Rock";
+        }
 
         // 何もキーがない場合はSpriteを外す
         if (keys.Count == 0)

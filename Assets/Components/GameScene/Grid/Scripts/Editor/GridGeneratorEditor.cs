@@ -151,7 +151,6 @@ public class GridGeneratorEditor : Editor
         for (int h = height - 1; h >= 0; h--)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField($"H{h}:", GUILayout.Width(100));
             
             if (massStatus[h] != null && massStatus[h].columns != null)
             {
@@ -176,7 +175,6 @@ public class GridGeneratorEditor : Editor
             for (int h = height - 1; h >= 0; h--)
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField($"H{h}:", GUILayout.Width(100));
                 
                 if (h < rockStatus.Count && rockStatus[h] != null && rockStatus[h].columns != null)
                 {
