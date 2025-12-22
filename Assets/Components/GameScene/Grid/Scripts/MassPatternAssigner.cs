@@ -28,7 +28,12 @@ public class MassPatternAssigner : MonoBehaviour
         CachePatternRenderer();
     }
 
-    private void BuildDict()
+    private void OnValidate()
+    {
+        BuildDict();
+    }
+
+    public void BuildDict()
     {
         patternDict.Clear();
         foreach (var entry in patternTable)

@@ -133,6 +133,7 @@ public class GridGenerator : MonoBehaviour
                                         var assigner = instance.GetComponent<MassPatternAssigner>();
                                         if (assigner != null)
                                         {
+                                            assigner.BuildDict(); // 辞書構築（エディタ実行時用）
                                             assigner.ApplyPatterns(massValue);
                                         }
                                         generatedCount++;
@@ -165,6 +166,7 @@ public class GridGenerator : MonoBehaviour
                                             var assigner = instance.GetComponent<RockPatternAssigner>();
                                             if (assigner != null)
                                             {
+                                                assigner.BuildDict(); // 辞書構築（エディタ実行時用）
                                                 assigner.ApplyPatterns(rockValue);
                                             }
                                             generatedCount++;
