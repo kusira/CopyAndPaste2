@@ -27,62 +27,38 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
             return;
         }
 
+        // 表示のちらつきを防ぐため、既に存在する場合は削除（通常はないはずだが）
+        var existingSelectors = GameObject.FindGameObjectsWithTag("RangeSelector"); // 必要ならTag等で検索
+        // RangeSelectorBehaviorがシングルトン的な挙動をするならここで整理してもいいが、
+        // 既存実装では複数生成されないように管理されているかは不明。
+        // ここでは単純に新規生成する。
+
         // このオブジェクトのスケールからサイズを取得
         Vector3 scale = transform.localScale;
-        float selectorWidth = scale.x;
-        float selectorHeight = scale.y;
-
-        // グリッドのサイズを取得（StageDatabaseから）
-        int gridWidth = 0;
-        int gridHeight = 0;
-
-        StageDatabase.StageData stageData = GetStageData();
-        if (stageData != null && stageData.massStatus != null && stageData.massStatus.Count > 0)
-        {
-            gridHeight = stageData.massStatus.Count;
-            if (stageData.massStatus[0] != null && stageData.massStatus[0].columns != null)
-            {
-                gridWidth = stageData.massStatus[0].columns.Count;
-            }
-        }
-
-        if (gridWidth == 0 || gridHeight == 0)
-        {
-            Debug.LogWarning("グリッドのサイズが取得できませんでした");
-            return;
-        }
-
+        
         // RangeSelectorParentをシーン内から検索
         GameObject parentObject = GameObject.Find("RangeSelectorParent");
         Transform parent = parentObject != null ? parentObject.transform : null;
         
-        if (parent == null)
+        // Itemの位置に生成する（直後にBehavior側でマウス追従が始まる）
+        // Parentがある場合はParent下に入れる
+        GameObject instance;
+        if (parent != null)
         {
-            Debug.LogWarning("RangeSelectorParentが見つかりませんでした");
-            return;
+            instance = Instantiate(rangeSelectorPrefab, parent);
         }
-
-        // RangeSelectorParentの位置を取得
-        Vector3 parentPosition = parent.position;
-
-        // RangeSelectorParentの位置を(0,0)として、グリッドの左上とRangeSelectorの左上を合わせる
-        // 計算式: ((-グリッドの幅 + RangeSelectorの幅) / 2, (グリッドの高さ - RangeSelectorの高さ) / 2)
-        float localCenterX = (-gridWidth + selectorWidth) * 0.5f;
-        float localCenterY = (gridHeight - selectorHeight) * 0.5f;
-        
-        // 親の位置を基準にワールド座標を計算
-        Vector3 worldPosition = parentPosition + new Vector3(localCenterX, localCenterY, 0f);
-
-        // RangeSelectorを生成（親の下に生成）
-        GameObject instance = Instantiate(rangeSelectorPrefab, parent);
+        else
+        {
+            instance = Instantiate(rangeSelectorPrefab);
+        }
         
         if (instance != null)
         {
-            // ワールド座標で位置を設定
-            instance.transform.position = worldPosition;
+            // 位置を設定（取り急ぎItemと同じ位置）
+            instance.transform.position = transform.position;
             
             // 同じサイズにスケールを設定
-            instance.transform.localScale = new Vector3(selectorWidth, selectorHeight, 1f);
+            instance.transform.localScale = scale;
             instance.name = "RangeSelector";
 
             // Selectorに自身を登録
@@ -92,7 +68,7 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
                 behavior.SetSourceItem(this);
             }
             
-            Debug.Log($"RangeSelectorを生成しました: サイズ({selectorWidth}, {selectorHeight}), ワールド位置({worldPosition.x}, {worldPosition.y}), ローカル位置({localCenterX}, {localCenterY}), グリッドサイズ({gridWidth}, {gridHeight})");
+            Debug.Log($"RangeSelectorを生成しました: サイズ({scale.x}, {scale.y})");
         }
     }
 

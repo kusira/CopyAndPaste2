@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -8662629293334482819}
   m_Layer: 0
   m_Name: RangeSelector
-  m_TagString: Untagged
+  m_TagString: RangeSelector
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,3 +103,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f13de2f431a10f41b9adbf8a2871945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangeSelectorBehavior
+  debugHasCopy: 0
+  debugCopiedCount: 0
+  debugRotationIndex: 0
+  debugStateMessage: "\u672A\u30B3\u30D4\u30FC"
+  debugSnapshotOffsets: []
+  debugMinX: 0
+  debugMaxX: 0
+  debugMinY: 0
+  debugMaxY: 0
+  debugSelMinX: 0
+  debugSelMaxX: 0
+  debugSelMinY: 0
+  debugSelMaxY: 0
+  invalidColor: {r: 1, g: 0, b: 0, a: 1}
