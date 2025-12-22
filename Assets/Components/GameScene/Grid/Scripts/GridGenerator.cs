@@ -42,16 +42,24 @@ public class GridGenerator : MonoBehaviour
             List<StageDatabase.RowData> massStatus = null;
             List<StageDatabase.RowData> rockStatus = null;
 
-            // StageDatabaseから直接取得する（CurrentGameStatusはインデックスのみ）
-            if (stageDatabase != null)
+            // StageDatabaseからデータを取得（CurrentGameStatus経由を優先）
+            StageDatabase.StageData stageData = null;
+            if (currentGameStatus != null)
+            {
+                stageData = currentGameStatus.GetCurrentStageData();
+            }
+
+            // 直接Databaseから取得（フォールバック）
+            if (stageData == null && stageDatabase != null)
             {
                 int stageIndex = currentGameStatus != null ? currentGameStatus.GetCurrentStageIndex() : 0;
-                StageDatabase.StageData stageData = stageDatabase.GetStageData(stageIndex);
-                if (stageData != null)
-                {
-                    massStatus = stageData.massStatus;
-                    rockStatus = stageData.rockStatus;
-                }
+                stageData = stageDatabase.GetStageData(stageIndex);
+            }
+
+            if (stageData != null)
+            {
+                massStatus = stageData.massStatus;
+                rockStatus = stageData.rockStatus;
             }
 
             if (massStatus == null || massStatus.Count == 0)

@@ -8,7 +8,6 @@ public class RangeSelectorBehavior : MonoBehaviour
     private Camera mainCamera;
     private CurrentGameStatus currentGameStatus;
     private GridGenerator gridGenerator;
-    private StageDatabase stageDatabase;
 
     private int gridWidth = 0;
     private int gridHeight = 0;
@@ -63,16 +62,6 @@ public class RangeSelectorBehavior : MonoBehaviour
         // 参照系を取得
         currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
         gridGenerator = Object.FindFirstObjectByType<GridGenerator>();
-
-        // GridGenerator から StageDatabase を取得
-        if (gridGenerator != null)
-        {
-            FieldInfo dbField = typeof(GridGenerator).GetField("stageDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (dbField != null)
-            {
-                stageDatabase = dbField.GetValue(gridGenerator) as StageDatabase;
-            }
-        }
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -280,7 +269,7 @@ public class RangeSelectorBehavior : MonoBehaviour
             return;
         }
         StageDatabase.StageData stageData = GetStageData();
-        if (stageData == null || stageData.rockStatus == null || stageData.rockStatus.Count == 0)
+        if (stageData == null || stageData.rockStatus == null)
         {
             Debug.LogWarning("RockStatusが設定されていません");
             return;
@@ -795,44 +784,56 @@ public class RangeSelectorBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// StageDatabase から現在のステージデータを取得します
+    /// 現在のステージデータを取得します（ランタイムではDeepCopy済みを返す）
     /// </summary>
     private StageDatabase.StageData GetStageData()
     {
-        // StageDatabase が未取得なら GridGenerator から取得を試みる
-        if (stageDatabase == null)
-        {
-            if (gridGenerator == null)
-            {
-                gridGenerator = Object.FindFirstObjectByType<GridGenerator>();
-            }
-            if (gridGenerator != null)
-            {
-                FieldInfo dbField = typeof(GridGenerator).GetField("stageDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
-                if (dbField != null)
-                {
-                    stageDatabase = dbField.GetValue(gridGenerator) as StageDatabase;
-                }
-            }
-        }
-
-        if (stageDatabase == null)
-        {
-            Debug.LogWarning("StageDatabaseが見つかりませんでした");
-            return null;
-        }
-
-        int stageIndex = 0;
+        // 1. CurrentGameStatus から取得（最優先：ランタイムDeepCopy）
         if (currentGameStatus == null)
         {
             currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
         }
         if (currentGameStatus != null)
         {
-            stageIndex = currentGameStatus.GetCurrentStageIndex();
+            var runtimeData = currentGameStatus.GetCurrentStageData();
+            if (runtimeData != null)
+            {
+                return runtimeData;
+            }
         }
 
-        return stageDatabase.GetStageData(stageIndex);
+        // 2. CurrentGameStatus が持つ StageDatabase から直接取得（読み取り専用）
+        if (currentGameStatus != null)
+        {
+            StageDatabase db = currentGameStatus.GetStageDatabase();
+            if (db != null)
+            {
+                int idx = currentGameStatus.GetCurrentStageIndex();
+                return db.GetStageData(idx);
+            }
+        }
+
+        // 3. フォールバック：GridGenerator にアサインされている StageDatabase から取得
+        if (gridGenerator == null)
+        {
+            gridGenerator = Object.FindFirstObjectByType<GridGenerator>();
+        }
+        if (gridGenerator != null)
+        {
+            FieldInfo dbField = typeof(GridGenerator).GetField("stageDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (dbField != null)
+            {
+                StageDatabase db = dbField.GetValue(gridGenerator) as StageDatabase;
+                if (db != null)
+                {
+                    int idx = currentGameStatus != null ? currentGameStatus.GetCurrentStageIndex() : 0;
+                    return db.GetStageData(idx);
+                }
+            }
+        }
+
+        Debug.LogWarning("ステージデータを取得できませんでした（RangeSelectorBehavior）");
+        return null;
     }
 }
 

@@ -123,7 +123,17 @@ public class GridGeneratorEditor : Editor
             stageIndex = currentGameStatus.GetCurrentStageIndex();
         }
 
-        StageDatabase.StageData stageData = stageDatabase.GetStageData(stageIndex);
+        StageDatabase.StageData stageData = null;
+        if (currentGameStatus != null)
+        {
+            stageData = currentGameStatus.GetCurrentStageData();
+        }
+
+        // CurrentGameStatusから取得できなかった場合（未アサイン時など）は直接Databaseから取得
+        if (stageData == null)
+        {
+             stageData = stageDatabase.GetStageData(stageIndex);
+        }
         if (stageData == null)
         {
             EditorGUILayout.HelpBox("ステージデータが取得できません", MessageType.Warning);
