@@ -130,6 +130,7 @@ public class StageDatabaseEditor : Editor
             ResizeGrid(stageData.massStatus, gridWidth, gridHeight);
             ResizeGrid(stageData.rockStatus, gridWidth, gridHeight);
             EditorUtility.SetDirty(database);
+            RefreshGrid();
         }
 
         EditorGUILayout.Space();
@@ -154,12 +155,14 @@ public class StageDatabaseEditor : Editor
             Undo.RecordObject(database, "MassStatusをクリア");
             ClearGrid(stageData.massStatus);
             EditorUtility.SetDirty(database);
+            RefreshGrid();
         }
         if (GUILayout.Button("RockStatusをクリア"))
         {
             Undo.RecordObject(database, "RockStatusをクリア");
             ClearGrid(stageData.rockStatus);
             EditorUtility.SetDirty(database);
+            RefreshGrid();
         }
         EditorGUILayout.EndHorizontal();
 
@@ -263,6 +266,7 @@ public class StageDatabaseEditor : Editor
                             Undo.RecordObject(database, $"{label}Statusを編集");
                             grid[h].columns[w] = newValue;
                             EditorUtility.SetDirty(database);
+                            RefreshGrid();
                         }
                     }
                     else
@@ -340,6 +344,15 @@ public class StageDatabaseEditor : Editor
                     grid[h].columns[w] = "";
                 }
             }
+        }
+    }
+
+    private void RefreshGrid()
+    {
+        GridGenerator generator = FindFirstObjectByType<GridGenerator>();
+        if (generator != null)
+        {
+            generator.GenerateGrid();
         }
     }
 }
