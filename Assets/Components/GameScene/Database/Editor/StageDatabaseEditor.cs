@@ -123,6 +123,65 @@ public class StageDatabaseEditor : Editor
                 EditorUtility.SetDirty(database);
             }
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+            // RangeSelectorItemの編集
+            EditorGUILayout.LabelField("RangeSelectorItem", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("i個目のアイテムのサイズはH_i*W_iで指定されます", MessageType.Info);
+
+            // アイテム数の設定
+            int itemCount = EditorGUILayout.IntField("アイテム数", stageData.rangeSelectorItems.Count);
+            if (itemCount != stageData.rangeSelectorItems.Count)
+            {
+                Undo.RecordObject(database, "RangeSelectorItem数を変更");
+                while (stageData.rangeSelectorItems.Count < itemCount)
+                {
+                    stageData.rangeSelectorItems.Add(new StageDatabase.RangeSelectorItemData());
+                }
+                while (stageData.rangeSelectorItems.Count > itemCount)
+                {
+                    stageData.rangeSelectorItems.RemoveAt(stageData.rangeSelectorItems.Count - 1);
+                }
+                EditorUtility.SetDirty(database);
+            }
+
+            EditorGUILayout.Space();
+
+            // 各アイテムのサイズを編集
+            for (int i = 0; i < stageData.rangeSelectorItems.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField($"アイテム {i}:", GUILayout.Width(80));
+
+                StageDatabase.RangeSelectorItemData item = stageData.rangeSelectorItems[i];
+                if (item == null)
+                {
+                    item = new StageDatabase.RangeSelectorItemData();
+                    stageData.rangeSelectorItems[i] = item;
+                }
+
+                // H<数字入力>×W<数字入力>の形式で表示
+                EditorGUILayout.LabelField("H", GUILayout.Width(15));
+                int newHeight = EditorGUILayout.IntField(item.height, GUILayout.Width(50));
+                EditorGUILayout.LabelField("×", GUILayout.Width(20));
+                EditorGUILayout.LabelField("W", GUILayout.Width(15));
+                int newWidth = EditorGUILayout.IntField(item.width, GUILayout.Width(50));
+
+                newHeight = Mathf.Max(1, newHeight);
+                newWidth = Mathf.Max(1, newWidth);
+
+                if (newHeight != item.height || newWidth != item.width)
+                {
+                    Undo.RecordObject(database, $"RangeSelectorItem[{i}]を変更");
+                    item.height = newHeight;
+                    item.width = newWidth;
+                    EditorUtility.SetDirty(database);
+                }
+
+                EditorGUILayout.EndHorizontal();
+            }
         }
     }
 

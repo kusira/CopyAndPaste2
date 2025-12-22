@@ -17,26 +17,67 @@ MonoBehaviour:
     massStatus:
     - columns:
       - .
-      - 
-      - 
-    - columns:
       - .
       - .
       - 
+      - 
     - columns:
+      - 
+      - .
+      - .
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - .
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
       - 
       - 
       - 
     rockStatus:
     - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
       - '#'
       - 
       - 
     - columns:
-      - '#'
+      - 
+      - 
+      - 
       - 
       - 
     - columns:
       - 
       - 
       - 
+      - 
+      - 
+    rangeSelectorItems:
+    - height: 2
+      width: 2
+    - height: 1
+      width: 1

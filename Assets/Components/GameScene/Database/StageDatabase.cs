@@ -21,6 +21,16 @@ public class StageDatabase : ScriptableObject
     }
 
     [System.Serializable]
+    public class RangeSelectorItemData
+    {
+        [Tooltip("範囲選択アイテムの高さ（H）")]
+        public int height = 1;
+        
+        [Tooltip("範囲選択アイテムの幅（W）")]
+        public int width = 1;
+    }
+
+    [System.Serializable]
     public class StageData
     {
         [Tooltip("ステージ名")]
@@ -33,6 +43,9 @@ public class StageDatabase : ScriptableObject
         [Tooltip("Rockの配置情報を表す二次元リストです。\"#\"の位置にRockが生成されます")]
         // ▼ 変更: List<List<string>> から List<RowData> に変更
         public List<RowData> rockStatus = new List<RowData>();
+        
+        [Tooltip("範囲選択アイテムのリストです。i個目のアイテムのサイズはH_i*W_iで指定されます")]
+        public List<RangeSelectorItemData> rangeSelectorItems = new List<RangeSelectorItemData>();
     }
 
     [Tooltip("ステージデータのリスト")]
