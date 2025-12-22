@@ -161,7 +161,17 @@ public static class RangeSelectorHelper
             }
 
             if (gy >= massStatus.Count || massStatus[gy] == null || massStatus[gy].columns == null ||
-                gx >= massStatus[gy].columns.Count || massStatus[gy].columns[gx] != ".")
+                gx >= massStatus[gy].columns.Count)
+            {
+                return false;
+            }
+
+            string cellValue = massStatus[gy].columns[gx];
+            char baseChar;
+            List<string> keys = new List<string>(); // ダミー
+            ParseCell(cellValue, out baseChar, keys);
+            
+            if (baseChar != '.')
             {
                 return false;
             }

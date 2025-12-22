@@ -110,7 +110,7 @@ public class GridGenerator : MonoBehaviour
 
                         // MassStatusをチェック
                         string massValue = massStatus[h].columns[w];
-                        bool hasMass = !string.IsNullOrEmpty(massValue) && massValue.Length > 0 && massValue[0] == '.';
+                        bool hasMass = !string.IsNullOrEmpty(massValue);
                         if (hasMass)
                         {
                             if (massPrefab != null)

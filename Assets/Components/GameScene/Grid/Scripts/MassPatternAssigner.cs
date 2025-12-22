@@ -21,11 +21,18 @@ public class MassPatternAssigner : MonoBehaviour
     private readonly Dictionary<string, Sprite> patternDict = new Dictionary<string, Sprite>();
     private Transform patternTransform;
     private SpriteRenderer patternRenderer;
+    
+    // Mass本体のSprite制御用
+    [Header("Mass Sprite Settings")]
+    [SerializeField] private Sprite normalSprite;
+    [SerializeField] private Sprite cantPutSprite;
+    private SpriteRenderer massRenderer;
 
     private void Awake()
     {
         BuildDict();
         CachePatternRenderer();
+        massRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void BuildDict()
@@ -64,25 +71,50 @@ public class MassPatternAssigner : MonoBehaviour
         var keys = new List<string>();
         RangeSelectorHelper.ParseCell(cellValue, out baseChar, keys);
 
-        // 何もキーがない場合はSpriteを外す
-        if (keys.Count == 0)
+        // Mass本体のSpriteとTagを設定
+        if (baseChar == '.')
         {
-            patternRenderer.sprite = null;
-            return;
-        }
-
-        // 最初にマッチしたキーのSpriteを適用（複数ある場合は先頭優先）
-        foreach (var k in keys)
-        {
-            if (patternDict.TryGetValue(k, out var sp))
+            if (massRenderer != null && normalSprite != null)
             {
-                patternRenderer.sprite = sp;
+                massRenderer.sprite = normalSprite;
+            }
+            gameObject.tag = "Mass";
+
+            // 何もキーがない場合はSpriteを外す
+            if (keys.Count == 0)
+            {
+                if (patternRenderer != null) patternRenderer.sprite = null;
                 return;
             }
-        }
 
-        // 見つからなければ外す
-        patternRenderer.sprite = null;
+            // 見つからなければ外す（デフォルト）
+            if (patternRenderer != null) patternRenderer.sprite = null;
+
+            // 最初にマッチしたキーのSpriteを適用
+            foreach (var k in keys)
+            {
+                if (patternDict.TryGetValue(k, out var sp))
+                {
+                    if (patternRenderer != null) patternRenderer.sprite = sp;
+                    return;
+                }
+            }
+        }
+        else
+        {
+            // '.' 以外は配置不可マスとする
+            if (massRenderer != null && cantPutSprite != null)
+            {
+                massRenderer.sprite = cantPutSprite;
+            }
+            gameObject.tag = "Untagged";
+            
+            // パターンは表示しない
+            if (patternRenderer != null)
+            {
+                patternRenderer.sprite = null;
+            }
+        }
     }
 }
 

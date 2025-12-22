@@ -371,33 +371,30 @@ public class RangeSelectorBehavior : MonoBehaviour
             int gx = centerX + o.x;
             int gy = centerY + o.y;
 
-            // グリッド範囲外でもプレビューは残す（貼り付けは不可にする）が、
-            // Listアクセスで例外が出ないように、ここでスキップする
+            // グリッド範囲外ならプレビューを表示しない
             if (gx < 0 || gy < 0 || gx >= gridWidth || gy >= gridHeight)
             {
                 canPaste = false;
-                if (rockPreviewPrefab != null)
-                {
-                    Vector3 worldPreviewPos = GridIndexToWorld(gx, gy, transform.position.z);
-                    GameObject preview = Instantiate(rockPreviewPrefab, worldPreviewPos, Quaternion.identity, previewParent);
-                    previewObjects.Add(preview);
-
-                    var sr = preview.GetComponent<SpriteRenderer>();
-                    if (sr != null)
-                    {
-                        Color c = sr.color;
-                        c.a = 0.5f;
-                        sr.color = c;
-                    }
-                }
                 continue;
             }
 
             // Massが存在するか（そこにマスがない場合はNG）
             if (gy >= massStatus.Count || massStatus[gy] == null || massStatus[gy].columns == null ||
-                gx >= massStatus[gy].columns.Count || massStatus[gy].columns[gx] != ".")
+                gx >= massStatus[gy].columns.Count)
             {
                 canPaste = false;
+            }
+            else
+            {
+                string cellValue = massStatus[gy].columns[gx];
+                char baseChar;
+                List<string> keys = new List<string>(); // ダミー
+                RangeSelectorHelper.ParseCell(cellValue, out baseChar, keys);
+
+                if (baseChar != '.')
+                {
+                    canPaste = false;
+                }
             }
 
             // 既にRockがある場合はNG
@@ -654,34 +651,55 @@ public class RangeSelectorBehavior : MonoBehaviour
         // グリッドの親位置を基準にローカル座標に変換
         Vector3 localPosition = worldPosition - gridParentPosition;
 
-        // グリッドのセルサイズは1x1
-        float snappedX = Mathf.Round(localPosition.x);
-        float snappedY = Mathf.Round(localPosition.y);
+        // グリッドオフセット（左上基準への変換用）
+        float ox = gridOffset.x;
+        float oy = gridOffset.y;
 
+        // グリッド座標系での位置（0, 0 がグリッド左下の中心）
+        // セルの中心は 整数値 (0,0), (1,0) ... 
+        
         // RangeSelectorのサイズを取得
         Vector3 selectorScale = transform.localScale;
-        float selectorWidth = selectorScale.x;
-        float selectorHeight = selectorScale.y;
+        int selectorW = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
+        int selectorH = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
 
-        // サイズが偶数の場合、中心座標を(-0.5, -0.5)に調整
-        if (selectorWidth % 2 == 0)
+        // セレクターの中心が、グリッドの整数座標(セルの中心)に来るべきか、半整数座標(セルの境界)に来るべきか
+        // セレクター幅が奇数(1,3,5)なら、中心はセルの中心（整数）に合う
+        // セレクター幅が偶数(2,4,6)なら、中心はセルの境界（半整数）に合う
+        
+        // X座標のスナップ
+        float targetX;
+        if (selectorW % 2 != 0)
         {
-            snappedX -= 0.5f;
+            // 奇数サイズ：整数座標にスナップ
+            // localPosition.x - ox がグリッドインデックスに近い値
+            float relativeX = localPosition.x - ox;
+            targetX = Mathf.Round(relativeX) + ox;
         }
-        if (selectorHeight % 2 == 0)
+        else
         {
-            snappedY -= 0.5f;
+            // 偶数サイズ：半整数座標にスナップ
+            float relativeX = localPosition.x - ox;
+            targetX = Mathf.Floor(relativeX) + 0.5f + ox;
         }
 
-        // 左上が0.5ずれの場合に補正（ヘルパーを使用）
-        RangeSelectorHelper.AdjustCenterForTopLeftAlignment(
-            ref snappedX,
-            ref snappedY,
-            Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorWidth))),
-            Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorHeight))));
+        // Y座標のスナップ
+        float targetY;
+        if (selectorH % 2 != 0)
+        {
+            // 奇数サイズ：整数座標にスナップ
+            float relativeY = localPosition.y - oy;
+            targetY = Mathf.Round(relativeY) + oy;
+        }
+        else
+        {
+            // 偶数サイズ：半整数座標にスナップ
+            float relativeY = localPosition.y - oy;
+            targetY = Mathf.Floor(relativeY) + 0.5f + oy;
+        }
 
         // ワールド座標に戻す
-        return gridParentPosition + new Vector3(snappedX, snappedY, worldPosition.z);
+        return gridParentPosition + new Vector3(targetX, targetY, worldPosition.z);
     }
 
     /// <summary>
