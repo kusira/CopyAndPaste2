@@ -182,16 +182,46 @@ public class RangeSelectorBehavior : MonoBehaviour
     /// <summary>
     /// 入力処理（左クリックコピー、ホイール回転、右クリック貼り付け）
     /// </summary>
+    /// <summary>
+    /// 入力処理（右クリックでコピー/ペースト、左クリックでキャンセル/削除、ホイール回転）
+    /// </summary>
     private void HandleInput()
     {
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        // 左クリックでコピー
+        // 左クリック (Action: Copy or Paste)
         if (mouse.leftButton.wasPressedThisFrame)
         {
-            Debug.Log("左クリック：現在の範囲内のRockをコピーします");
-            CopyCurrentRegion();
+            if (hasCopy)
+            {
+                // ペースト
+                Debug.Log("左クリック：現在保持しているRockパターンを貼り付けします");
+                TryPaste();
+            }
+            else
+            {
+                // コピー
+                Debug.Log("左クリック：現在の範囲内のRockをコピーします");
+                CopyCurrentRegion();
+            }
+        }
+
+        // 右クリック (Cancel: Clear Copy or Delete Object)
+        if (mouse.rightButton.wasPressedThisFrame)
+        {
+            if (hasCopy)
+            {
+                // コピー解除
+                Debug.Log("右クリック：コピー状態を解除します");
+                ClearCopyState();
+            }
+            else
+            {
+                // RangeSelector削除
+                Debug.Log("右クリック：RangeSelectorを削除します");
+                Destroy(gameObject);
+            }
         }
 
         // ホイールで回転（90度単位）
@@ -216,13 +246,27 @@ public class RangeSelectorBehavior : MonoBehaviour
             previewDirty = true;
             UpdatePreviewAndValidity();
         }
+    }
 
-        // 右クリックで貼り付け
-        if (mouse.rightButton.wasPressedThisFrame && hasCopy)
-        {
-            Debug.Log("右クリック：現在保持しているRockパターンを貼り付けします");
-            TryPaste();
-        }
+    /// <summary>
+    /// コピー状態をクリアして初期状態に戻します
+    /// </summary>
+    private void ClearCopyState()
+    {
+        hasCopy = false;
+        copiedOffsets.Clear();
+        rotatedOffsets.Clear();
+        rotationIndex = 0;
+        
+        // 見た目をリセット
+        UpdateSelectorRotation();
+        
+        // プレビュー消去
+        ClearPreviewChildren();
+        UpdateDebugSnapshot(copiedOffsets); // 空リストで更新
+        SetValidColor(true); // 通常色に戻す
+        
+        UpdateDebugState("未コピー", 0, 0, false);
     }
 
     /// <summary>
