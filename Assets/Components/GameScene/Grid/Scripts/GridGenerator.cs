@@ -9,6 +9,9 @@ public class GridGenerator : MonoBehaviour
     
     [Tooltip("RockのPrefabをアサインします")]
     [SerializeField] private GameObject rockPrefab;
+    
+    [Tooltip("GridBackgroundのPrefabをアサインします。グリッドの後ろに配置されます")]
+    [SerializeField] private GameObject gridBackgroundPrefab;
 
     [Header("Parent Objects")]
     [Tooltip("Massを生成する際の親GameObjectをアサインします。未設定の場合はこのGameObjectが親になります")]
@@ -80,6 +83,9 @@ public class GridGenerator : MonoBehaviour
             }
 
             Vector3 parentPosition = parentTransform.position;
+
+            // GridBackgroundを生成（グリッドの後ろに配置）
+            GenerateGridBackground(parentTransform, parentPosition, width, height);
 
             // グリッドの中心を計算（親の位置を中心に配置）
             float offsetX = -(width - 1) * 0.5f;
@@ -241,6 +247,82 @@ public class GridGenerator : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogError($"グリッドのクリア中にエラーが発生しました: {e.Message}");
+        }
+    }
+
+    /// <summary>
+    /// GridBackgroundを生成します
+    /// </summary>
+    private void GenerateGridBackground(Transform parentTransform, Vector3 parentPosition, int gridWidth, int gridHeight)
+    {
+        if (gridBackgroundPrefab == null)
+        {
+            return; // GridBackgroundが設定されていない場合は何もしない
+        }
+
+        try
+        {
+            // 既存のGridBackgroundをクリア
+            ClearGridBackground(parentTransform);
+
+            // グリッドの中心位置（Z座標は後ろに配置）
+            Vector3 backgroundPosition = parentPosition + new Vector3(0f, 0f, 1f);
+
+            // GridBackgroundを生成
+            GameObject backgroundInstance = Instantiate(gridBackgroundPrefab, backgroundPosition, Quaternion.identity, parentTransform);
+            
+            if (backgroundInstance != null)
+            {
+                // グリッドのサイズに合わせてスケールを設定
+                backgroundInstance.transform.localScale = new Vector3(gridWidth, gridHeight, 1f);
+                backgroundInstance.name = "GridBackground";
+                
+                Debug.Log($"GridBackgroundを生成しました: サイズ({gridWidth}, {gridHeight})");
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"GridBackgroundの生成中にエラーが発生しました: {e.Message}");
+        }
+    }
+
+    /// <summary>
+    /// 既存のGridBackgroundをクリアします
+    /// </summary>
+    private void ClearGridBackground(Transform parentTransform)
+    {
+        if (parentTransform == null)
+        {
+            return;
+        }
+
+        try
+        {
+            // GridBackgroundという名前の子オブジェクトを検索して削除
+            for (int i = parentTransform.childCount - 1; i >= 0; i--)
+            {
+                if (parentTransform.childCount <= i)
+                {
+                    break;
+                }
+
+                Transform child = parentTransform.GetChild(i);
+                if (child != null && child.name == "GridBackground")
+                {
+                    if (Application.isPlaying)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                    else
+                    {
+                        DestroyImmediate(child.gameObject);
+                    }
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"GridBackgroundのクリア中にエラーが発生しました: {e.Message}");
         }
     }
 

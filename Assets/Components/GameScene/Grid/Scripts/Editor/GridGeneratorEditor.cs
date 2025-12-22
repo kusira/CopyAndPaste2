@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
@@ -7,12 +8,15 @@ public class GridGeneratorEditor : Editor
 {
     private FieldInfo massParentField;
     private FieldInfo rockParentField;
+    private FieldInfo currentGameStatusField;
+    private Vector2 scrollPosition;
 
     private void OnEnable()
     {
         // リフレクションでフィールドを取得
         massParentField = typeof(GridGenerator).GetField("massParent", BindingFlags.NonPublic | BindingFlags.Instance);
         rockParentField = typeof(GridGenerator).GetField("rockParent", BindingFlags.NonPublic | BindingFlags.Instance);
+        currentGameStatusField = typeof(GridGenerator).GetField("currentGameStatus", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     public override void OnInspectorGUI()
@@ -24,6 +28,12 @@ public class GridGeneratorEditor : Editor
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
         GridGenerator generator = (GridGenerator)target;
+
+        // リアルタイムでグリッド情報を表示
+        DrawGridInfo(generator);
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
         EditorGUILayout.LabelField("デバッグ", EditorStyles.boldLabel);
         EditorGUILayout.Space();
@@ -77,6 +87,107 @@ public class GridGeneratorEditor : Editor
                 DestroyImmediate(rockParentTransform.GetChild(i).gameObject);
             }
         }
+    }
+
+    /// <summary>
+    /// グリッド情報をリアルタイムで表示します
+    /// </summary>
+    private void DrawGridInfo(GridGenerator generator)
+    {
+        EditorGUILayout.LabelField("現在のグリッド情報", EditorStyles.boldLabel);
+
+        // CurrentGameStatusを取得
+        CurrentGameStatus currentGameStatus = null;
+        if (currentGameStatusField != null)
+        {
+            currentGameStatus = currentGameStatusField.GetValue(generator) as CurrentGameStatus;
+        }
+
+        if (currentGameStatus == null)
+        {
+            EditorGUILayout.HelpBox("CurrentGameStatusが設定されていません", MessageType.Warning);
+            return;
+        }
+
+        StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
+        if (stageData == null)
+        {
+            EditorGUILayout.HelpBox("ステージデータが取得できません", MessageType.Warning);
+            return;
+        }
+
+        List<StageDatabase.RowData> massStatus = stageData.massStatus;
+        List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
+
+        if (massStatus == null || massStatus.Count == 0)
+        {
+            EditorGUILayout.HelpBox("MassStatusが設定されていません", MessageType.Warning);
+            return;
+        }
+
+        int height = massStatus.Count;
+        int width = massStatus[0] != null && massStatus[0].columns != null ? massStatus[0].columns.Count : 0;
+
+        EditorGUILayout.LabelField($"グリッドサイズ: {width} × {height}");
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("MassStatus", EditorStyles.boldLabel);
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(200));
+        
+        for (int h = height - 1; h >= 0; h--)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField($"H{h}:", GUILayout.Width(40));
+            
+            if (massStatus[h] != null && massStatus[h].columns != null)
+            {
+                for (int w = 0; w < width; w++)
+                {
+                    string value = w < massStatus[h].columns.Count ? massStatus[h].columns[w] : "";
+                    string display = string.IsNullOrEmpty(value) ? " " : value;
+                    EditorGUILayout.LabelField(display, GUILayout.Width(20));
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndScrollView();
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("RockStatus", EditorStyles.boldLabel);
+        Vector2 scrollPosition2 = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(200));
+        scrollPosition = scrollPosition2;
+        
+        if (rockStatus != null && rockStatus.Count > 0)
+        {
+            for (int h = height - 1; h >= 0; h--)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField($"H{h}:", GUILayout.Width(40));
+                
+                if (h < rockStatus.Count && rockStatus[h] != null && rockStatus[h].columns != null)
+                {
+                    for (int w = 0; w < width; w++)
+                    {
+                        string value = w < rockStatus[h].columns.Count ? rockStatus[h].columns[w] : "";
+                        string display = string.IsNullOrEmpty(value) ? " " : value;
+                        EditorGUILayout.LabelField(display, GUILayout.Width(20));
+                    }
+                }
+                else
+                {
+                    for (int w = 0; w < width; w++)
+                    {
+                        EditorGUILayout.LabelField(" ", GUILayout.Width(20));
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+        else
+        {
+            EditorGUILayout.HelpBox("RockStatusが設定されていません", MessageType.Info);
+        }
+        EditorGUILayout.EndScrollView();
     }
 }
 
