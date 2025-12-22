@@ -9,6 +9,7 @@ public class GridGeneratorEditor : Editor
     private FieldInfo massParentField;
     private FieldInfo rockParentField;
     private FieldInfo currentGameStatusField;
+    private FieldInfo stageDatabaseField;
     private Vector2 scrollPosition;
 
     private void OnEnable()
@@ -17,6 +18,7 @@ public class GridGeneratorEditor : Editor
         massParentField = typeof(GridGenerator).GetField("massParent", BindingFlags.NonPublic | BindingFlags.Instance);
         rockParentField = typeof(GridGenerator).GetField("rockParent", BindingFlags.NonPublic | BindingFlags.Instance);
         currentGameStatusField = typeof(GridGenerator).GetField("currentGameStatus", BindingFlags.NonPublic | BindingFlags.Instance);
+        stageDatabaseField = typeof(GridGenerator).GetField("stageDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     public override void OnInspectorGUI()
@@ -96,20 +98,32 @@ public class GridGeneratorEditor : Editor
     {
         EditorGUILayout.LabelField("現在のグリッド情報", EditorStyles.boldLabel);
 
-        // CurrentGameStatusを取得
+        // CurrentGameStatusとStageDatabaseを取得
         CurrentGameStatus currentGameStatus = null;
         if (currentGameStatusField != null)
         {
             currentGameStatus = currentGameStatusField.GetValue(generator) as CurrentGameStatus;
         }
 
-        if (currentGameStatus == null)
+        StageDatabase stageDatabase = null;
+        if (stageDatabaseField != null)
         {
-            EditorGUILayout.HelpBox("CurrentGameStatusが設定されていません", MessageType.Warning);
+            stageDatabase = stageDatabaseField.GetValue(generator) as StageDatabase;
+        }
+
+        if (stageDatabase == null)
+        {
+            EditorGUILayout.HelpBox("StageDatabaseがGridGeneratorに設定されていません", MessageType.Warning);
             return;
         }
 
-        StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
+        int stageIndex = 0;
+        if (currentGameStatus != null)
+        {
+            stageIndex = currentGameStatus.GetCurrentStageIndex();
+        }
+
+        StageDatabase.StageData stageData = stageDatabase.GetStageData(stageIndex);
         if (stageData == null)
         {
             EditorGUILayout.HelpBox("ステージデータが取得できません", MessageType.Warning);
@@ -137,7 +151,7 @@ public class GridGeneratorEditor : Editor
         for (int h = height - 1; h >= 0; h--)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField($"H{h}:", GUILayout.Width(40));
+            EditorGUILayout.LabelField($"H{h}:", GUILayout.Width(100));
             
             if (massStatus[h] != null && massStatus[h].columns != null)
             {
@@ -145,7 +159,7 @@ public class GridGeneratorEditor : Editor
                 {
                     string value = w < massStatus[h].columns.Count ? massStatus[h].columns[w] : "";
                     string display = string.IsNullOrEmpty(value) ? " " : value;
-                    EditorGUILayout.LabelField(display, GUILayout.Width(20));
+                    EditorGUILayout.LabelField(display, GUILayout.Width(100));
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -162,7 +176,7 @@ public class GridGeneratorEditor : Editor
             for (int h = height - 1; h >= 0; h--)
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField($"H{h}:", GUILayout.Width(40));
+                EditorGUILayout.LabelField($"H{h}:", GUILayout.Width(100));
                 
                 if (h < rockStatus.Count && rockStatus[h] != null && rockStatus[h].columns != null)
                 {
@@ -170,14 +184,14 @@ public class GridGeneratorEditor : Editor
                     {
                         string value = w < rockStatus[h].columns.Count ? rockStatus[h].columns[w] : "";
                         string display = string.IsNullOrEmpty(value) ? " " : value;
-                        EditorGUILayout.LabelField(display, GUILayout.Width(20));
+                        EditorGUILayout.LabelField(display, GUILayout.Width(100));
                     }
                 }
                 else
                 {
                     for (int w = 0; w < width; w++)
                     {
-                        EditorGUILayout.LabelField(" ", GUILayout.Width(20));
+                        EditorGUILayout.LabelField(" ", GUILayout.Width(100));
                     }
                 }
                 EditorGUILayout.EndHorizontal();

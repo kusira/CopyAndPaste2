@@ -18,6 +18,14 @@ public class StageDatabase : ScriptableObject
         }
 
         public int Count => columns.Count;
+
+        // ▼ 追加: ディープコピー用メソッド
+        public RowData DeepCopy()
+        {
+            RowData copy = new RowData();
+            copy.columns = new List<string>(this.columns);
+            return copy;
+        }
     }
 
     [System.Serializable]
@@ -28,6 +36,16 @@ public class StageDatabase : ScriptableObject
         
         [Tooltip("範囲選択アイテムの幅（W）")]
         public int width = 1;
+
+        // ▼ 追加: ディープコピー用メソッド
+        public RangeSelectorItemData DeepCopy()
+        {
+            return new RangeSelectorItemData
+            {
+                height = this.height,
+                width = this.width
+            };
+        }
     }
 
     [System.Serializable]
@@ -46,6 +64,30 @@ public class StageDatabase : ScriptableObject
         
         [Tooltip("範囲選択アイテムのリストです。i個目のアイテムのサイズはH_i*W_iで指定されます")]
         public List<RangeSelectorItemData> rangeSelectorItems = new List<RangeSelectorItemData>();
+
+        // ▼ 追加: ディープコピー用メソッド
+        public StageData DeepCopy()
+        {
+            StageData copy = new StageData();
+            copy.stageName = this.stageName;
+
+            foreach (var mass in this.massStatus)
+            {
+                copy.massStatus.Add(mass.DeepCopy());
+            }
+
+            foreach (var rock in this.rockStatus)
+            {
+                copy.rockStatus.Add(rock.DeepCopy());
+            }
+
+            foreach (var item in this.rangeSelectorItems)
+            {
+                copy.rangeSelectorItems.Add(item.DeepCopy());
+            }
+
+            return copy;
+        }
     }
 
     [Tooltip("ステージデータのリスト")]

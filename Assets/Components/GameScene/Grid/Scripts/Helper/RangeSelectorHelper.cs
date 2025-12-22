@@ -37,6 +37,25 @@ public static class RangeSelectorHelper
     }
 
     /// <summary>
+    /// 文字列から基底タイプ（'.' または '#') とギミックキーの一覧を抽出します。
+    /// 例: ".S" -> baseChar='.', keys={'S'}
+    /// </summary>
+    public static void ParseCell(string cell, out char baseChar, List<string> gimmickKeys)
+    {
+        baseChar = '\0';
+        gimmickKeys.Clear();
+        if (string.IsNullOrEmpty(cell)) return;
+
+        baseChar = cell[0];
+        for (int i = 1; i < cell.Length; i++)
+        {
+            var c = cell[i];
+            // 1文字キーとして登録
+            gimmickKeys.Add(c.ToString());
+        }
+    }
+
+    /// <summary>
     /// 指定範囲内のRockを中心セルからのオフセットとしてコピーします。
     /// </summary>
     public static void CopyRockPattern(

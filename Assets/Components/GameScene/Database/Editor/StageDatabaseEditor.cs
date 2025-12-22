@@ -198,7 +198,7 @@ public class StageDatabaseEditor : Editor
         EditorGUILayout.LabelField("", GUILayout.Width(50));
         for (int w = 0; w < width; w++)
         {
-            EditorGUILayout.LabelField(w.ToString(), GUILayout.Width(20), GUILayout.Height(20));
+            EditorGUILayout.LabelField(w.ToString(), GUILayout.Width(30), GUILayout.Height(20));
         }
         EditorGUILayout.EndHorizontal();
 
@@ -216,14 +216,8 @@ public class StageDatabaseEditor : Editor
                     if (w < grid[h].columns.Count)
                     {
                         string value = grid[h].columns[w] ?? "";
-                        string newValue = EditorGUILayout.TextField(value, GUILayout.Width(20), GUILayout.Height(20));
-                        
-                        // 1文字のみ許可
-                        if (newValue.Length > 1)
-                        {
-                            newValue = newValue.Substring(0, 1);
-                        }
-                        
+                        string newValue = EditorGUILayout.TextField(value, GUILayout.Width(60), GUILayout.Height(20));
+
                         if (newValue != value)
                         {
                             Undo.RecordObject(database, $"{label}Statusを編集");
@@ -234,7 +228,7 @@ public class StageDatabaseEditor : Editor
                     else
                     {
                         // 幅が足りない場合は空のセルを表示
-                        EditorGUILayout.TextField("", GUILayout.Width(20), GUILayout.Height(20));
+                        EditorGUILayout.TextField("", GUILayout.Width(60), GUILayout.Height(20));
                     }
                 }
             }
@@ -243,7 +237,7 @@ public class StageDatabaseEditor : Editor
                 // 行が存在しない場合は空のセルを表示
                 for (int w = 0; w < width; w++)
                 {
-                    EditorGUILayout.TextField("", GUILayout.Width(20), GUILayout.Height(20));
+                    EditorGUILayout.TextField("", GUILayout.Width(60), GUILayout.Height(20));
                 }
             }
 

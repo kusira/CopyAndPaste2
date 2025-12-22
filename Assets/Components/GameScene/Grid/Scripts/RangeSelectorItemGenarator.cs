@@ -12,8 +12,11 @@ public class RangeSelectorItemGenarator : MonoBehaviour
     [SerializeField] private Transform rangeSelectorItemParent;
 
     [Header("References")]
-    [Tooltip("現在のゲームステータスを参照します。設定されている場合、ここからステージデータを取得します")]
+    [Tooltip("現在のゲームステータス（ステージ番号だけを参照します）")]
     [SerializeField] private CurrentGameStatus currentGameStatus;
+
+    [Tooltip("ステージデータベース。ここからRangeSelectorItemの情報を取得します")]
+    [SerializeField] private StageDatabase stageDatabase;
 
     [Header("Settings")]
     [Tooltip("アイテム間の縦方向の間隔")]
@@ -41,13 +44,12 @@ public class RangeSelectorItemGenarator : MonoBehaviour
         // CurrentGameStatusからデータを取得
         List<StageDatabase.RangeSelectorItemData> items = null;
 
-        if (currentGameStatus != null)
+        if (stageDatabase != null)
         {
-            StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
+            int stageIndex = currentGameStatus != null ? currentGameStatus.GetCurrentStageIndex() : 0;
+            StageDatabase.StageData stageData = stageDatabase.GetStageData(stageIndex);
             if (stageData != null)
-            {
                 items = stageData.rangeSelectorItems;
-            }
         }
 
         if (items == null || items.Count == 0)

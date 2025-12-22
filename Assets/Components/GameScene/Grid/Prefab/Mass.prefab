@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5090334109017997059}
   - component: {fileID: 2447830648859415049}
+  - component: {fileID: -6222468281697820592}
   m_Layer: 0
   m_Name: Mass
   m_TagString: Untagged
@@ -91,6 +92,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-6222468281697820592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830290989597081050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16291497e585c34428012b72081f49a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MassPatternAssigner
+  patternTable:
+  - key: Start
+    sprite: {fileID: -4770266185572575904, guid: b8bfe3aa8e9aa91409704b2296c44b96, type: 3}
 --- !u!1 &7109598708669861738
 GameObject:
   m_ObjectHideFlags: 0

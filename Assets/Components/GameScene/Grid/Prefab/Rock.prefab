@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7363495217619441934}
   - component: {fileID: 434503229154474578}
+  - component: {fileID: -554948552270179625}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Untagged
@@ -91,6 +92,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-554948552270179625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4262176293661612385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff21b551a7b0024092d034c1572aab8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RockPatternAssigner
+  patternTable:
+  - key: Star
+    sprite: {fileID: 6981481357855213104, guid: 60e27eb06ec728347b3b1835ba9f1627, type: 3}
 --- !u!1 &7370561605131840916
 GameObject:
   m_ObjectHideFlags: 0

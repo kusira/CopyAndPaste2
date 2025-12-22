@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -31,19 +32,11 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
         float selectorWidth = scale.x;
         float selectorHeight = scale.y;
 
-        // CurrentGameStatusをシーン内から検索
-        CurrentGameStatus currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
-        if (currentGameStatus == null)
-        {
-            Debug.LogWarning("CurrentGameStatusが見つかりませんでした");
-            return;
-        }
-
-        // グリッドのサイズを取得
+        // グリッドのサイズを取得（StageDatabaseから）
         int gridWidth = 0;
         int gridHeight = 0;
 
-        StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
+        StageDatabase.StageData stageData = GetStageData();
         if (stageData != null && stageData.massStatus != null && stageData.massStatus.Count > 0)
         {
             gridHeight = stageData.massStatus.Count;
@@ -94,6 +87,44 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
             
             Debug.Log($"RangeSelectorを生成しました: サイズ({selectorWidth}, {selectorHeight}), ワールド位置({worldPosition.x}, {worldPosition.y}), ローカル位置({localCenterX}, {localCenterY}), グリッドサイズ({gridWidth}, {gridHeight})");
         }
+    }
+
+    /// <summary>
+    /// StageDatabase から現在のステージデータを取得します
+    /// </summary>
+    private StageDatabase.StageData GetStageData()
+    {
+        // CurrentGameStatusからステージ番号を取得
+        int stageIndex = 0;
+        CurrentGameStatus currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+        if (currentGameStatus != null)
+        {
+            stageIndex = currentGameStatus.GetCurrentStageIndex();
+        }
+
+        // GridGeneratorからStageDatabaseを取得
+        GridGenerator gridGenerator = Object.FindFirstObjectByType<GridGenerator>();
+        if (gridGenerator == null)
+        {
+            Debug.LogWarning("GridGeneratorがシーンに見つかりませんでした");
+            return null;
+        }
+
+        FieldInfo dbField = typeof(GridGenerator).GetField("stageDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (dbField == null)
+        {
+            Debug.LogWarning("GridGeneratorからStageDatabaseフィールドを取得できませんでした");
+            return null;
+        }
+
+        StageDatabase stageDatabase = dbField.GetValue(gridGenerator) as StageDatabase;
+        if (stageDatabase == null)
+        {
+            Debug.LogWarning("StageDatabaseがGridGeneratorにアサインされていません");
+            return null;
+        }
+
+        return stageDatabase.GetStageData(stageIndex);
     }
 }
 

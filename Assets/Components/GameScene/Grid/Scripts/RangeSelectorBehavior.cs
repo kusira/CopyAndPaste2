@@ -8,6 +8,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     private Camera mainCamera;
     private CurrentGameStatus currentGameStatus;
     private GridGenerator gridGenerator;
+    private StageDatabase stageDatabase;
 
     private int gridWidth = 0;
     private int gridHeight = 0;
@@ -63,6 +64,16 @@ public class RangeSelectorBehavior : MonoBehaviour
         currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
         gridGenerator = Object.FindFirstObjectByType<GridGenerator>();
 
+        // GridGenerator から StageDatabase を取得
+        if (gridGenerator != null)
+        {
+            FieldInfo dbField = typeof(GridGenerator).GetField("stageDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (dbField != null)
+            {
+                stageDatabase = dbField.GetValue(gridGenerator) as StageDatabase;
+            }
+        }
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
@@ -97,13 +108,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     /// </summary>
     private void UpdateGridInfo()
     {
-        if (currentGameStatus == null)
-        {
-            currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
-            if (currentGameStatus == null) return;
-        }
-
-        StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
+        StageDatabase.StageData stageData = GetStageData();
         if (stageData != null && stageData.massStatus != null && stageData.massStatus.Count > 0)
         {
             gridHeight = stageData.massStatus.Count;
@@ -230,8 +235,7 @@ public class RangeSelectorBehavior : MonoBehaviour
             Debug.LogWarning("CurrentGameStatusが見つかりませんでした");
             return;
         }
-
-        StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
+        StageDatabase.StageData stageData = GetStageData();
         if (stageData == null || stageData.rockStatus == null || stageData.rockStatus.Count == 0)
         {
             Debug.LogWarning("RockStatusが設定されていません");
@@ -340,7 +344,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         // プレビューと同時に有効性チェック
         bool canPaste = true;
 
-        StageDatabase.StageData stageData = currentGameStatus != null ? currentGameStatus.GetCurrentStageData() : null;
+        StageDatabase.StageData stageData = GetStageData();
         if (stageData == null)
         {
             SetValidColor(false);
@@ -445,7 +449,7 @@ public class RangeSelectorBehavior : MonoBehaviour
             return;
         }
 
-        StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
+        StageDatabase.StageData stageData = GetStageData();
         if (stageData == null)
         {
             return;
@@ -713,6 +717,47 @@ public class RangeSelectorBehavior : MonoBehaviour
         float cy = Mathf.Clamp(local.y, minY, maxY);
 
         return gridParentPosition + new Vector3(cx, cy, worldPosition.z);
+    }
+
+    /// <summary>
+    /// StageDatabase から現在のステージデータを取得します
+    /// </summary>
+    private StageDatabase.StageData GetStageData()
+    {
+        // StageDatabase が未取得なら GridGenerator から取得を試みる
+        if (stageDatabase == null)
+        {
+            if (gridGenerator == null)
+            {
+                gridGenerator = Object.FindFirstObjectByType<GridGenerator>();
+            }
+            if (gridGenerator != null)
+            {
+                FieldInfo dbField = typeof(GridGenerator).GetField("stageDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (dbField != null)
+                {
+                    stageDatabase = dbField.GetValue(gridGenerator) as StageDatabase;
+                }
+            }
+        }
+
+        if (stageDatabase == null)
+        {
+            Debug.LogWarning("StageDatabaseが見つかりませんでした");
+            return null;
+        }
+
+        int stageIndex = 0;
+        if (currentGameStatus == null)
+        {
+            currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+        }
+        if (currentGameStatus != null)
+        {
+            stageIndex = currentGameStatus.GetCurrentStageIndex();
+        }
+
+        return stageDatabase.GetStageData(stageIndex);
     }
 }
 
