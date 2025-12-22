@@ -17,6 +17,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     // コピーされたRockパターン（中心からのオフセット）
     private readonly List<RangeSelectorHelper.CopiedRockData> copiedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
     private readonly List<RangeSelectorHelper.CopiedRockData> rotatedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
+    private Vector2Int copiedSize = Vector2Int.one; // コピーした領域のサイズ (W, H)
     private bool hasCopy = false;
     private int rotationIndex = 0; // 0,1,2,3 = 0,90,180,270
     private Vector3 initialScale;
@@ -287,6 +288,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         initialScale = scale; // 回転用に初期スケールを保存
         int selWidth = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.x)));
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
+        copiedSize = new Vector2Int(selWidth, selHeight);
 
         // RangeSelectorの中心がどのセルかを計算
         Vector3 localPos = transform.position - gridParentPosition;
@@ -395,7 +397,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         }
 
         // 回転済みオフセットをヘルパーで計算
-        RangeSelectorHelper.RotateOffsets(copiedOffsets, rotationIndex, rotatedOffsets);
+        RangeSelectorHelper.RotateOffsets(copiedOffsets, rotationIndex, copiedSize.x, copiedSize.y, rotatedOffsets);
 
         Transform previewParent = transform.parent != null ? transform.parent : transform;
 
@@ -514,7 +516,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         // 回転済みオフセットが無ければ更新
         if (rotatedOffsets.Count == 0)
         {
-            RangeSelectorHelper.RotateOffsets(copiedOffsets, rotationIndex, rotatedOffsets);
+            RangeSelectorHelper.RotateOffsets(copiedOffsets, rotationIndex, copiedSize.x, copiedSize.y, rotatedOffsets);
         }
 
         // まずはヘルパー関数で有効性チェック（オーバーラップやマス無しを確認）

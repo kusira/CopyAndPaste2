@@ -114,10 +114,13 @@ public static class RangeSelectorHelper
 
     /// <summary>
     /// コピー済みオフセット群を回転させ、回転後のオフセットリストを構築します。
+    /// 偶数サイズの回転時におけるピボットずれを補正します。
     /// </summary>
     public static void RotateOffsets(
         List<CopiedRockData> sourceOffsets,
         int rotationIndex,
+        int sourceWidth,
+        int sourceHeight,
         List<CopiedRockData> rotatedOffsets)
     {
         rotatedOffsets.Clear();
@@ -125,34 +128,71 @@ public static class RangeSelectorHelper
 
         int rot = ((rotationIndex % 4) + 4) % 4;
 
+        // ピボット位置の補正値（偶数サイズの場合、ピボットはセルの境界線上にあるため、-0.5ずれているとみなす）
+        // 座標系は「Pivot」が原点。
+        // SourcePivot = Center + (W_is_even ? 0.5 : 0) ?
+        // いや、整数座標系では W=2 のとき Indices 0,1 の Center 0.5。Pivot(centerX) は 1。
+        // なので Pivot は Center より +0.5 ずれている。
+        // したがって、Center = Pivot - 0.5。
+        // Offsets は (Pos - Pivot)。
+        // RelToCenter = Pos - Center = Pos - (Pivot - 0.5) = (Pos - Pivot) + 0.5 = Offset + 0.5。
+        // なので、Offset に +0.5 ではなく - comp を加える？
+        
+        // 正しい補正：
+        // Even(偶数): PivotはCenterより0.5大きい -> Offsetは本来より0.5小さい -> 本来の位置にするには +0.5
+        // srcComp = (isEven) ? +0.5 : 0
+        float srcCompX = (sourceWidth % 2 == 0) ? 0.5f : 0f;
+        float srcCompY = (sourceHeight % 2 == 0) ? 0.5f : 0f;
+
+        // Target Dimensions
+        int targetWidth = (rot % 2 == 0) ? sourceWidth : sourceHeight;
+        int targetHeight = (rot % 2 == 0) ? sourceHeight : sourceWidth;
+        
+        // Target Comp
+        // ターゲット座標系でも同様に、もしEvenなら Pivot が +0.5 ずれる。
+        // NewOffset = NewPos - NewPivot
+        // NewRelToCenter = NewPos - NewCenter
+        // NewOffset = (NewRelToCenter + NewCenter) - NewPivot
+        //           = NewRelToCenter + (NewCenter - NewPivot)
+        //           = NewRelToCenter - 0.5 (if Even)
+        // dstComp = (isEven) ? -0.5 : 0
+        float dstCompX = (targetWidth % 2 == 0) ? -0.5f : 0f;
+        float dstCompY = (targetHeight % 2 == 0) ? -0.5f : 0f;
+
         foreach (var data in sourceOffsets)
         {
             Vector2Int o = data.offset;
-            Vector2Int r;
+            // Float中心相対座標に変換
+            float fx = o.x + srcCompX;
+            float fy = o.y + srcCompY;
+
+            float rx, ry;
             switch (rot)
             {
-                case 1: // 90°
-                    r = new Vector2Int(
-                        Mathf.RoundToInt(o.y),
-                        Mathf.RoundToInt(-o.x));
+                case 1: // 90° (x,y) -> (y, -x)
+                    rx = fy;
+                    ry = -fx;
                     break;
-                case 2: // 180°
-                    r = new Vector2Int(
-                        Mathf.RoundToInt(-o.x),
-                        Mathf.RoundToInt(-o.y));
+                case 2: // 180° (x,y) -> (-x, -y)
+                    rx = -fx;
+                    ry = -fy;
                     break;
-                case 3: // 270°
-                    r = new Vector2Int(
-                        Mathf.RoundToInt(-o.y),
-                        Mathf.RoundToInt(o.x));
+                case 3: // 270° (x,y) -> (-y, x)
+                    rx = -fy;
+                    ry = fx;
                     break;
                 default: // 0°
-                    r = new Vector2Int(
-                        Mathf.RoundToInt(o.x),
-                        Mathf.RoundToInt(o.y));
+                    rx = fx;
+                    ry = fy;
                     break;
             }
-            rotatedOffsets.Add(new CopiedRockData(r, data.value));
+
+            // 整数オフセットに戻す
+            // NewOffset = rx + dstComp
+            int nx = Mathf.RoundToInt(rx + dstCompX);
+            int ny = Mathf.RoundToInt(ry + dstCompY);
+
+            rotatedOffsets.Add(new CopiedRockData(new Vector2Int(nx, ny), data.value));
         }
     }
 
