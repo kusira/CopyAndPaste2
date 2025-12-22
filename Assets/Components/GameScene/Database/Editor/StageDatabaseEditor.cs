@@ -10,10 +10,27 @@ public class StageDatabaseEditor : Editor
 
     private UnityEditorInternal.ReorderableList reorderableList;
 
+    private string GetSessionStateKey()
+    {
+        return $"StageDatabaseEditor_SelectedStageIndex_{target.GetInstanceID()}";
+    }
+
     private void OnEnable()
     {
         StageDatabase database = (StageDatabase)target;
         reorderableList = new UnityEditorInternal.ReorderableList(serializedObject, serializedObject.FindProperty("stages"), true, true, true, true);
+
+        // SessionStateから選択状態を復元
+        selectedStageIndex = SessionState.GetInt(GetSessionStateKey(), 0);
+        
+        // 範囲チェック
+        if (database.stages != null && selectedStageIndex >= database.stages.Count)
+        {
+            selectedStageIndex = 0;
+        }
+
+        // リストの選択状態に反映
+        reorderableList.index = selectedStageIndex;
 
         reorderableList.drawHeaderCallback = (Rect rect) =>
         {
@@ -34,6 +51,8 @@ public class StageDatabaseEditor : Editor
         reorderableList.onSelectCallback = (UnityEditorInternal.ReorderableList list) =>
         {
             selectedStageIndex = list.index;
+            // 選択変更時に保存
+            SessionState.SetInt(GetSessionStateKey(), selectedStageIndex);
         };
     }
 
