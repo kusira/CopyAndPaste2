@@ -189,6 +189,7 @@ public class StageDatabaseEditor : Editor
                 stageData.rangeSelectorItems.RemoveAt(stageData.rangeSelectorItems.Count - 1);
             }
             EditorUtility.SetDirty(database);
+            RefreshItemGenerator();
         }
 
         EditorGUILayout.Space();
@@ -222,6 +223,7 @@ public class StageDatabaseEditor : Editor
                 item.height = newHeight;
                 item.width = newWidth;
                 EditorUtility.SetDirty(database);
+                RefreshItemGenerator();
             }
 
             EditorGUILayout.EndHorizontal();
@@ -353,6 +355,15 @@ public class StageDatabaseEditor : Editor
         if (generator != null)
         {
             generator.GenerateGrid();
+        }
+    }
+
+    private void RefreshItemGenerator()
+    {
+        RangeSelectorItemGenarator generator = FindFirstObjectByType<RangeSelectorItemGenarator>();
+        if (generator != null)
+        {
+            generator.GenerateItems();
         }
     }
 }
