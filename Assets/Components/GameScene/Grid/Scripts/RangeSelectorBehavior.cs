@@ -17,10 +17,12 @@ public class RangeSelectorBehavior : MonoBehaviour
     // コピーされたRockパターン（中心からのオフセット）
     private readonly List<RangeSelectorHelper.CopiedRockData> copiedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
     private readonly List<RangeSelectorHelper.CopiedRockData> rotatedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
+
     private Vector2Int copiedSize = Vector2Int.one; // コピーした領域のサイズ (W, H)
     private bool hasCopy = false;
     private int rotationIndex = 0; // 0,1,2,3 = 0,90,180,270
     private Vector3 initialScale;
+    private Vector3 dragOffset = Vector3.zero; // 回転時の位置ずれを吸収するためのマウスとのオフセット
 
     // デバッグ表示用
     [SerializeField] private bool debugHasCopy = false;
@@ -152,8 +154,9 @@ public class RangeSelectorBehavior : MonoBehaviour
         Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mouseScreenPosition);
         mouseWorldPosition.z = transform.position.z; // Z座標は維持
 
-        // グリッドにスナップ
-        Vector3 snappedPosition = SnapToGrid(mouseWorldPosition);
+        // グリッドにスナップ（ドラッグオフセットを加味）
+        Vector3 snapperTarget = mouseWorldPosition + dragOffset;
+        Vector3 snappedPosition = SnapToGrid(snapperTarget);
 
         // グリッドの範囲内かチェック
         // グリッド範囲内に収まるようにクランプ
@@ -220,13 +223,23 @@ public class RangeSelectorBehavior : MonoBehaviour
         {
             Debug.Log($"マウスホイール：Rockパターンを回転します（スクロール値={scroll}）");
 
+            int rotationStep = 0;
             if (scroll > 0f)
             {
+                rotationStep = 1;
                 rotationIndex = (rotationIndex + 1) % 4;
             }
             else if (scroll < 0f)
             {
+                rotationStep = -1;
                 rotationIndex = (rotationIndex + 3) % 4;
+            }
+
+            if (rotationStep != 0 && hasCopy)
+            {
+                // 回転による位置ずれを計算してドラッグオフセットに加算
+                Vector3 pivotShift = CalculatePivotBasedShift(rotationStep);
+                dragOffset += pivotShift;
             }
 
             Debug.Log($"マウスホイール：現在の回転インデックス={rotationIndex}");
@@ -247,6 +260,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         copiedOffsets.Clear();
         rotatedOffsets.Clear();
         rotationIndex = 0;
+        dragOffset = Vector3.zero;
         
         // 見た目をリセット
         UpdateSelectorRotation();
@@ -289,6 +303,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         int selWidth = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.x)));
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
         copiedSize = new Vector2Int(selWidth, selHeight);
+        dragOffset = Vector3.zero; // コピー時にオフセットはリセット
 
         // RangeSelectorの中心がどのセルかを計算
         Vector3 localPos = transform.position - gridParentPosition;
@@ -655,6 +670,106 @@ public class RangeSelectorBehavior : MonoBehaviour
         debugSelMaxX = Mathf.RoundToInt(floatCenterX + halfW);
         debugSelMinY = Mathf.RoundToInt(floatCenterY - halfH);
         debugSelMaxY = Mathf.RoundToInt(floatCenterY + halfH);
+    }
+
+    /// <summary>
+    /// 回転時のピボットに基づいた位置シフト量を計算します
+    /// </summary>
+    private Vector3 CalculatePivotBasedShift(int rotationStep)
+    {
+        // 現在の見た目上のサイズ（rotationIndex適用済みだが、今回の回転適用前の状態を知る必要がある）
+        // 呼び出し元で既に rotationIndex を更新してしまっているため、逆算するか、
+        // あるいは呼び出し順序を変える必要があるが、ここでは更新後のインデックスから「前の状態」を推測するより
+        // 更新前の W, H を使う。
+        // ただし引数で渡された rotationStep 分だけ戻して計算する。
+        
+        // 更新後の rotationIndex
+        int currentRot = rotationIndex;
+        // 更新前の rotationIndex
+        int prevRot = (currentRot - rotationStep + 4) % 4; // step=1なら -1, step=-1なら +1
+
+        // 更新前のサイズ
+        int w = (prevRot % 2 == 0) ? copiedSize.x : copiedSize.y;
+        int h = (prevRot % 2 == 0) ? copiedSize.y : copiedSize.x;
+
+        // ピボット候補の中心からの距離（短辺を一辺とする正方形の中心）
+        // 長辺の方向に ±(W-H)/2 ずらす
+        float diff = (Mathf.Abs(w - h)) * 0.5f;
+
+        Vector3 pivot1 = Vector3.zero;
+        Vector3 pivot2 = Vector3.zero;
+
+        if (w > h)
+        {
+            // 横長：左右に候補
+            pivot1 = new Vector3(-diff, 0, 0); // 左
+            pivot2 = new Vector3(diff, 0, 0);  // 右
+        }
+        else if (h > w)
+        {
+            // 縦長：上下に候補
+            pivot1 = new Vector3(0, -diff, 0); // 下
+            pivot2 = new Vector3(0, diff, 0);  // 上
+        }
+        // w == h の場合は (0,0) なのでそのままでOK
+
+        // カーソル位置（中心からの相対座標）
+        // Mouse.current は HandleInput 内で取得されているが、ここでも取得する
+        Vector3 mouseWorldPos = Vector3.zero;
+        if (mainCamera != null && Mouse.current != null)
+        {
+            Vector3 mouseScreen = Mouse.current.position.ReadValue();
+            mouseScreen.z = Mathf.Abs(mainCamera.transform.position.z);
+            mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreen);
+            mouseWorldPos.z = transform.position.z;
+        }
+
+        Vector3 currentCenter = transform.position;
+        Vector3 mouseLocal = mouseWorldPos - currentCenter;
+
+        // 近い方のピボットを採用
+        float d1 = (mouseLocal - pivot1).sqrMagnitude;
+        float d2 = (mouseLocal - pivot2).sqrMagnitude;
+        Vector3 chosenPivot = (d1 < d2) ? pivot1 : pivot2;
+
+        // 回転ベクトルを計算
+        // Pivotを中心に回転するとは、CenterがPivotの周りを回ること。
+        // NewCenter = Pivot + Rotate(OldCenter - Pivot)
+        // OldCenter = 0 (local)
+        // NewCenterLocal = Pivot + Rotate(-Pivot) = Pivot - Rotate(Pivot)
+        // Shift = NewCenterLocal
+
+        Vector3 rotatedPivot = Vector3.zero;
+        
+        // 回転ロジック (rotationStep == 1 ? 90deg : -90deg)
+        // Unity 2D (Y-up) で 左回転(90)は (x,y)->(-y,x)? 右回転(-90)は (x,y)->(y,-x)?
+        // HelperのIndex 1 (90deg) は (y, -x) となっている。
+        // Index 3 (270deg/-90deg) は (-y, x) となっている。
+        // ここでの rotationStep は Index の増減に対応。
+        // step = 1 (index++): 0->1 (0 -> 90deg?). Helper logic: 1 is (y, -x). 
+        // 座標系: X右, Y上. (1,0) -> (0,-1) は時計回り(CW) -90度。
+        // Unity Editorの回転はZ軸正方向に対してCCWが正。
+        // Helperの実装が "時計回り" なのか "反時計回り" なのかによる。
+        // Helper Case 1: (y, -x). (1,0)->(0,-1). -> Clockwise.
+        // Helper Case 3: (-y, x). (1,0)->(0,1). -> Counter-Clockwise.
+        
+        // rotationStep = 1 (CW 90deg) とする。
+        // Rotate(v) = (v.y, -v.x) if step=1
+        // Rotate(v) = (-v.y, v.x) if step=-1
+
+        if (rotationStep == 1)
+        {
+            // CW
+            rotatedPivot = new Vector3(chosenPivot.y, -chosenPivot.x, 0);
+        }
+        else
+        {
+            // CCW
+            rotatedPivot = new Vector3(-chosenPivot.y, chosenPivot.x, 0);
+        }
+
+        Vector3 shift = chosenPivot - rotatedPivot;
+        return shift;
     }
 
     /// <summary>
