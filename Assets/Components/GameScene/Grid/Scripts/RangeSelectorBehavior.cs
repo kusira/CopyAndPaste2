@@ -1008,6 +1008,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         if (sourceItem != null)
         {
             sourceItem.SetAlpha(1.0f); // 削除時は元に戻す
+            RangeSelectorItemBehavior.ClearCurrentSelection(sourceItem); // キャンセル時に再選択可能にする
         }
         Destroy(gameObject);
     }
@@ -1018,6 +1019,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         {
             // アイテムもろとも削除
             Destroy(sourceItem.gameObject);
+            RangeSelectorItemBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
         }
         Destroy(gameObject);
     }

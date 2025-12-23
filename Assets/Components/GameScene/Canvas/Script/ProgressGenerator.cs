@@ -30,6 +30,10 @@ public class ProgressGenerator : MonoBehaviour
     [Tooltip("各行の右方向へのオフセット（段差）")]
     [SerializeField] private float rowOffset = 0.5f;
 
+    [Header("Result")]
+    [Tooltip("すべてAcquiredになったときにリザルトを表示するコンポーネント")]
+    [SerializeField] private ResultShower resultShower;
+
     private List<ProgressItemData> createdProgressItems = new List<ProgressItemData>();
 
     /// <summary>
@@ -248,8 +252,48 @@ public class ProgressGenerator : MonoBehaviour
                 targetItem.isAcquired = true;
                 SetProgressItemState(targetItem.gameObject, true);
                 Debug.Log($"ProgressGenerator: {targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をAcquiredにしました（{acquiredCount + 1}個目）");
+
+                // すべてのProgressがAcquiredになったかチェック
+                if (IsAllAcquired())
+                {
+                    // ResultShowerがアサインされていない場合は自動検索
+                    if (resultShower == null)
+                    {
+                        resultShower = FindFirstObjectByType<ResultShower>();
+                    }
+
+                    if (resultShower != null)
+                    {
+                        resultShower.ShowResult();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("ProgressGenerator: ResultShowerが見つかりません。リザルトを表示できません。");
+                    }
+                }
             }
         }
+    }
+
+    /// <summary>
+    /// すべてのProgressアイテムがAcquiredになっているか判定します
+    /// </summary>
+    private bool IsAllAcquired()
+    {
+        if (createdProgressItems == null || createdProgressItems.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (var item in createdProgressItems)
+        {
+            if (item == null || !item.isAcquired)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>

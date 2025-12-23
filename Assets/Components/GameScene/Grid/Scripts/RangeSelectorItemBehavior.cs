@@ -4,6 +4,11 @@ using UnityEngine.EventSystems;
 
 public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
 {
+    /// <summary>
+    /// 現在選択中のアイテム（同じアイテムを再選択しないための静的参照）
+    /// </summary>
+    private static RangeSelectorItemBehavior currentSelectedItem;
+
     [Header("Prefabs")]
     [Tooltip("RangeSelectorのPrefabをアサインします")]
     [SerializeField] private GameObject rangeSelectorPrefab;
@@ -19,7 +24,27 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
+        // すでにこのアイテムが選択されている場合は何もしない
+        if (currentSelectedItem == this)
+        {
+            return;
+        }
+
+        // 他のアイテムを選択した場合は、このアイテムを現在の選択として更新
+        currentSelectedItem = this;
+
         GenerateRangeSelector();
+    }
+
+    /// <summary>
+    /// 指定のアイテムが選択中なら選択状態を解除します（キャンセル時など）
+    /// </summary>
+    public static void ClearCurrentSelection(RangeSelectorItemBehavior item)
+    {
+        if (currentSelectedItem == item)
+        {
+            currentSelectedItem = null;
+        }
     }
 
     /// <summary>
@@ -33,11 +58,12 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        // 表示のちらつきを防ぐため、既に存在する場合は削除（通常はないはずだが）
-        var existingSelectors = GameObject.FindGameObjectsWithTag("RangeSelector"); // 必要ならTag等で検索
-        // RangeSelectorBehaviorがシングルトン的な挙動をするならここで整理してもいいが、
-        // 既存実装では複数生成されないように管理されているかは不明。
-        // ここでは単純に新規生成する。
+        // 既存のRangeSelectorがあれば削除してから新しいものを生成（常に1つだけにする）
+        var existingSelector = Object.FindFirstObjectByType<RangeSelectorBehavior>();
+        if (existingSelector != null)
+        {
+            Destroy(existingSelector.gameObject);
+        }
 
         // このオブジェクトのスケールからサイズを取得（論理サイズ優先）
         float width, height;
