@@ -15,7 +15,7 @@ public class RockPatternAssigner : MonoBehaviour
         public Sprite sprite;
     }
 
-    [Tooltip("キーとSpriteの対応を登録します（例: key='S', sprite=Star画像）")]
+    [Tooltip("キーとSpriteの対応を登録します（例: key='S', sprite=Star画像, key='P', sprite=Pentagon画像, key='C', sprite=Circle画像）")]
     [SerializeField] private List<PatternEntry> patternTable = new List<PatternEntry>();
 
     private readonly Dictionary<string, Sprite> patternDict = new Dictionary<string, Sprite>();
