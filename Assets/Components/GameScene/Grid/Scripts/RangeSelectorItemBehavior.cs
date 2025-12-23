@@ -2,7 +2,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
+public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
 {
     /// <summary>
     /// 現在選択中のアイテム（同じアイテムを再選択しないための静的参照）
@@ -21,9 +21,9 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
     [SerializeField] private int itemIndex = -1;
 
     /// <summary>
-    /// ポインタークリック時の処理（新しいInputSystem対応）
+    /// ポインター押下時の処理（新しいInputSystem対応）
     /// </summary>
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
         // 左クリック以外（右クリックなど）は無視
         if (eventData != null && eventData.button != PointerEventData.InputButton.Left)
@@ -37,15 +37,19 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
             return;
         }
 
+        // RangeSelectorの操作より前にParent配下を全破棄
+        ClearRangeSelectorParentChildren();
+
         // 他のアイテムを選択した場合は、このアイテムを現在の選択として更新
         currentSelectedItem = this;
 
-        // すぐに生成せず、3フレーム待ってから生成してチラつきを防ぐ
+        // 既存の生成待ちを止め、即時生成
         if (generateRoutine != null)
         {
             StopCoroutine(generateRoutine);
+            generateRoutine = null;
         }
-        generateRoutine = StartCoroutine(GenerateSelectorAfterFrames(3));
+        GenerateRangeSelector();
     }
 
     /// <summary>
@@ -92,8 +96,7 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
         Vector3 targetScale = new Vector3(width, height, 1f);
         
         // RangeSelectorParentをシーン内から検索
-        GameObject parentObject = GameObject.Find("RangeSelectorParent");
-        Transform parent = parentObject != null ? parentObject.transform : null;
+        Transform parent = FindRangeSelectorParent();
         
         // Itemの位置に生成する（直後にBehavior側でマウス追従が始まる）
         // Parentがある場合はParent下に入れる
@@ -222,6 +225,43 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
 
         Debug.LogWarning("ステージデータを取得できませんでした（RangeSelectorItemBehavior）");
         return null;
+    }
+
+    /// <summary>
+    /// RangeSelectorParentを探し、Transformを返します
+    /// </summary>
+    private Transform FindRangeSelectorParent()
+    {
+        var transforms = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None);
+        foreach (var t in transforms)
+        {
+            if (t != null && t.name == "RangeSelectorParent")
+            {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// RangeSelectorParent配下の子を全破棄します
+    /// </summary>
+    private void ClearRangeSelectorParentChildren()
+    {
+        Transform parent = FindRangeSelectorParent();
+        if (parent == null)
+        {
+            return;
+        }
+
+        for (int i = parent.childCount - 1; i >= 0; i--)
+        {
+            var child = parent.GetChild(i);
+            if (child != null)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 }
 
