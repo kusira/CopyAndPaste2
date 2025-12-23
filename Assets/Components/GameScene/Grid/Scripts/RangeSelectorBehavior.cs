@@ -70,6 +70,11 @@ public class RangeSelectorBehavior : MonoBehaviour
         if (spriteRenderer != null)
         {
             normalColor = spriteRenderer.color;
+            // 生成直後は2フレームだけ透明にする
+            var transparent = normalColor;
+            transparent.a = 0f;
+            spriteRenderer.color = transparent;
+            StartCoroutine(SetOpacityAfterFrames(2, normalColor));
         }
 
         // GridGeneratorからRockPrefabを取得（プレビューに使用）
@@ -807,6 +812,22 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         Vector3 shift = chosenPivot - rotatedPivot;
         return shift;
+    }
+
+    /// <summary>
+    /// 指定フレーム待機後に不透明度を元に戻します
+    /// </summary>
+    private System.Collections.IEnumerator SetOpacityAfterFrames(int waitFrames, Color targetColor)
+    {
+        for (int i = 0; i < waitFrames; i++)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = targetColor;
+        }
     }
 
     /// <summary>
