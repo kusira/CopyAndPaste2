@@ -109,6 +109,8 @@ MonoBehaviour:
     sprite: {fileID: 6981481357855213104, guid: 60e27eb06ec728347b3b1835ba9f1627, type: 3}
   - key: P
     sprite: {fileID: 3949876716828887839, guid: c4b7137c508eff84c88abf9477ca7f68, type: 3}
+  - key: C
+    sprite: {fileID: -6296405149468949379, guid: dcb4d5100b51f194d88f1cae3d132365, type: 3}
 --- !u!1 &7370561605131840916
 GameObject:
   m_ObjectHideFlags: 0

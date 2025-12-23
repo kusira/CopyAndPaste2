@@ -10,6 +10,9 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
     
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
+    
+    // このアイテムのインデックス（RangeSelectorItemGenaratorで設定される）
+    [SerializeField] private int itemIndex = -1;
 
     /// <summary>
     /// ポインタークリック時の処理（新しいInputSystem対応）
@@ -93,6 +96,22 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
     public void SetLogicalSize(int width, int height)
     {
         logicalSize = new Vector2Int(width, height);
+    }
+
+    /// <summary>
+    /// アイテムのインデックスを設定します
+    /// </summary>
+    public void SetItemIndex(int index)
+    {
+        itemIndex = index;
+    }
+
+    /// <summary>
+    /// アイテムのインデックスを取得します
+    /// </summary>
+    public int GetItemIndex()
+    {
+        return itemIndex;
     }
 
     /// <summary>

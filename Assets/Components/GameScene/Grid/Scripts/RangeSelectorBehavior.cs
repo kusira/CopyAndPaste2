@@ -549,8 +549,35 @@ public class RangeSelectorBehavior : MonoBehaviour
             return;
         }
 
-        // 貼り付け処理：ヘルパー関数でRockStatusを書き換え
+        // --- ここから確定処理 ---
+
+        // 1. 直前の状態をSnapshotに記録（Undo用）
+        if (UndoRedoManager.Instance != null)
+        {
+            UndoRedoManager.Instance.RecordSnapshot();
+        }
+
+        // 2. 貼り付け処理：ヘルパー関数でRockStatusを書き換え
         RangeSelectorHelper.ApplyPaste(rotatedOffsets, centerX, centerY, rockStatus);
+
+        // 3. 使用したアイテムをデータから削除
+        if (sourceItem != null)
+        {
+            int itemIndex = sourceItem.GetItemIndex();
+            // インデックスが有効か確認
+            if (itemIndex >= 0 && itemIndex < stageData.rangeSelectorItems.Count)
+            {
+                // リストから削除（これでアイテムが消費されたことになる）
+                stageData.rangeSelectorItems.RemoveAt(itemIndex);
+                Debug.Log($"Used item index {itemIndex} removed from data.");
+            }
+            else
+            {
+                // インデックスがない場合は、リストの先頭を削除する、などのフォールバックが必要かもしれないが
+                // ここでは安全のため何もしない（論理削除失敗）
+                Debug.LogWarning($"Item index {itemIndex} is invalid or out of range. Item not removed.");
+            }
+        }
 
         Debug.Log("Rockパターンを貼り付けました");
         UpdateDebugState("貼り付け完了", copiedOffsets.Count, rotationIndex, true);
@@ -566,7 +593,14 @@ public class RangeSelectorBehavior : MonoBehaviour
             gridGenerator.GenerateGrid();
         }
 
-        // プレビュー更新
+        // アイテムリストを再生成（消費されたアイテムを消すため）
+        var itemGen = Object.FindFirstObjectByType<RangeSelectorItemGenarator>();
+        if (itemGen != null)
+        {
+            itemGen.GenerateItems();
+        }
+
+        // プレビュー更新 (貼り付け後はSelector消えるので不要だが一応)
         UpdatePreviewAndValidity();
 
         // 貼り付け成功したら削除（アイテムごと）

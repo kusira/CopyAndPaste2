@@ -205,3 +205,83 @@ MonoBehaviour:
       width: 3
     - height: 2
       width: 2
+  - stageName: Stage 4
+    massStatus:
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - 
+      - 
+      - 
+      - '#'
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+    rangeSelectorItems:
+    - height: 3
+      width: 2
+    - height: 1
+      width: 3
+    - height: 2
+      width: 2

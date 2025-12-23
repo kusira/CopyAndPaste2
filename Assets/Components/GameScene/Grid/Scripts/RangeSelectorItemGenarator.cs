@@ -47,12 +47,23 @@ public class RangeSelectorItemGenarator : MonoBehaviour
         // CurrentGameStatusからデータを取得
         List<StageDatabase.RangeSelectorItemData> items = null;
 
-        if (stageDatabase != null)
+        // CurrentGameStatusからデータを取得（ランタイム優先）
+        StageDatabase.StageData stageData = null;
+        if (currentGameStatus != null)
+        {
+            stageData = currentGameStatus.GetCurrentStageData();
+        }
+
+        // ランタイムデータがない場合はデータベースから取得（フォールバック）
+        if (stageData == null && stageDatabase != null)
         {
             int stageIndex = currentGameStatus != null ? currentGameStatus.GetCurrentStageIndex() : 0;
-            StageDatabase.StageData stageData = stageDatabase.GetStageData(stageIndex);
-            if (stageData != null)
-                items = stageData.rangeSelectorItems;
+            stageData = stageDatabase.GetStageData(stageIndex);
+        }
+
+        if (stageData != null)
+        {
+            items = stageData.rangeSelectorItems;
         }
 
         if (items == null || items.Count == 0)
@@ -111,6 +122,7 @@ public class RangeSelectorItemGenarator : MonoBehaviour
                     if (itemBehavior != null)
                     {
                         itemBehavior.SetLogicalSize(width, height);
+                        itemBehavior.SetItemIndex(i); // インデックスを設定
                     }
                 }
 

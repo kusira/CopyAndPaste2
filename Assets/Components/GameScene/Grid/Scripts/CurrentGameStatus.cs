@@ -135,6 +135,17 @@ public class CurrentGameStatus : MonoBehaviour
     }
 
     /// <summary>
+    /// ランタイムのステージデータを外部から設定します（Undo/Redo用）
+    /// </summary>
+    public void SetRuntimeStageData(StageDatabase.StageData data)
+    {
+        if (data != null)
+        {
+            runtimeStageData = data;
+        }
+    }
+
+    /// <summary>
     /// 現在のステージ番号を取得します
     /// </summary>
     public int GetCurrentStageIndex()
