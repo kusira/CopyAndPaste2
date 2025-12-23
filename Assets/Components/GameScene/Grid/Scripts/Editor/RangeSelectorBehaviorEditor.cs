@@ -67,11 +67,11 @@ public class RangeSelectorBehaviorEditor : Editor
         return field != null ? (int)field.GetValue(b) : 0;
     }
 
-    private System.Collections.Generic.List<Vector2Int> behaviorDebugOffsets(RangeSelectorBehavior b)
+    private System.Collections.Generic.List<RangeSelectorHelper.CopiedRockData> behaviorDebugOffsets(RangeSelectorBehavior b)
     {
         var type = typeof(RangeSelectorBehavior);
         var field = type.GetField("debugSnapshotOffsets", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        return field != null ? (System.Collections.Generic.List<Vector2Int>)field.GetValue(b) : null;
+        return field != null ? (System.Collections.Generic.List<RangeSelectorHelper.CopiedRockData>)field.GetValue(b) : null;
     }
 
     private int behaviorDebugInt(RangeSelectorBehavior b, string name)
@@ -111,7 +111,7 @@ public class RangeSelectorBehaviorEditor : Editor
 
             for (int x = minX; x <= maxX; x++)
             {
-                bool exists = offsets.Exists(o => o.x == x && o.y == y);
+                bool exists = offsets.Exists(o => o.offset.x == x && o.offset.y == y);
                 string cell = exists ? "■" : "□";
                 EditorGUILayout.LabelField(cell, GUILayout.Width(18));
             }

@@ -264,11 +264,6 @@ public class RangeSelectorBehavior : MonoBehaviour
         hasCopy = false;
         copiedOffsets.Clear();
         rotatedOffsets.Clear();
-        rotationIndex = 0;
-        dragOffset = Vector3.zero;
-        
-        // 見た目をリセット
-        UpdateSelectorRotation();
         
         // プレビュー消去
         ClearPreviewChildren();
@@ -346,7 +341,6 @@ public class RangeSelectorBehavior : MonoBehaviour
             centerX, centerY,
             copiedOffsets);
 
-        rotationIndex = 0;
         hasCopy = copiedOffsets.Count > 0;
 
         if (!hasCopy)
@@ -360,7 +354,7 @@ public class RangeSelectorBehavior : MonoBehaviour
             UpdateDebugState($"コピー完了: {copiedOffsets.Count}セル", copiedOffsets.Count, rotationIndex, true);
         }
 
-        // コピー時は初期向き（rotationIndex=0）に合わせて見た目もリセット
+        // コピー時も現在の回転インデックスを維持したまま見た目を更新
         UpdateSelectorRotation();
 
         previewDirty = true;
