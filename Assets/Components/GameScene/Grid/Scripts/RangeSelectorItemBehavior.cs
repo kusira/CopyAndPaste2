@@ -24,6 +24,12 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
+        // 左クリック以外（右クリックなど）は無視
+        if (eventData != null && eventData.button != PointerEventData.InputButton.Left)
+        {
+            return;
+        }
+
         // すでにこのアイテムが選択されている場合は何もしない
         if (currentSelectedItem == this)
         {
@@ -58,11 +64,11 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        // 既存のRangeSelectorがあれば削除してから新しいものを生成（常に1つだけにする）
+        // 既存のRangeSelectorがあれば、選択をキャンセルしてから新しいものを生成（常に1つだけにする）
         var existingSelector = Object.FindFirstObjectByType<RangeSelectorBehavior>();
         if (existingSelector != null)
         {
-            Destroy(existingSelector.gameObject);
+            existingSelector.CancelSelection();
         }
 
         // このオブジェクトのスケールからサイズを取得（論理サイズ優先）

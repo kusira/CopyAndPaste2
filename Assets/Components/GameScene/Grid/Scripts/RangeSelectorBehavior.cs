@@ -213,7 +213,7 @@ public class RangeSelectorBehavior : MonoBehaviour
             {
                 // RangeSelector削除（アイテムを表示に戻す）
                 Debug.Log("右クリック：RangeSelectorを削除します");
-                DestroySelector();
+                CancelSelection();
             }
         }
 
@@ -1001,6 +1001,15 @@ public class RangeSelectorBehavior : MonoBehaviour
         {
             sourceItem.SetAlpha(0.3f); // 選択中は薄くする
         }
+    }
+
+    /// <summary>
+    /// RangeSelectorの選択をキャンセルし、自身を削除します
+    /// （外部からも呼べるようにラップメソッドを公開）
+    /// </summary>
+    public void CancelSelection()
+    {
+        DestroySelector();
     }
 
     private void DestroySelector()
