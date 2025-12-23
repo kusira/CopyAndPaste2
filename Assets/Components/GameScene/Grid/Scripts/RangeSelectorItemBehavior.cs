@@ -7,6 +7,9 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
     [Header("Prefabs")]
     [Tooltip("RangeSelectorのPrefabをアサインします")]
     [SerializeField] private GameObject rangeSelectorPrefab;
+    
+    // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
+    private Vector2Int logicalSize = Vector2Int.zero;
 
     /// <summary>
     /// ポインタークリック時の処理（新しいInputSystem対応）
@@ -33,8 +36,19 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
         // 既存実装では複数生成されないように管理されているかは不明。
         // ここでは単純に新規生成する。
 
-        // このオブジェクトのスケールからサイズを取得
-        Vector3 scale = transform.localScale;
+        // このオブジェクトのスケールからサイズを取得（論理サイズ優先）
+        float width, height;
+        if (logicalSize.x > 0 && logicalSize.y > 0)
+        {
+            width = logicalSize.x;
+            height = logicalSize.y;
+        }
+        else
+        {
+            width = transform.localScale.x;
+            height = transform.localScale.y;
+        }
+        Vector3 targetScale = new Vector3(width, height, 1f);
         
         // RangeSelectorParentをシーン内から検索
         GameObject parentObject = GameObject.Find("RangeSelectorParent");
@@ -58,7 +72,7 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
             instance.transform.position = transform.position;
             
             // 同じサイズにスケールを設定
-            instance.transform.localScale = scale;
+            instance.transform.localScale = targetScale;
             instance.name = "RangeSelector";
 
             // Selectorに自身を登録
@@ -68,8 +82,17 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
                 behavior.SetSourceItem(this);
             }
             
-            Debug.Log($"RangeSelectorを生成しました: サイズ({scale.x}, {scale.y})");
+            Debug.Log($"RangeSelectorを生成しました: サイズ({targetScale.x}, {targetScale.y})");
         }
+    }
+
+    /// <summary>
+    /// アイテムの論理サイズ（グリッド単位）を設定します。
+    /// これを設定すると、見た目のスケールに関わらず、指定されたサイズでRangeSelectorが生成されます。
+    /// </summary>
+    public void SetLogicalSize(int width, int height)
+    {
+        logicalSize = new Vector2Int(width, height);
     }
 
     /// <summary>

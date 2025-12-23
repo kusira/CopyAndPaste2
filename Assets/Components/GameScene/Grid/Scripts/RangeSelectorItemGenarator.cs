@@ -21,6 +21,9 @@ public class RangeSelectorItemGenarator : MonoBehaviour
     [Header("Settings")]
     [Tooltip("アイテム間の縦方向の間隔")]
     [SerializeField] private float itemSpacing = 1.0f;
+    
+    // アイテムの表示スケール（機能的なサイズではなく、見た目の大きさの係数）
+    private const float ItemScale = 0.7f;
 
     private void Start()
     {
@@ -83,10 +86,13 @@ public class RangeSelectorItemGenarator : MonoBehaviour
                 int height = Mathf.Max(1, itemData.height);
                 int width = Mathf.Max(1, itemData.width);
 
-                // 最初のアイテムのY位置を(0, -H_0/2)にする（親の位置を基準）
+                // 最初のアイテムのY位置を(0, -VisualH/2)にする（親の位置を基準）
+                float visualHeight = height * ItemScale;
+                float visualWidth = width * ItemScale;
+                
                 if (i == 0)
                 {
-                    currentY = -height * 0.5f;
+                    currentY = -visualHeight * 0.5f;
                 }
 
                 // アイテムの中心位置を計算（親の位置を基準）
@@ -96,9 +102,16 @@ public class RangeSelectorItemGenarator : MonoBehaviour
                 GameObject instance = Instantiate(rangeSelectorPrefab, itemCenter, Quaternion.identity, parent);
                 if (instance != null)
                 {
-                    // スケールを変更してH*Wのサイズにする
-                    instance.transform.localScale = new Vector3(width, height, 1f);
+                    // スケールを変更してH*W * 0.7のサイズにする（見た目）
+                    instance.transform.localScale = new Vector3(visualWidth, visualHeight, 1f);
                     instance.name = $"RangeSelectorItem_{i}";
+                    
+                    // 論理サイズ（実際に生成されるセレクターのサイズ）は元の大きさをセット
+                    var itemBehavior = instance.GetComponent<RangeSelectorItemBehavior>();
+                    if (itemBehavior != null)
+                    {
+                        itemBehavior.SetLogicalSize(width, height);
+                    }
                 }
 
                 // 次のアイテムの位置を計算
@@ -106,7 +119,8 @@ public class RangeSelectorItemGenarator : MonoBehaviour
                 if (i < items.Count - 1)
                 {
                     int nextHeight = Mathf.Max(1, items[i + 1] != null ? items[i + 1].height : 1);
-                    currentY -= (height * 0.5f + itemSpacing + nextHeight * 0.5f);
+                    float nextVisualHeight = nextHeight * ItemScale;
+                    currentY -= (visualHeight * 0.5f + itemSpacing + nextVisualHeight * 0.5f);
                 }
             }
             catch (System.Exception e)

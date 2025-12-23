@@ -18,43 +18,55 @@ MonoBehaviour:
     - columns:
       - .
       - .
-      - .
-      - .
       - .S
-    - columns:
-      - .
-      - .
-      - .
       - .S
       - .
     - columns:
       - .
       - .
+      - .S
       - .
-      - 
-      - 
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
     rockStatus:
     - columns:
-      - 
-      - 
-      - 
-      - 
-      - 
-    - columns:
-      - 
-      - 
       - '#'
       - 
       - 
+      - 
+      - 
     - columns:
       - 
       - 
+      - 
+      - 
+      - 
+    - columns:
+      - '#'
+      - '#'
       - '#S'
       - 
+      - '#S'
+    - columns:
       - 
+      - '#S'
+      - 
+      - '#'
+      - '#'
     rangeSelectorItems:
-    - height: 2
-      width: 1
+    - height: 3
+      width: 2
     - height: 2
       width: 2
   - stageName: Stage 2
@@ -111,5 +123,85 @@ MonoBehaviour:
     rangeSelectorItems:
     - height: 3
       width: 2
+    - height: 2
+      width: 2
+  - stageName: Stage 3
+    massStatus:
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .P
+      - .
+      - .
+    - columns:
+      - .P
+      - .
+      - .
+      - .S
+      - .
+      - .
+    - columns:
+      - .S
+      - .P
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - 
+      - 
+      - '#'
+      - '#'
+      - 
+      - 
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - '#S'
+      - 
+      - 
+      - '#P'
+      - '#'
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - '#S'
+      - '#P'
+      - '#'
+    rangeSelectorItems:
+    - height: 3
+      width: 2
+    - height: 1
+      width: 3
     - height: 2
       width: 2
