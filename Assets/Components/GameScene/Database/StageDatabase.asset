@@ -243,14 +243,7 @@ MonoBehaviour:
     massStatus:
     - columns:
       - .
-      - .
-      - .
-      - .
-      - .
-      - .
-    - columns:
-      - .
-      - .
+      - .C
       - .
       - .
       - .
@@ -260,13 +253,27 @@ MonoBehaviour:
       - .
       - .
       - .
+      - .P
+      - .
+    - columns:
+      - .
+      - .
+      - .S
+      - .
       - .
       - .
     - columns:
       - .
       - .
       - .
+      - .S
       - .
+      - .
+    - columns:
+      - .
+      - .S
+      - .P
+      - .C
       - .
       - .
     - columns:
@@ -278,44 +285,53 @@ MonoBehaviour:
       - .
     rockStatus:
     - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - '#'
+      - '#C'
+      - 
+      - 
+    - columns:
+      - 
+      - '#'
+      - 
+      - '#S'
+      - 
+      - 
+    - columns:
+      - 
+      - '#P'
+      - 
+      - 
+      - '#C'
+      - '#P'
+    - columns:
+      - 
+      - 
       - 
       - 
       - 
       - '#'
-      - 
-      - 
     - columns:
       - 
       - 
       - 
-      - 
-      - 
-      - 
-    - columns:
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-    - columns:
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-    - columns:
-      - 
-      - 
-      - 
-      - 
-      - 
+      - '#P'
+      - '#'
       - 
     rangeSelectorItems:
-    - height: 3
-      width: 2
-    - height: 1
+    - height: 2
       width: 3
     - height: 2
       width: 2
+    - height: 1
+      width: 4
+    - height: 1
+      width: 4

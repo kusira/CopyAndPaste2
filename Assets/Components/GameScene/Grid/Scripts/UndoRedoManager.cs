@@ -1,16 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UndoRedoManager : MonoBehaviour
 {
     public static UndoRedoManager Instance { get; private set; }
 
-    [Header("UI References")]
-    [Tooltip("UndoボタンのGameObject（Buttonコンポーネントが必要）")]
-    [SerializeField] private Button undoButton;
-    [Tooltip("RedoボタンのGameObject（Buttonコンポーネントが必要）")]
-    [SerializeField] private Button redoButton;
+    [Header("Sprite References")]
+    [Tooltip("UndoスプライトのGameObject（SpriteRendererとCollider2Dが必要）")]
+    [SerializeField] private GameObject undoSpriteObject;
+    [Tooltip("RedoスプライトのGameObject（SpriteRendererとCollider2Dが必要）")]
+    [SerializeField] private GameObject redoSpriteObject;
+
+    [Header("Color Settings")]
+    [Tooltip("通常時の色")]
+    [SerializeField] private Color normalColor = Color.white;
+    [Tooltip("無効時の色（灰色マスク）")]
+    [SerializeField] private Color disabledColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+    [Tooltip("押下時の色")]
+    [SerializeField] private Color pressedColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+
+    private SpriteRenderer undoSpriteRenderer;
+    private SpriteRenderer redoSpriteRenderer;
+    private UndoRedoSpriteButton undoButton;
+    private UndoRedoSpriteButton redoButton;
 
     // 履歴スタック
     private readonly Stack<StageDatabase.StageData> undoStack = new Stack<StageDatabase.StageData>();
@@ -30,15 +43,60 @@ public class UndoRedoManager : MonoBehaviour
 
     private void Start()
     {
-        // ボタンのイベント登録
-        if (undoButton != null)
+        // Undoスプライトの設定
+        if (undoSpriteObject != null)
         {
-            undoButton.onClick.AddListener(Undo);
+            undoSpriteRenderer = undoSpriteObject.GetComponent<SpriteRenderer>();
+            if (undoSpriteRenderer == null)
+            {
+                Debug.LogWarning("UndoRedoManager: UndoSpriteObjectにSpriteRendererがありません");
+            }
+
+            // Collider2Dがなければ追加
+            if (undoSpriteObject.GetComponent<Collider2D>() == null)
+            {
+                BoxCollider2D collider = undoSpriteObject.AddComponent<BoxCollider2D>();
+                if (undoSpriteRenderer != null && undoSpriteRenderer.sprite != null)
+                {
+                    collider.size = undoSpriteRenderer.sprite.bounds.size;
+                }
+            }
+
+            // UndoRedoSpriteButtonコンポーネントを追加
+            undoButton = undoSpriteObject.GetComponent<UndoRedoSpriteButton>();
+            if (undoButton == null)
+            {
+                undoButton = undoSpriteObject.AddComponent<UndoRedoSpriteButton>();
+            }
+            undoButton.Initialize(this, true);
         }
 
-        if (redoButton != null)
+        // Redoスプライトの設定
+        if (redoSpriteObject != null)
         {
-            redoButton.onClick.AddListener(Redo);
+            redoSpriteRenderer = redoSpriteObject.GetComponent<SpriteRenderer>();
+            if (redoSpriteRenderer == null)
+            {
+                Debug.LogWarning("UndoRedoManager: RedoSpriteObjectにSpriteRendererがありません");
+            }
+
+            // Collider2Dがなければ追加
+            if (redoSpriteObject.GetComponent<Collider2D>() == null)
+            {
+                BoxCollider2D collider = redoSpriteObject.AddComponent<BoxCollider2D>();
+                if (redoSpriteRenderer != null && redoSpriteRenderer.sprite != null)
+                {
+                    collider.size = redoSpriteRenderer.sprite.bounds.size;
+                }
+            }
+
+            // UndoRedoSpriteButtonコンポーネントを追加
+            redoButton = redoSpriteObject.GetComponent<UndoRedoSpriteButton>();
+            if (redoButton == null)
+            {
+                redoButton = redoSpriteObject.AddComponent<UndoRedoSpriteButton>();
+            }
+            redoButton.Initialize(this, false);
         }
 
         UpdateButtons();
@@ -154,6 +212,22 @@ public class UndoRedoManager : MonoBehaviour
             itemGen.GenerateItems();
         }
 
+        // 4. Progressの状態を更新
+        // Progressアイテムを再生成（初期状態に戻す）
+        var progressGenerator = Object.FindFirstObjectByType<ProgressGenerator>();
+        if (progressGenerator != null)
+        {
+            progressGenerator.CreateProgressItems();
+        }
+
+        // GridMonitorの監視状態をリセットして再計算
+        var gridMonitor = Object.FindFirstObjectByType<GridMonitor>();
+        if (gridMonitor != null)
+        {
+            gridMonitor.ResetMonitor();
+            gridMonitor.RecalculateProgress();
+        }
+
         UpdateButtons();
     }
 
@@ -162,14 +236,111 @@ public class UndoRedoManager : MonoBehaviour
     /// </summary>
     private void UpdateButtons()
     {
+        bool canUndo = undoStack.Count > 0;
+        bool canRedo = redoStack.Count > 0;
+
+        if (undoSpriteRenderer != null)
+        {
+            undoSpriteRenderer.color = canUndo ? normalColor : disabledColor;
+        }
+
+        if (redoSpriteRenderer != null)
+        {
+            redoSpriteRenderer.color = canRedo ? normalColor : disabledColor;
+        }
+
         if (undoButton != null)
         {
-            undoButton.interactable = undoStack.Count > 0;
+            undoButton.SetInteractable(canUndo);
         }
 
         if (redoButton != null)
         {
-            redoButton.interactable = redoStack.Count > 0;
+            redoButton.SetInteractable(canRedo);
+        }
+    }
+
+    /// <summary>
+    /// Undoボタンがクリックされたときに呼ばれます
+    /// </summary>
+    public void OnUndoClicked()
+    {
+        Undo();
+    }
+
+    /// <summary>
+    /// Redoボタンがクリックされたときに呼ばれます
+    /// </summary>
+    public void OnRedoClicked()
+    {
+        Redo();
+    }
+
+    /// <summary>
+    /// ボタンが押下されたときの色を設定します
+    /// </summary>
+    public void SetButtonPressed(bool isUndo, bool pressed)
+    {
+        if (isUndo && undoSpriteRenderer != null)
+        {
+            undoSpriteRenderer.color = pressed ? pressedColor : (undoStack.Count > 0 ? normalColor : disabledColor);
+        }
+        else if (!isUndo && redoSpriteRenderer != null)
+        {
+            redoSpriteRenderer.color = pressed ? pressedColor : (redoStack.Count > 0 ? normalColor : disabledColor);
+        }
+    }
+}
+
+/// <summary>
+/// スプライトベースのUndo/Redoボタンコンポーネント
+/// </summary>
+public class UndoRedoSpriteButton : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
+{
+    private UndoRedoManager manager;
+    private bool isUndo;
+    private bool isInteractable = true;
+    private bool isPressed = false;
+
+    public void Initialize(UndoRedoManager mgr, bool undo)
+    {
+        manager = mgr;
+        isUndo = undo;
+    }
+
+    public void SetInteractable(bool interactable)
+    {
+        isInteractable = interactable;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!isInteractable) return;
+
+        if (isUndo)
+        {
+            manager.OnUndoClicked();
+        }
+        else
+        {
+            manager.OnRedoClicked();
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (!isInteractable) return;
+
+        isPressed = true;
+        manager.SetButtonPressed(isUndo, true);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (isPressed)
+        {
+            isPressed = false;
+            manager.SetButtonPressed(isUndo, false);
         }
     }
 }

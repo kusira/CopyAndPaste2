@@ -137,5 +137,102 @@ public class GridMonitor : MonoBehaviour
     {
         acquiredProgressKeys.Clear();
     }
+
+    /// <summary>
+    /// 現在のグリッド状態に基づいてProgressの状態を再計算します
+    /// </summary>
+    public void RecalculateProgress()
+    {
+        if (currentGameStatus == null || progressGenerator == null)
+        {
+            return;
+        }
+
+        // まず、すべてのProgressアイテムを初期状態にリセット
+        var progressItems = progressGenerator.GetProgressItems();
+        foreach (var item in progressItems)
+        {
+            if (item != null && item.gameObject != null)
+            {
+                item.isAcquired = false;
+                Transform acquiredTransform = item.gameObject.transform.Find("Acquired");
+                Transform notAcquiredTransform = item.gameObject.transform.Find("NotAcquired");
+                if (acquiredTransform != null)
+                {
+                    acquiredTransform.gameObject.SetActive(false);
+                }
+                if (notAcquiredTransform != null)
+                {
+                    notAcquiredTransform.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        // 現在のグリッド状態をチェックして、条件を満たしているProgressをAcquiredにする
+        StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
+        if (stageData == null || stageData.massStatus == null || stageData.rockStatus == null)
+        {
+            return;
+        }
+
+        List<StageDatabase.RowData> massStatus = stageData.massStatus;
+        List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
+
+        // 各座標で.Sと#S、.Pと#P、.Cと#Cが一致しているかチェック
+        for (int h = 0; h < massStatus.Count; h++)
+        {
+            if (massStatus[h] == null || massStatus[h].columns == null) continue;
+
+            for (int w = 0; w < massStatus[h].columns.Count; w++)
+            {
+                // MassStatusをチェック
+                string massValue = massStatus[h].columns[w];
+                if (string.IsNullOrEmpty(massValue)) continue;
+
+                char massBaseChar;
+                List<string> massKeys = new List<string>();
+                RangeSelectorHelper.ParseCell(massValue, out massBaseChar, massKeys);
+
+                // .S, .P, .Cをチェック
+                if (massBaseChar == '.')
+                {
+                    foreach (var key in massKeys)
+                    {
+                        if (key == "S" || key == "P" || key == "C")
+                        {
+                            // 同じ座標のRockStatusをチェック
+                            if (h < rockStatus.Count && 
+                                rockStatus[h] != null && 
+                                rockStatus[h].columns != null && 
+                                w < rockStatus[h].columns.Count)
+                            {
+                                string rockValue = rockStatus[h].columns[w];
+                                if (!string.IsNullOrEmpty(rockValue))
+                                {
+                                    char rockBaseChar;
+                                    List<string> rockKeys = new List<string>();
+                                    RangeSelectorHelper.ParseCell(rockValue, out rockBaseChar, rockKeys);
+
+                                    // #S, #P, #Cをチェック
+                                    if (rockBaseChar == '#' && rockKeys.Contains(key))
+                                    {
+                                        // 条件を満たしている
+                                        Vector2Int gridPos = new Vector2Int(w, h);
+                                        string progressKey = $"{key}_{gridPos.x}_{gridPos.y}";
+
+                                        if (!acquiredProgressKeys.Contains(progressKey))
+                                        {
+                                            acquiredProgressKeys.Add(progressKey);
+                                            progressGenerator.SetProgressAcquired(gridPos, key);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 

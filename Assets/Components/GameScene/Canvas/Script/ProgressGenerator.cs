@@ -31,7 +31,6 @@ public class ProgressGenerator : MonoBehaviour
     [SerializeField] private float rowOffset = 0.5f;
 
     private List<ProgressItemData> createdProgressItems = new List<ProgressItemData>();
-    private HashSet<string> satisfiedConditions = new HashSet<string>(); // 条件を満たしたProgressアイテムのキー
 
     /// <summary>
     /// Progressアイテムのデータを保持するクラス
@@ -50,14 +49,6 @@ public class ProgressGenerator : MonoBehaviour
             patternKey = key;
             gridPosition = pos;
             isAcquired = false;
-        }
-
-        /// <summary>
-        /// 条件を満たしたProgressアイテムを識別するキーを生成します
-        /// </summary>
-        public string GetConditionKey()
-        {
-            return $"{patternKey}_{gridPosition.x}_{gridPosition.y}";
         }
     }
 
@@ -209,7 +200,6 @@ public class ProgressGenerator : MonoBehaviour
             }
         }
         createdProgressItems.Clear();
-        satisfiedConditions.Clear();
     }
 
     /// <summary>
@@ -234,34 +224,30 @@ public class ProgressGenerator : MonoBehaviour
 
     /// <summary>
     /// 指定された座標とパターンキーに対応するProgressアイテムの条件が満たされたことを記録します
+    /// 既にAcquiredになっているアイテムの数を数えて、その数+1個目のアイテム（左側から）をAcquiredにします
     /// </summary>
     public void SetProgressAcquired(Vector2Int gridPosition, string patternKey)
     {
-        string conditionKey = $"{patternKey}_{gridPosition.x}_{gridPosition.y}";
-        if (!satisfiedConditions.Contains(conditionKey))
-        {
-            satisfiedConditions.Add(conditionKey);
-            UpdateProgressItemsInOrder();
-        }
-    }
-
-    /// <summary>
-    /// 生成順（左側から）で条件を満たしているProgressアイテムをAcquired状態にします
-    /// </summary>
-    private void UpdateProgressItemsInOrder()
-    {
-        // 生成順（createdProgressItemsの順番）でチェック
+        // 既にAcquiredになっているアイテムの数を数える
+        int acquiredCount = 0;
         foreach (var item in createdProgressItems)
         {
-            if (item != null && item.gameObject != null && !item.isAcquired)
+            if (item != null && item.isAcquired)
             {
-                string conditionKey = item.GetConditionKey();
-                if (satisfiedConditions.Contains(conditionKey))
-                {
-                    item.isAcquired = true;
-                    SetProgressItemState(item.gameObject, true);
-                    Debug.Log($"ProgressGenerator: {item.patternKey} at ({item.gridPosition.x}, {item.gridPosition.y}) をAcquiredにしました（左側から順番）");
-                }
+                acquiredCount++;
+            }
+        }
+
+        // その数+1個目のアイテム（左側から）をAcquiredにする
+        int targetIndex = acquiredCount; // 0-indexedなので、acquiredCountが次のアイテムのインデックス
+        if (targetIndex < createdProgressItems.Count)
+        {
+            var targetItem = createdProgressItems[targetIndex];
+            if (targetItem != null && targetItem.gameObject != null && !targetItem.isAcquired)
+            {
+                targetItem.isAcquired = true;
+                SetProgressItemState(targetItem.gameObject, true);
+                Debug.Log($"ProgressGenerator: {targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をAcquiredにしました（{acquiredCount + 1}個目）");
             }
         }
     }
