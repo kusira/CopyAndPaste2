@@ -8,6 +8,7 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
     /// 現在選択中のアイテム（同じアイテムを再選択しないための静的参照）
     /// </summary>
     private static RangeSelectorItemBehavior currentSelectedItem;
+    private Coroutine generateRoutine;
 
     [Header("Prefabs")]
     [Tooltip("RangeSelectorのPrefabをアサインします")]
@@ -39,7 +40,12 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
         // 他のアイテムを選択した場合は、このアイテムを現在の選択として更新
         currentSelectedItem = this;
 
-        GenerateRangeSelector();
+        // すぐに生成せず、3フレーム待ってから生成してチラつきを防ぐ
+        if (generateRoutine != null)
+        {
+            StopCoroutine(generateRoutine);
+        }
+        generateRoutine = StartCoroutine(GenerateSelectorAfterFrames(3));
     }
 
     /// <summary>
@@ -119,6 +125,20 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerClickHandler
             
             Debug.Log($"RangeSelectorを生成しました: サイズ({targetScale.x}, {targetScale.y})");
         }
+    }
+
+    /// <summary>
+    /// 指定フレーム待ってからRangeSelectorを生成します
+    /// </summary>
+    private System.Collections.IEnumerator GenerateSelectorAfterFrames(int waitFrames)
+    {
+        for (int i = 0; i < waitFrames; i++)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        GenerateRangeSelector();
+        generateRoutine = null;
     }
 
     /// <summary>
