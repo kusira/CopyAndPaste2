@@ -9,6 +9,9 @@ public class GridGenerator : MonoBehaviour
     
     [Tooltip("RockのPrefabをアサインします")]
     [SerializeField] private GameObject rockPrefab;
+
+    [Tooltip("GridFrameのPrefabをアサインします。GridParentの直下に生成されます")]
+    [SerializeField] private GameObject gridFramePrefab;
     
     [Header("Parent Objects")]
     [Tooltip("Massを生成する際の親GameObjectをアサインします。未設定の場合はこのGameObjectが親になります")]
@@ -196,6 +199,9 @@ public class GridGenerator : MonoBehaviour
             {
                 Debug.Log($"グリッドを生成しました: {width}x{height} (生成数: {generatedCount})");
             }
+
+            // GridFrameを生成してサイズを調整
+            CreateAndUpdateGridFrame(width, height);
         }
         catch (System.Exception e)
         {
@@ -270,6 +276,136 @@ public class GridGenerator : MonoBehaviour
         {
             Debug.LogError($"グリッドのクリア中にエラーが発生しました: {e.Message}");
         }
+    }
+
+    /// <summary>
+    /// GridFrameを生成してサイズを調整します
+    /// </summary>
+    /// <param name="gridWidth">グリッドの幅</param>
+    /// <param name="gridHeight">グリッドの高さ</param>
+    private void CreateAndUpdateGridFrame(int gridWidth, int gridHeight)
+    {
+        if (gridFramePrefab == null)
+        {
+            Debug.LogWarning("GridFramePrefabがアサインされていません");
+            return;
+        }
+
+        // GridParentを取得（massParentの親、またはrockParentの親）
+        Transform gridParentTransform = null;
+        if (massParent != null)
+        {
+            gridParentTransform = massParent.parent;
+        }
+        else if (rockParent != null)
+        {
+            gridParentTransform = rockParent.parent;
+        }
+        else
+        {
+            // massParentとrockParentがnullの場合は、このGameObjectの親を探す
+            gridParentTransform = transform.parent;
+        }
+
+        if (gridParentTransform == null)
+        {
+            Debug.LogWarning("GridParentが見つかりません");
+            return;
+        }
+
+        // 既存のGridFrameを削除
+        ClearGridFrame(gridParentTransform);
+
+        // GridFrameを生成
+        GameObject gridFrame = Instantiate(gridFramePrefab, gridParentTransform);
+        if (gridFrame == null)
+        {
+            Debug.LogError("GridFrameの生成に失敗しました");
+            return;
+        }
+
+        gridFrame.name = "GridFrame";
+
+        // サイズを調整
+        UpdateGridFrameSize(gridFrame, gridWidth, gridHeight);
+    }
+
+    /// <summary>
+    /// 既存のGridFrameを削除します
+    /// </summary>
+    /// <param name="parent">親Transform</param>
+    private void ClearGridFrame(Transform parent)
+    {
+        if (parent == null) return;
+
+        // GridFrameという名前の子オブジェクトを探して削除
+        for (int i = parent.childCount - 1; i >= 0; i--)
+        {
+            Transform child = parent.GetChild(i);
+            if (child != null && child.name == "GridFrame")
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(child.gameObject);
+                }
+                else
+                {
+                    DestroyImmediate(child.gameObject);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// GridFrameのサイズをグリッドサイズに合わせて調整します
+    /// </summary>
+    /// <param name="gridFrame">GridFrameゲームオブジェクト</param>
+    /// <param name="gridWidth">グリッドの幅</param>
+    /// <param name="gridHeight">グリッドの高さ</param>
+    private void UpdateGridFrameSize(GameObject gridFrame, int gridWidth, int gridHeight)
+    {
+        if (gridFrame == null) return;
+
+        // アウトラインの比率: 60/860
+        const float outlineRatio = 60f / 860f;
+        // グリッド部分の比率: (860 - 120) / 860 = 740 / 860
+        const float gridRatio = 740f / 860f;
+        
+        // 全体のサイズ = グリッドサイズ / グリッド比率
+        // 上下左右にアウトラインがあるので、全体サイズはグリッドサイズより大きくなる
+        float totalWidth = gridWidth / gridRatio;
+        float totalHeight = gridHeight / gridRatio;
+
+        // RectTransformがある場合はSizeDeltaを変更
+        RectTransform rectTransform = gridFrame.GetComponent<RectTransform>();
+        if (rectTransform != null)
+        {
+            rectTransform.sizeDelta = new Vector2(totalWidth, totalHeight);
+            Debug.Log($"GridFrameのサイズを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight})");
+            return;
+        }
+
+        // SpriteRendererがある場合はTransformのScaleを変更
+        SpriteRenderer spriteRenderer = gridFrame.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null && spriteRenderer.sprite != null)
+        {
+            // スプライトの元のサイズを取得
+            float spriteWidth = spriteRenderer.sprite.bounds.size.x;
+            float spriteHeight = spriteRenderer.sprite.bounds.size.y;
+            
+            if (spriteWidth > 0 && spriteHeight > 0)
+            {
+                float scaleX = totalWidth / spriteWidth;
+                float scaleY = totalHeight / spriteHeight;
+                gridFrame.transform.localScale = new Vector3(scaleX, scaleY, 1f);
+                Debug.Log($"GridFrameのスケールを更新しました: {scaleX}x{scaleY} (グリッドサイズ: {gridWidth}x{gridHeight})");
+                return;
+            }
+        }
+
+        // TransformのScaleを直接変更（デフォルト）
+        gridFrame.transform.localScale = new Vector3(totalWidth, totalHeight, 1f);
+        Debug.Log($"GridFrameのスケールを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight})");
     }
 }
 
