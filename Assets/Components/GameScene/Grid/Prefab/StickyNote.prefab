@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9127832438153493847}
   - component: {fileID: 1939376558785793011}
   m_Layer: 0
-  m_Name: Selection_LB_0
+  m_Name: Selection_LB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 6452171366313480307}
   - component: {fileID: 6325001601719871283}
   m_Layer: 0
-  m_Name: Slelection_LT_0
+  m_Name: Slelection_LT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245,6 +245,7 @@ Transform:
   m_Children:
   - {fileID: 8084780108897113345}
   - {fileID: 3866464822658672465}
+  - {fileID: 3671079436191520236}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5682363929937487994
@@ -367,6 +368,7 @@ MonoBehaviour:
   RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}
   RSItemMasses: {fileID: 4399566794775994387}
   selection: {fileID: 6150345130779730232}
+  selectionBack: {fileID: 6166333267980462276}
   itemWidth: 0
   itemHeight: 0
   gridScale: 0.5
@@ -400,7 +402,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3671079436191520236}
   - {fileID: 9127832438153493847}
   - {fileID: 8979317777289611138}
   - {fileID: 1699490221812707906}
@@ -418,12 +419,12 @@ GameObject:
   - component: {fileID: 3671079436191520236}
   - component: {fileID: 4903210263804531596}
   m_Layer: 0
-  m_Name: Selection_Back_0
+  m_Name: Selection_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3671079436191520236
 Transform:
   m_ObjectHideFlags: 0
@@ -437,7 +438,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 3866464822658672465}
+  m_Father: {fileID: 29965325976113890}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4903210263804531596
 SpriteRenderer:
@@ -508,7 +509,7 @@ GameObject:
   - component: {fileID: 8979317777289611138}
   - component: {fileID: 2078709641895293066}
   m_Layer: 0
-  m_Name: Selection_RB_0
+  m_Name: Selection_RB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -598,7 +599,7 @@ GameObject:
   - component: {fileID: 1699490221812707906}
   - component: {fileID: 5725516077552371681}
   m_Layer: 0
-  m_Name: Selection_RT_0
+  m_Name: Selection_RT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

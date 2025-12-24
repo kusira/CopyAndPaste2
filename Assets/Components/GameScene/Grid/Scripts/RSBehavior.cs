@@ -60,6 +60,20 @@ public class RSBehavior : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Color normalColor = Color.white;
 
+    // 四隅のSelection
+    [Header("Selection Corners")]
+    [Tooltip("左上のSelectionオブジェクトをアサインします")]
+    [SerializeField] private GameObject selectionLT;
+    
+    [Tooltip("右上のSelectionオブジェクトをアサインします")]
+    [SerializeField] private GameObject selectionRT;
+    
+    [Tooltip("左下のSelectionオブジェクトをアサインします")]
+    [SerializeField] private GameObject selectionLB;
+    
+    [Tooltip("右下のSelectionオブジェクトをアサインします")]
+    [SerializeField] private GameObject selectionRB;
+
     private void Start()
     {
         // メインカメラを取得
@@ -99,6 +113,51 @@ public class RSBehavior : MonoBehaviour
 
         // 初期スケールを保存
         initialScale = transform.localScale;
+
+        // 四隅のSelectionを配置
+        SetupSelectionCorners();
+    }
+
+    /// <summary>
+    /// 四隅のSelectionオブジェクトをRSの四隅に配置します
+    /// </summary>
+    private void SetupSelectionCorners()
+    {
+        // RSのサイズを取得
+        Vector3 scale = transform.localScale;
+        float halfWidth = Mathf.Abs(scale.x) * 0.5f;
+        float halfHeight = Mathf.Abs(scale.y) * 0.5f;
+
+        // 四隅の位置を計算（ローカル座標系）
+        Vector3 center = transform.position;
+
+        // 左上 (Left Top)
+        if (selectionLT != null)
+        {
+            Vector3 ltPos = center + new Vector3(-halfWidth, halfHeight, 0f);
+            selectionLT.transform.position = ltPos;
+        }
+
+        // 右上 (Right Top)
+        if (selectionRT != null)
+        {
+            Vector3 rtPos = center + new Vector3(halfWidth, halfHeight, 0f);
+            selectionRT.transform.position = rtPos;
+        }
+
+        // 左下 (Left Bottom)
+        if (selectionLB != null)
+        {
+            Vector3 lbPos = center + new Vector3(-halfWidth, -halfHeight, 0f);
+            selectionLB.transform.position = lbPos;
+        }
+
+        // 右下 (Right Bottom)
+        if (selectionRB != null)
+        {
+            Vector3 rbPos = center + new Vector3(halfWidth, -halfHeight, 0f);
+            selectionRB.transform.position = rbPos;
+        }
     }
 
     private void Update()

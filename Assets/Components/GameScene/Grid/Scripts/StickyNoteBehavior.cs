@@ -25,6 +25,9 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     [Tooltip("マウスホバー時に表示するSelectionオブジェクトをアサインします")]
     [SerializeField] private GameObject selection;
     
+    [Tooltip("選択時に表示するSelection_Backオブジェクトをアサインします")]
+    [SerializeField] private GameObject selectionBack;
+    
     [Header("Item Info")]
     [Tooltip("アイテムの幅（W）")]
     [SerializeField] private int itemWidth = 0;
@@ -44,10 +47,15 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
 
     private void Start()
     {
-        // 初期状態ではSelectionを非表示にする
+        // 初期状態ではSelectionとSelection_Backを非表示にする
         if (selection != null)
         {
             selection.SetActive(false);
+        }
+        
+        if (selectionBack != null)
+        {
+            selectionBack.SetActive(false);
         }
 
         // RSItemMassを生成
@@ -74,8 +82,23 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
         // RSの操作より前にParent配下を全破棄
         ClearRSParentChildren();
 
+        // 以前選択されていたアイテムのSelection_Backを非表示にする
+        if (currentSelectedItem != null && currentSelectedItem != this)
+        {
+            if (currentSelectedItem.selectionBack != null)
+            {
+                currentSelectedItem.selectionBack.SetActive(false);
+            }
+        }
+
         // 他のアイテムを選択した場合は、このアイテムを現在の選択として更新
         currentSelectedItem = this;
+
+        // このアイテムのSelection_Backを表示
+        if (selectionBack != null)
+        {
+            selectionBack.SetActive(true);
+        }
 
         // 既存の生成待ちを止め、即時生成
         if (generateRoutine != null)
@@ -116,6 +139,11 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
         if (currentSelectedItem == item)
         {
             currentSelectedItem = null;
+            // 選択解除時にSelection_Backを非表示にする
+            if (item != null && item.selectionBack != null)
+            {
+                item.selectionBack.SetActive(false);
+            }
         }
     }
 
