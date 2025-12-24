@@ -308,13 +308,28 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // RangeSelectorのサイズ（セル数）を取得
         Vector3 scale = transform.localScale;
-        // initialScaleは既に設定されているはずなので、コピー時には変更しない
-        // initialScale = scale; // コピー時には変更しない
         int selWidth = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.x)));
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
-        copiedSize = new Vector2Int(selWidth, selHeight);
-        // dragOffsetはコピー時にはリセットしない（位置を維持するため）
-        // dragOffset = Vector3.zero;
+        
+
+        int canonicalW = selWidth;
+        int canonicalH = selHeight;
+        
+        // initialScaleはFloat精度を維持する必要があるため、RoundToIntした値ではなく元のscaleから計算する
+        // rotationIndexが奇数(90, 270)の場合は、現在(x,y)が入れ替わった状態なので戻す
+        if (rotationIndex % 2 != 0)
+        {
+            canonicalW = selHeight;
+            canonicalH = selWidth;
+            initialScale = new Vector3(Mathf.Abs(scale.y), Mathf.Abs(scale.x), scale.z);
+        }
+        else
+        {
+            initialScale = new Vector3(Mathf.Abs(scale.x), Mathf.Abs(scale.y), scale.z);
+        }
+        
+        copiedSize = new Vector2Int(canonicalW, canonicalH);
+        dragOffset = Vector3.zero; // コピー時にオフセットはリセット
 
         // RangeSelectorの中心がどのセルかを計算
         Vector3 localPos = transform.position - gridParentPosition;
@@ -354,6 +369,30 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         hasCopy = copiedOffsets.Count > 0;
 
+        if (hasCopy && rotationIndex != 0)
+        {
+            // 回転状態でコピーした場合、データを「回転なし(0度)」の状態に戻して保存する
+            // これにより、ペースト時に現在の回転角を適用した際に正しくなる
+            
+            // 逆回転のインデックス (例: 1(90) -> 3(270))
+            int inverseRot = (4 - rotationIndex) % 4;
+            
+            List<RangeSelectorHelper.CopiedRockData> unrotatedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
+            
+            // 現在の(見た目上の)サイズを渡して逆回転させる
+            RangeSelectorHelper.RotateOffsets(
+                copiedOffsets,
+                inverseRot,
+                selWidth,
+                selHeight,
+                unrotatedOffsets);
+
+            // 保存データを差し替え
+            copiedOffsets.Clear();
+            copiedOffsets.AddRange(unrotatedOffsets);
+
+        }
+
         if (!hasCopy)
         {
             Debug.Log("コピー対象のRockがありませんでした");
@@ -368,8 +407,8 @@ public class RangeSelectorBehavior : MonoBehaviour
             CreateDashLine(minX, minY, maxX, maxY);
         }
 
-        // コピー時には位置とスケールを変更しない（既に正しい状態のはず）
-        // UpdateSelectorRotation(); // コピー時には呼ばない
+        // コピー時も現在の回転インデックスを維持したまま見た目を更新
+        UpdateSelectorRotation();
 
         previewDirty = true;
         UpdatePreviewAndValidity();
