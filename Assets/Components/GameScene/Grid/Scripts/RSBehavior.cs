@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RangeSelectorBehavior : MonoBehaviour
+public class RSBehavior : MonoBehaviour
 {
     private Camera mainCamera;
     private CurrentGameStatus currentGameStatus;
@@ -15,8 +15,8 @@ public class RangeSelectorBehavior : MonoBehaviour
     private Vector3 gridOffset;
 
     // コピーされたRockパターン（中心からのオフセット）
-    private readonly List<RangeSelectorHelper.CopiedRockData> copiedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
-    private readonly List<RangeSelectorHelper.CopiedRockData> rotatedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
+    private readonly List<RSHelper.CopiedRockData> copiedOffsets = new List<RSHelper.CopiedRockData>();
+    private readonly List<RSHelper.CopiedRockData> rotatedOffsets = new List<RSHelper.CopiedRockData>();
 
     private Vector2Int copiedSize = Vector2Int.one; // コピーした領域のサイズ (W, H)
     private bool hasCopy = false;
@@ -29,7 +29,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     [SerializeField] private int debugCopiedCount = 0;
     [SerializeField] private int debugRotationIndex = 0;
     [SerializeField] private string debugStateMessage = "未コピー";
-    [SerializeField, HideInInspector] private List<RangeSelectorHelper.CopiedRockData> debugSnapshotOffsets = new List<RangeSelectorHelper.CopiedRockData>();
+    [SerializeField, HideInInspector] private List<RSHelper.CopiedRockData> debugSnapshotOffsets = new List<RSHelper.CopiedRockData>();
     [SerializeField, HideInInspector] private int debugMinX = 0;
     [SerializeField, HideInInspector] private int debugMaxX = 0;
     [SerializeField, HideInInspector] private int debugMinY = 0;
@@ -223,8 +223,8 @@ public class RangeSelectorBehavior : MonoBehaviour
             }
             else
             {
-                // RangeSelector削除（アイテムを表示に戻す）
-                Debug.Log("右クリック：RangeSelectorを削除します");
+                // RS削除（アイテムを表示に戻す）
+                Debug.Log("右クリック：RSを削除します");
                 CancelSelection();
             }
         }
@@ -255,7 +255,7 @@ public class RangeSelectorBehavior : MonoBehaviour
             }
 
             Debug.Log($"マウスホイール：現在の回転インデックス={rotationIndex}");
-            // RangeSelector本体の見た目の向きも変更
+            // RS本体の見た目の向きも変更
             UpdateSelectorRotation();
 
             previewDirty = true;
@@ -306,7 +306,7 @@ public class RangeSelectorBehavior : MonoBehaviour
             return;
         }
 
-        // RangeSelectorのサイズ（セル数）を取得
+        // RSのサイズ（セル数）を取得
         Vector3 scale = transform.localScale;
         int selWidth = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.x)));
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
@@ -331,7 +331,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         copiedSize = new Vector2Int(canonicalW, canonicalH);
         dragOffset = Vector3.zero; // コピー時にオフセットはリセット
 
-        // RangeSelectorの中心がどのセルかを計算
+        // RSの中心がどのセルかを計算
         Vector3 localPos = transform.position - gridParentPosition;
         // GridGeneratorと同じ計算式: position = parentPosition + (offsetX + w, offsetY + h)
         // 逆算: w = localPos.x - offsetX, h = localPos.y - offsetY
@@ -341,7 +341,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         int centerX = Mathf.FloorToInt(floatCenterX + 0.5f);
         int centerY = Mathf.FloorToInt(floatCenterY + 0.5f);
 
-        Debug.Log($"コピー開始: RangeSelector位置({transform.position.x}, {transform.position.y}), ローカル位置({localPos.x}, {localPos.y}), オフセット({gridOffset.x}, {gridOffset.y}), 中心セル({centerX}, {centerY}), サイズ({selWidth}, {selHeight})");
+        Debug.Log($"コピー開始: RS位置({transform.position.x}, {transform.position.y}), ローカル位置({localPos.x}, {localPos.y}), オフセット({gridOffset.x}, {gridOffset.y}), 中心セル({centerX}, {centerY}), サイズ({selWidth}, {selHeight})");
 
         // 選択範囲の矩形（グリッドインデックス）
         float halfW = (selWidth - 1) * 0.5f;
@@ -361,7 +361,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         }
 
         // ヘルパー関数でRockパターンをコピー
-        RangeSelectorHelper.CopyRockPattern(
+        RSHelper.CopyRockPattern(
             stageData,
             minX, minY, maxX, maxY,
             centerX, centerY,
@@ -377,10 +377,10 @@ public class RangeSelectorBehavior : MonoBehaviour
             // 逆回転のインデックス (例: 1(90) -> 3(270))
             int inverseRot = (4 - rotationIndex) % 4;
             
-            List<RangeSelectorHelper.CopiedRockData> unrotatedOffsets = new List<RangeSelectorHelper.CopiedRockData>();
+            List<RSHelper.CopiedRockData> unrotatedOffsets = new List<RSHelper.CopiedRockData>();
             
             // 現在の(見た目上の)サイズを渡して逆回転させる
-            RangeSelectorHelper.RotateOffsets(
+            RSHelper.RotateOffsets(
                 copiedOffsets,
                 inverseRot,
                 selWidth,
@@ -464,7 +464,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         }
 
         // 回転済みオフセットをヘルパーで計算
-        RangeSelectorHelper.RotateOffsets(copiedOffsets, rotationIndex, copiedSize.x, copiedSize.y, rotatedOffsets);
+        RSHelper.RotateOffsets(copiedOffsets, rotationIndex, copiedSize.x, copiedSize.y, rotatedOffsets);
 
         Transform previewParent = transform.parent != null ? transform.parent : transform;
 
@@ -492,7 +492,7 @@ public class RangeSelectorBehavior : MonoBehaviour
                 string cellValue = massStatus[gy].columns[gx];
                 char baseChar;
                 List<string> keys = new List<string>(); // ダミー
-                RangeSelectorHelper.ParseCell(cellValue, out baseChar, keys);
+                RSHelper.ParseCell(cellValue, out baseChar, keys);
 
                 if (baseChar != '.')
                 {
@@ -507,7 +507,7 @@ public class RangeSelectorBehavior : MonoBehaviour
                 string rv = rockStatus[gy].columns[gx];
                 char baseChar;
                 List<string> dummyKeys = new List<string>();
-                RangeSelectorHelper.ParseCell(rv, out baseChar, dummyKeys);
+                RSHelper.ParseCell(rv, out baseChar, dummyKeys);
 
                 if (baseChar == '#')
                 {
@@ -583,11 +583,11 @@ public class RangeSelectorBehavior : MonoBehaviour
         // 回転済みオフセットが無ければ更新
         if (rotatedOffsets.Count == 0)
         {
-            RangeSelectorHelper.RotateOffsets(copiedOffsets, rotationIndex, copiedSize.x, copiedSize.y, rotatedOffsets);
+            RSHelper.RotateOffsets(copiedOffsets, rotationIndex, copiedSize.x, copiedSize.y, rotatedOffsets);
         }
 
         // まずはヘルパー関数で有効性チェック（オーバーラップやマス無しを確認）
-        bool canPaste = RangeSelectorHelper.CanPaste(
+        bool canPaste = RSHelper.CanPaste(
             rotatedOffsets,
             centerX, centerY,
             gridWidth, gridHeight,
@@ -610,17 +610,17 @@ public class RangeSelectorBehavior : MonoBehaviour
         }
 
         // 2. 貼り付け処理：ヘルパー関数でRockStatusを書き換え
-        RangeSelectorHelper.ApplyPaste(rotatedOffsets, centerX, centerY, rockStatus);
+        RSHelper.ApplyPaste(rotatedOffsets, centerX, centerY, rockStatus);
 
         // 3. 使用したアイテムをデータから削除
         if (sourceItem != null)
         {
             int itemIndex = sourceItem.GetItemIndex();
             // インデックスが有効か確認
-            if (itemIndex >= 0 && itemIndex < stageData.rangeSelectorItems.Count)
+            if (itemIndex >= 0 && itemIndex < stageData.RSItems.Count)
             {
                 // リストから削除（これでアイテムが消費されたことになる）
-                stageData.rangeSelectorItems.RemoveAt(itemIndex);
+                stageData.RSItems.RemoveAt(itemIndex);
                 Debug.Log($"Used item index {itemIndex} removed from data.");
             }
             else
@@ -646,7 +646,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         }
 
         // アイテムリストを再生成（消費されたアイテムを消すため）
-        var itemGen = Object.FindFirstObjectByType<RangeSelectorItemGenarator>();
+        var itemGen = Object.FindFirstObjectByType<RSItemGenarator>();
         if (itemGen != null)
         {
             itemGen.GenerateItems();
@@ -716,10 +716,10 @@ public class RangeSelectorBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// RangeSelector本体の回転（見た目）をrotationIndexに合わせて更新します
+    /// RS本体の回転（見た目）をrotationIndexに合わせて更新します
     /// </summary>
     /// <summary>
-    /// RangeSelector本体の回転（見た目）をrotationIndexに合わせて更新します
+    /// RS本体の回転（見た目）をrotationIndexに合わせて更新します
     /// 都合上、Z回転ではなくTransformのスケール変更（XY入れ替え）で表現します
     /// </summary>
     private void UpdateSelectorRotation()
@@ -883,7 +883,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     /// <summary>
     /// デバッグ用に現在のコピー形状を保存します
     /// </summary>
-    private void UpdateDebugSnapshot(List<RangeSelectorHelper.CopiedRockData> offsets)
+    private void UpdateDebugSnapshot(List<RSHelper.CopiedRockData> offsets)
     {
         debugSnapshotOffsets.Clear();
         debugSnapshotOffsets.AddRange(offsets);
@@ -929,7 +929,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         // グリッド座標系での位置（0, 0 がグリッド左下の中心）
         // セルの中心は 整数値 (0,0), (1,0) ... 
         
-        // RangeSelectorのサイズを取得
+        // RSのサイズを取得
         Vector3 selectorScale = transform.localScale;
         int selectorW = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
         int selectorH = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
@@ -1057,15 +1057,15 @@ public class RangeSelectorBehavior : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("ステージデータを取得できませんでした（RangeSelectorBehavior）");
+        Debug.LogWarning("ステージデータを取得できませんでした（RSBehavior）");
         return null;
     }
     
 
-    // アイテム参照（RangeSelectorItemBehaviorから設定される）
-    private RangeSelectorItemBehavior sourceItem;
+    // アイテム参照（RSItemBehaviorから設定される）
+    private RSItemBehavior sourceItem;
 
-    public void SetSourceItem(RangeSelectorItemBehavior item)
+    public void SetSourceItem(RSItemBehavior item)
     {
         sourceItem = item;
         if (sourceItem != null)
@@ -1075,7 +1075,7 @@ public class RangeSelectorBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// RangeSelectorの選択をキャンセルし、自身を削除します
+    /// RSの選択をキャンセルし、自身を削除します
     /// （外部からも呼べるようにラップメソッドを公開）
     /// </summary>
     public void CancelSelection()
@@ -1088,7 +1088,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         if (sourceItem != null)
         {
             sourceItem.SetAlpha(1.0f); // 削除時は元に戻す
-            RangeSelectorItemBehavior.ClearCurrentSelection(sourceItem); // キャンセル時に再選択可能にする
+            RSItemBehavior.ClearCurrentSelection(sourceItem); // キャンセル時に再選択可能にする
         }
         Destroy(gameObject);
     }
@@ -1102,7 +1102,7 @@ public class RangeSelectorBehavior : MonoBehaviour
         {
             // アイテムもろとも削除
             Destroy(sourceItem.gameObject);
-            RangeSelectorItemBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
+            RSItemBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
         }
         Destroy(gameObject);
     }

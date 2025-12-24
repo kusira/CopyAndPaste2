@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangeSelectorItemGenarator : MonoBehaviour
+public class RSItemGenarator : MonoBehaviour
 {
     [Header("Prefabs")]
-    [Tooltip("RangeSelectorのPrefabをアサインします（1x1サイズ）")]
-    [SerializeField] private GameObject rangeSelectorPrefab;
+    [Tooltip("RSのPrefabをアサインします（1x1サイズ）")]
+    [SerializeField] private GameObject RSPrefab;
 
     [Header("Parent Objects")]
-    [Tooltip("RangeSelectorItemを生成する際の親GameObjectをアサインします。未設定の場合はこのGameObjectが親になります")]
-    [SerializeField] private Transform rangeSelectorItemParent;
+    [Tooltip("RSItemを生成する際の親GameObjectをアサインします。未設定の場合はこのGameObjectが親になります")]
+    [SerializeField] private Transform RSItemParent;
 
     [Header("References")]
     [Tooltip("現在のゲームステータス（ステージ番号だけを参照します）")]
     [SerializeField] private CurrentGameStatus currentGameStatus;
 
-    [Tooltip("ステージデータベース。ここからRangeSelectorItemの情報を取得します")]
+    [Tooltip("ステージデータベース。ここからRSItemの情報を取得します")]
     [SerializeField] private StageDatabase stageDatabase;
 
     [Header("Settings")]
@@ -38,14 +38,14 @@ public class RangeSelectorItemGenarator : MonoBehaviour
         // 既存のアイテムをクリア
         ClearItems();
 
-        if (rangeSelectorPrefab == null)
+        if (RSPrefab == null)
         {
-            Debug.LogError("RangeSelectorPrefabがアサインされていません");
+            Debug.LogError("RSPrefabがアサインされていません");
             return;
         }
 
         // CurrentGameStatusからデータを取得
-        List<StageDatabase.RangeSelectorItemData> items = null;
+        List<StageDatabase.RSItemData> items = null;
 
         // CurrentGameStatusからデータを取得（ランタイム優先）
         StageDatabase.StageData stageData = null;
@@ -63,16 +63,16 @@ public class RangeSelectorItemGenarator : MonoBehaviour
 
         if (stageData != null)
         {
-            items = stageData.rangeSelectorItems;
+            items = stageData.RSItems;
         }
 
         if (items == null || items.Count == 0)
         {
-            Debug.LogWarning("RangeSelectorItemが設定されていません");
+            Debug.LogWarning("RSItemが設定されていません");
             return;
         }
 
-        Transform parent = rangeSelectorItemParent != null ? rangeSelectorItemParent : transform;
+        Transform parent = RSItemParent != null ? RSItemParent : transform;
         if (parent == null)
         {
             Debug.LogError("親Transformがnullです");
@@ -87,10 +87,10 @@ public class RangeSelectorItemGenarator : MonoBehaviour
         {
             try
             {
-                StageDatabase.RangeSelectorItemData itemData = items[i];
+                StageDatabase.RSItemData itemData = items[i];
                 if (itemData == null)
                 {
-                    Debug.LogWarning($"RangeSelectorItem[{i}]がnullです");
+                    Debug.LogWarning($"RSItem[{i}]がnullです");
                     continue;
                 }
 
@@ -110,15 +110,15 @@ public class RangeSelectorItemGenarator : MonoBehaviour
                 Vector3 itemCenter = parentPosition + new Vector3(0f, currentY, 0f);
 
                 // 範囲選択アイテムを生成（1つのオブジェクトのスケールを変更）
-                GameObject instance = Instantiate(rangeSelectorPrefab, itemCenter, Quaternion.identity, parent);
+                GameObject instance = Instantiate(RSPrefab, itemCenter, Quaternion.identity, parent);
                 if (instance != null)
                 {
                     // スケールを変更してH*W * 0.7のサイズにする（見た目）
                     instance.transform.localScale = new Vector3(visualWidth, visualHeight, 1f);
-                    instance.name = $"RangeSelectorItem_{i}";
+                    instance.name = $"RSItem_{i}";
                     
                     // 論理サイズ（実際に生成されるセレクターのサイズ）は元の大きさをセット
-                    var itemBehavior = instance.GetComponent<RangeSelectorItemBehavior>();
+                    var itemBehavior = instance.GetComponent<RSItemBehavior>();
                     if (itemBehavior != null)
                     {
                         itemBehavior.SetLogicalSize(width, height);
@@ -137,7 +137,7 @@ public class RangeSelectorItemGenarator : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"RangeSelectorItem[{i}]の生成中にエラーが発生しました: {e.Message}");
+                Debug.LogError($"RSItem[{i}]の生成中にエラーが発生しました: {e.Message}");
             }
         }
 
@@ -151,7 +151,7 @@ public class RangeSelectorItemGenarator : MonoBehaviour
     {
         try
         {
-            Transform parentTransform = rangeSelectorItemParent != null ? rangeSelectorItemParent : transform;
+            Transform parentTransform = RSItemParent != null ? RSItemParent : transform;
             if (parentTransform != null)
             {
                 // 無限ループを防ぐため、子オブジェクトの数を事前に取得

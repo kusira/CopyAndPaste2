@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(RangeSelectorItemGenarator))]
-public class RangeSelectorItemGenaratorEditor : Editor
+[CustomEditor(typeof(RSItemGenarator))]
+public class RSItemGenaratorEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        RangeSelectorItemGenarator generator = (RangeSelectorItemGenarator)target;
+        RSItemGenarator generator = (RSItemGenarator)target;
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Generator Controls", EditorStyles.boldLabel);

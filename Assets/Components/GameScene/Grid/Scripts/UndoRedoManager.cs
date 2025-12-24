@@ -187,8 +187,8 @@ public class UndoRedoManager : MonoBehaviour
             currentStatus.SetRuntimeStageData(data);
         }
 
-        // 2. RangeSelectorParentの中身を破棄
-        GameObject parentObject = GameObject.Find("RangeSelectorParent");
+        // 2. RSParentの中身を破棄
+        GameObject parentObject = GameObject.Find("RSParent");
         if (parentObject != null)
         {
             foreach (Transform child in parentObject.transform)
@@ -206,7 +206,7 @@ public class UndoRedoManager : MonoBehaviour
         }
 
         // アイテムリストの再生成
-        var itemGen = Object.FindFirstObjectByType<RangeSelectorItemGenarator>();
+        var itemGen = Object.FindFirstObjectByType<RSItemGenarator>();
         if (itemGen != null)
         {
             itemGen.GenerateItems();

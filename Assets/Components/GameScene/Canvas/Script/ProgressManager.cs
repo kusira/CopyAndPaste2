@@ -31,9 +31,6 @@ public class ProgressManager : MonoBehaviour
     [Header("Animation Settings")]
     [Tooltip("Acquired時のアニメーション秒数")]
     [SerializeField] private float acquiredAnimationDuration = 0.3f;
-    
-    [Tooltip("Acquired時のアニメーションイージング")]
-    [SerializeField] private Ease acquiredAnimationEase = Ease.OutQuad;
 
     [Header("Result")]
     [Tooltip("すべてAcquiredになったときにリザルトを表示するコンポーネント")]
@@ -110,7 +107,7 @@ public class ProgressManager : MonoBehaviour
 
                 char baseChar;
                 List<string> keys = new List<string>();
-                RangeSelectorHelper.ParseCell(cellValue, out baseChar, keys);
+                RSHelper.ParseCell(cellValue, out baseChar, keys);
 
                 if (baseChar == '.')
                 {

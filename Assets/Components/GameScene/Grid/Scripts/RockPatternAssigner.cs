@@ -67,7 +67,7 @@ public class RockPatternAssigner : MonoBehaviour
         // パース
         char baseChar;
         var keys = new List<string>();
-        RangeSelectorHelper.ParseCell(cellValue, out baseChar, keys);
+        RSHelper.ParseCell(cellValue, out baseChar, keys);
         
         // Tagを設定
         if (baseChar == '#')

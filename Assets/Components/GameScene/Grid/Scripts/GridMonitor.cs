@@ -86,7 +86,7 @@ public class GridMonitor : MonoBehaviour
 
                 char massBaseChar;
                 List<string> massKeys = new List<string>();
-                RangeSelectorHelper.ParseCell(massValue, out massBaseChar, massKeys);
+                RSHelper.ParseCell(massValue, out massBaseChar, massKeys);
 
                 // .S, .H, .Cをチェック
                 if (massBaseChar == '.')
@@ -106,7 +106,7 @@ public class GridMonitor : MonoBehaviour
                                 {
                                     char rockBaseChar;
                                     List<string> rockKeys = new List<string>();
-                                    RangeSelectorHelper.ParseCell(rockValue, out rockBaseChar, rockKeys);
+                                    RSHelper.ParseCell(rockValue, out rockBaseChar, rockKeys);
 
                                     // #S, #H, #Cをチェック
                                     if (rockBaseChar == '#' && rockKeys.Contains(key))
@@ -200,7 +200,7 @@ public class GridMonitor : MonoBehaviour
 
                 char massBaseChar;
                 List<string> massKeys = new List<string>();
-                RangeSelectorHelper.ParseCell(massValue, out massBaseChar, massKeys);
+                RSHelper.ParseCell(massValue, out massBaseChar, massKeys);
 
                 // .S, .H, .Cをチェック
                 if (massBaseChar == '.')
@@ -220,7 +220,7 @@ public class GridMonitor : MonoBehaviour
                                 {
                                     char rockBaseChar;
                                     List<string> rockKeys = new List<string>();
-                                    RangeSelectorHelper.ParseCell(rockValue, out rockBaseChar, rockKeys);
+                                    RSHelper.ParseCell(rockValue, out rockBaseChar, rockKeys);
 
                                     // #S, #H, #Cをチェック
                                     if (rockBaseChar == '#' && rockKeys.Contains(key))

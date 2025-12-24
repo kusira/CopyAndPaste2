@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Mass
   - Rock
-  - RangeSelector
+  - RS
   layers:
   - Default
   - TransparentFX

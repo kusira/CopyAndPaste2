@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6039706494604441133}
   - component: {fileID: -8662629293334482819}
   m_Layer: 0
-  m_Name: RangeSelector
-  m_TagString: RangeSelector
+  m_Name: RS
+  m_TagString: RS
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f13de2f431a10f41b9adbf8a2871945, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangeSelectorBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::RSBehavior
   debugHasCopy: 0
   debugCopiedCount: 0
   debugRotationIndex: 0

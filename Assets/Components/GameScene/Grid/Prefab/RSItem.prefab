@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4331750714849353095}
   - component: {fileID: 3200685504426527929}
   m_Layer: 0
-  m_Name: RangeSelectorItem
+  m_Name: RSItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,16 +80,16 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 20
-  m_Sprite: {fileID: 8868083035179302350, guid: 6ac6cbef942f1314791188a1e55eb618, type: 3}
+  m_SortingOrder: 120
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 2
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &4331750714849353095
@@ -103,8 +103,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6dbfc320b3d18b9478b26c0b304e5a0c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangeSelectorItemBehavior
-  rangeSelectorPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
+  RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
+  itemIndex: -1
 --- !u!61 &3200685504426527929
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -146,7 +147,7 @@ BoxCollider2D:
     oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}

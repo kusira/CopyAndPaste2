@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// RangeSelector用のヘルパー関数群
+/// RS用のヘルパー関数群
 /// コピー／回転／貼り付けのロジックをこのクラスにまとめます。
 /// </summary>
-public static class RangeSelectorHelper
+public static class RSHelper
 {
     /// <summary>
     /// コピーしたRockのデータを保持する構造体

@@ -67,7 +67,7 @@ public class MassPatternAssigner : MonoBehaviour
         // パース
         char baseChar;
         var keys = new List<string>();
-        RangeSelectorHelper.ParseCell(cellValue, out baseChar, keys);
+        RSHelper.ParseCell(cellValue, out baseChar, keys);
 
         // Mass本体のTagを設定
         if (baseChar == '.')

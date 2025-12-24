@@ -1,8 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(RangeSelectorBehavior))]
-public class RangeSelectorBehaviorEditor : Editor
+[CustomEditor(typeof(RSBehavior))]
+public class RSBehaviorEditor : Editor
 {
     private SerializedProperty dashLinePrefabProperty;
     private SerializedProperty invalidColorProperty;

@@ -29,7 +29,7 @@ public class StageDatabase : ScriptableObject
     }
 
     [System.Serializable]
-    public class RangeSelectorItemData
+    public class RSItemData
     {
         [Tooltip("範囲選択アイテムの高さ（H）")]
         public int height = 1;
@@ -38,9 +38,9 @@ public class StageDatabase : ScriptableObject
         public int width = 1;
 
         // ▼ 追加: ディープコピー用メソッド
-        public RangeSelectorItemData DeepCopy()
+        public RSItemData DeepCopy()
         {
-            return new RangeSelectorItemData
+            return new RSItemData
             {
                 height = this.height,
                 width = this.width
@@ -63,7 +63,7 @@ public class StageDatabase : ScriptableObject
         public List<RowData> rockStatus = new List<RowData>();
         
         [Tooltip("範囲選択アイテムのリストです。i個目のアイテムのサイズはH_i*W_iで指定されます")]
-        public List<RangeSelectorItemData> rangeSelectorItems = new List<RangeSelectorItemData>();
+        public List<RSItemData> RSItems = new List<RSItemData>();
 
         // ▼ 追加: ディープコピー用メソッド
         public StageData DeepCopy()
@@ -81,9 +81,9 @@ public class StageDatabase : ScriptableObject
                 copy.rockStatus.Add(rock.DeepCopy());
             }
 
-            foreach (var item in this.rangeSelectorItems)
+            foreach (var item in this.RSItems)
             {
-                copy.rangeSelectorItems.Add(item.DeepCopy());
+                copy.RSItems.Add(item.DeepCopy());
             }
 
             return copy;

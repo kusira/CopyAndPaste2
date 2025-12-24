@@ -2,22 +2,22 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
+public class RSItemBehavior : MonoBehaviour, IPointerDownHandler
 {
     /// <summary>
     /// 現在選択中のアイテム（同じアイテムを再選択しないための静的参照）
     /// </summary>
-    private static RangeSelectorItemBehavior currentSelectedItem;
+    private static RSItemBehavior currentSelectedItem;
     private Coroutine generateRoutine;
 
     [Header("Prefabs")]
-    [Tooltip("RangeSelectorのPrefabをアサインします")]
-    [SerializeField] private GameObject rangeSelectorPrefab;
+    [Tooltip("RSのPrefabをアサインします")]
+    [SerializeField] private GameObject RSPrefab;
     
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
     
-    // このアイテムのインデックス（RangeSelectorItemGenaratorで設定される）
+    // このアイテムのインデックス（RSItemGenaratorで設定される）
     [SerializeField] private int itemIndex = -1;
 
     /// <summary>
@@ -37,8 +37,8 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
             return;
         }
 
-        // RangeSelectorの操作より前にParent配下を全破棄
-        ClearRangeSelectorParentChildren();
+        // RSの操作より前にParent配下を全破棄
+        ClearRSParentChildren();
 
         // 他のアイテムを選択した場合は、このアイテムを現在の選択として更新
         currentSelectedItem = this;
@@ -49,13 +49,13 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
             StopCoroutine(generateRoutine);
             generateRoutine = null;
         }
-        GenerateRangeSelector();
+        GenerateRS();
     }
 
     /// <summary>
     /// 指定のアイテムが選択中なら選択状態を解除します（キャンセル時など）
     /// </summary>
-    public static void ClearCurrentSelection(RangeSelectorItemBehavior item)
+    public static void ClearCurrentSelection(RSItemBehavior item)
     {
         if (currentSelectedItem == item)
         {
@@ -64,18 +64,18 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
     }
 
     /// <summary>
-    /// RangeSelectorを生成します
+    /// RSを生成します
     /// </summary>
-    private void GenerateRangeSelector()
+    private void GenerateRS()
     {
-        if (rangeSelectorPrefab == null)
+        if (RSPrefab == null)
         {
-            Debug.LogWarning("RangeSelectorPrefabがアサインされていません");
+            Debug.LogWarning("RSPrefabがアサインされていません");
             return;
         }
 
-        // 既存のRangeSelectorがあれば、選択をキャンセルしてから新しいものを生成（常に1つだけにする）
-        var existingSelector = Object.FindFirstObjectByType<RangeSelectorBehavior>();
+        // 既存のRSがあれば、選択をキャンセルしてから新しいものを生成（常に1つだけにする）
+        var existingSelector = Object.FindFirstObjectByType<RSBehavior>();
         if (existingSelector != null)
         {
             existingSelector.CancelSelection();
@@ -95,19 +95,19 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
         }
         Vector3 targetScale = new Vector3(width, height, 1f);
         
-        // RangeSelectorParentをシーン内から検索
-        Transform parent = FindRangeSelectorParent();
+        // RSParentをシーン内から検索
+        Transform parent = FindRSParent();
         
         // Itemの位置に生成する（直後にBehavior側でマウス追従が始まる）
         // Parentがある場合はParent下に入れる
         GameObject instance;
         if (parent != null)
         {
-            instance = Instantiate(rangeSelectorPrefab, parent);
+            instance = Instantiate(RSPrefab, parent);
         }
         else
         {
-            instance = Instantiate(rangeSelectorPrefab);
+            instance = Instantiate(RSPrefab);
         }
         
         if (instance != null)
@@ -117,21 +117,21 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
             
             // 同じサイズにスケールを設定
             instance.transform.localScale = targetScale;
-            instance.name = "RangeSelector";
+            instance.name = "RS";
 
             // Selectorに自身を登録
-            var behavior = instance.GetComponent<RangeSelectorBehavior>();
+            var behavior = instance.GetComponent<RSBehavior>();
             if (behavior != null)
             {
                 behavior.SetSourceItem(this);
             }
             
-            Debug.Log($"RangeSelectorを生成しました: サイズ({targetScale.x}, {targetScale.y})");
+            Debug.Log($"RSを生成しました: サイズ({targetScale.x}, {targetScale.y})");
         }
     }
 
     /// <summary>
-    /// 指定フレーム待ってからRangeSelectorを生成します
+    /// 指定フレーム待ってからRSを生成します
     /// </summary>
     private System.Collections.IEnumerator GenerateSelectorAfterFrames(int waitFrames)
     {
@@ -140,13 +140,13 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
             yield return new WaitForEndOfFrame();
         }
 
-        GenerateRangeSelector();
+        GenerateRS();
         generateRoutine = null;
     }
 
     /// <summary>
     /// アイテムの論理サイズ（グリッド単位）を設定します。
-    /// これを設定すると、見た目のスケールに関わらず、指定されたサイズでRangeSelectorが生成されます。
+    /// これを設定すると、見た目のスケールに関わらず、指定されたサイズでRSが生成されます。
     /// </summary>
     public void SetLogicalSize(int width, int height)
     {
@@ -223,19 +223,19 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
             }
         }
 
-        Debug.LogWarning("ステージデータを取得できませんでした（RangeSelectorItemBehavior）");
+        Debug.LogWarning("ステージデータを取得できませんでした（RSItemBehavior）");
         return null;
     }
 
     /// <summary>
-    /// RangeSelectorParentを探し、Transformを返します
+    /// RSParentを探し、Transformを返します
     /// </summary>
-    private Transform FindRangeSelectorParent()
+    private Transform FindRSParent()
     {
         var transforms = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None);
         foreach (var t in transforms)
         {
-            if (t != null && t.name == "RangeSelectorParent")
+            if (t != null && t.name == "RSParent")
             {
                 return t;
             }
@@ -244,11 +244,11 @@ public class RangeSelectorItemBehavior : MonoBehaviour, IPointerDownHandler
     }
 
     /// <summary>
-    /// RangeSelectorParent配下の子を全破棄します
+    /// RSParent配下の子を全破棄します
     /// </summary>
-    private void ClearRangeSelectorParentChildren()
+    private void ClearRSParentChildren()
     {
-        Transform parent = FindRangeSelectorParent();
+        Transform parent = FindRSParent();
         if (parent == null)
         {
             return;
