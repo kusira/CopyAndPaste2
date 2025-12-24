@@ -2,7 +2,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RSItemBehavior : MonoBehaviour, IPointerDownHandler
+public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     /// <summary>
     /// 現在選択中のアイテム（同じアイテムを再選択しないための静的参照）
@@ -13,12 +13,25 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler
     [Header("Prefabs")]
     [Tooltip("RSのPrefabをアサインします")]
     [SerializeField] private GameObject RSPrefab;
+
+    [Header("Selection")]
+    [Tooltip("マウスホバー時に表示するSelectionオブジェクトをアサインします")]
+    [SerializeField] private GameObject selection;
     
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
     
-    // このアイテムのインデックス（RSItemGenaratorで設定される）
+    // このアイテムのインデックス（StickyNotesGeneratorで設定される）
     [SerializeField] private int itemIndex = -1;
+
+    private void Start()
+    {
+        // 初期状態ではSelectionを非表示にする
+        if (selection != null)
+        {
+            selection.SetActive(false);
+        }
+    }
 
     /// <summary>
     /// ポインター押下時の処理（新しいInputSystem対応）
@@ -50,6 +63,28 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler
             generateRoutine = null;
         }
         GenerateRS();
+    }
+
+    /// <summary>
+    /// マウスホバー開始時に呼び出されます
+    /// </summary>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (selection != null)
+        {
+            selection.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// マウスホバー終了時に呼び出されます
+    /// </summary>
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (selection != null)
+        {
+            selection.SetActive(false);
+        }
     }
 
     /// <summary>

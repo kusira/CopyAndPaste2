@@ -363,7 +363,7 @@ public class StageDatabaseEditor : Editor
 
     private void RefreshItemGenerator()
     {
-        RSItemGenarator generator = FindFirstObjectByType<RSItemGenarator>();
+        StickyNotesGenerator generator = FindFirstObjectByType<StickyNotesGenerator>();
         if (generator != null)
         {
             generator.GenerateItems();

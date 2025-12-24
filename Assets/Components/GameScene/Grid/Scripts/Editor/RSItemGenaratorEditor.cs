@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(RSItemGenarator))]
-public class RSItemGenaratorEditor : Editor
+[CustomEditor(typeof(StickyNotesGenerator))]
+public class StickyNotesGeneratorEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        RSItemGenarator generator = (RSItemGenarator)target;
+        StickyNotesGenerator generator = (StickyNotesGenerator)target;
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Generator Controls", EditorStyles.boldLabel);

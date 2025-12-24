@@ -646,7 +646,7 @@ public class RSBehavior : MonoBehaviour
         }
 
         // アイテムリストを再生成（消費されたアイテムを消すため）
-        var itemGen = Object.FindFirstObjectByType<RSItemGenarator>();
+        var itemGen = Object.FindFirstObjectByType<StickyNotesGenerator>();
         if (itemGen != null)
         {
             itemGen.GenerateItems();
