@@ -55,9 +55,10 @@ public class RangeSelectorBehavior : MonoBehaviour
     private GameObject dashLineInstance;
 
     // 色制御
+    [Header("Color")]
+    [SerializeField] private Color invalidColor = Color.red;
     private SpriteRenderer spriteRenderer;
     private Color normalColor = Color.white;
-    [SerializeField] private Color invalidColor = Color.red;
 
     private void Start()
     {
@@ -307,11 +308,13 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // RangeSelectorのサイズ（セル数）を取得
         Vector3 scale = transform.localScale;
-        initialScale = scale; // 回転用に初期スケールを保存
+        // initialScaleは既に設定されているはずなので、コピー時には変更しない
+        // initialScale = scale; // コピー時には変更しない
         int selWidth = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.x)));
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
         copiedSize = new Vector2Int(selWidth, selHeight);
-        dragOffset = Vector3.zero; // コピー時にオフセットはリセット
+        // dragOffsetはコピー時にはリセットしない（位置を維持するため）
+        // dragOffset = Vector3.zero;
 
         // RangeSelectorの中心がどのセルかを計算
         Vector3 localPos = transform.position - gridParentPosition;
@@ -365,8 +368,8 @@ public class RangeSelectorBehavior : MonoBehaviour
             CreateDashLine(minX, minY, maxX, maxY);
         }
 
-        // コピー時も現在の回転インデックスを維持したまま見た目を更新
-        UpdateSelectorRotation();
+        // コピー時には位置とスケールを変更しない（既に正しい状態のはず）
+        // UpdateSelectorRotation(); // コピー時には呼ばない
 
         previewDirty = true;
         UpdatePreviewAndValidity();

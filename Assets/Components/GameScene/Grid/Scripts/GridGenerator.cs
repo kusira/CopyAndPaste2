@@ -386,8 +386,6 @@ public class GridGenerator : MonoBehaviour
     {
         if (gridFrame == null) return;
 
-        // アウトラインの比率: 60/860
-        const float outlineRatio = 60f / 860f;
         // グリッド部分の比率: (860 - 120) / 860 = 740 / 860
         const float gridRatio = 740f / 860f;
         

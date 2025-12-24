@@ -232,7 +232,7 @@ public class ProgressManager : MonoBehaviour
                 {
                     // スケールを0に設定してからアニメーション
                     acquiredTransform.localScale = Vector3.zero;
-                    acquiredTransform.DOScale(Vector3.one, acquiredAnimationDuration).SetEase(acquiredAnimationEase);
+                    acquiredTransform.DOScale(Vector3.one, acquiredAnimationDuration).SetEase(Ease.OutQuad);
                 }
                 else
                 {
