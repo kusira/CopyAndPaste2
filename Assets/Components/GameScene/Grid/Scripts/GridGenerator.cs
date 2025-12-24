@@ -100,6 +100,9 @@ public class GridGenerator : MonoBehaviour
             float offsetX = -(width - 1) * 0.5f;
             float offsetY = -(height - 1) * 0.5f;
 
+            // GridFrameを生成してサイズを調整（Mass/Rock生成と同タイミング）
+            CreateAndUpdateGridFrame(width, height);
+
             int generatedCount = 0;
             int errorCount = 0;
 
@@ -199,9 +202,6 @@ public class GridGenerator : MonoBehaviour
             {
                 Debug.Log($"グリッドを生成しました: {width}x{height} (生成数: {generatedCount})");
             }
-
-            // GridFrameを生成してサイズを調整
-            CreateAndUpdateGridFrame(width, height);
         }
         catch (System.Exception e)
         {
@@ -216,6 +216,26 @@ public class GridGenerator : MonoBehaviour
     {
         try
         {
+            // GridFrameをクリア
+            Transform gridParentTransform = null;
+            if (massParent != null)
+            {
+                gridParentTransform = massParent.parent;
+            }
+            else if (rockParent != null)
+            {
+                gridParentTransform = rockParent.parent;
+            }
+            else
+            {
+                gridParentTransform = transform.parent;
+            }
+
+            if (gridParentTransform != null)
+            {
+                ClearGridFrame(gridParentTransform);
+            }
+
             // MassParentの子オブジェクトをクリア
             Transform massParentTransform = massParent != null ? massParent : transform;
             if (massParentTransform != null)

@@ -238,12 +238,15 @@ public class StageDatabaseEditor : Editor
 
         EditorGUILayout.BeginVertical();
 
+        // セルサイズ（正方形）
+        const float cellSize = 30f;
+
         // 列ヘッダー
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.Width(50));
         for (int w = 0; w < width; w++)
         {
-            EditorGUILayout.LabelField(w.ToString(), GUILayout.Width(30), GUILayout.Height(20));
+            EditorGUILayout.LabelField(w.ToString(), GUILayout.Width(cellSize), GUILayout.Height(cellSize));
         }
         EditorGUILayout.EndHorizontal();
 
@@ -251,7 +254,7 @@ public class StageDatabaseEditor : Editor
         for (int h = height - 1; h >= 0; h--)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(h.ToString(), GUILayout.Width(50), GUILayout.Height(20));
+            EditorGUILayout.LabelField(h.ToString(), GUILayout.Width(50), GUILayout.Height(cellSize));
 
             // 行が存在するかチェック
             if (h < grid.Count && grid[h] != null && grid[h].columns != null)
@@ -261,7 +264,7 @@ public class StageDatabaseEditor : Editor
                     if (w < grid[h].columns.Count)
                     {
                         string value = grid[h].columns[w] ?? "";
-                        string newValue = EditorGUILayout.TextField(value, GUILayout.Width(60), GUILayout.Height(20));
+                        string newValue = EditorGUILayout.TextField(value, GUILayout.Width(cellSize), GUILayout.Height(cellSize));
 
                         if (newValue != value)
                         {
@@ -274,7 +277,7 @@ public class StageDatabaseEditor : Editor
                     else
                     {
                         // 幅が足りない場合は空のセルを表示
-                        EditorGUILayout.TextField("", GUILayout.Width(60), GUILayout.Height(20));
+                        EditorGUILayout.TextField("", GUILayout.Width(cellSize), GUILayout.Height(cellSize));
                     }
                 }
             }
@@ -283,7 +286,7 @@ public class StageDatabaseEditor : Editor
                 // 行が存在しない場合は空のセルを表示
                 for (int w = 0; w < width; w++)
                 {
-                    EditorGUILayout.TextField("", GUILayout.Width(60), GUILayout.Height(20));
+                    EditorGUILayout.TextField("", GUILayout.Width(cellSize), GUILayout.Height(cellSize));
                 }
             }
 
