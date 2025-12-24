@@ -116,10 +116,10 @@ TextureImporter:
       name: TutorialPanel_0
       rect:
         serializedVersion: 2
-        x: 179
-        y: 15
-        width: 1678
-        height: 1057
+        x: 203
+        y: 24
+        width: 1514
+        height: 1031
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

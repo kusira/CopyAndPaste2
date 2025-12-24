@@ -116,10 +116,10 @@ TextureImporter:
       name: MenuPanel_0
       rect:
         serializedVersion: 2
-        x: 179
-        y: 15
-        width: 1678
-        height: 1057
+        x: 219
+        y: 65
+        width: 1514
+        height: 1015
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

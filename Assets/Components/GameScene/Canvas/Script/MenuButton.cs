@@ -47,26 +47,45 @@ public class MenuButton : MonoBehaviour
     private void OnEnable()
     {
         if (!initialized) return;
-        menuButton.onClick.AddListener(OpenMenu);
-        closeButton.onClick.AddListener(CloseMenu);
-
-        var backdropButton = backdrop.GetComponent<Button>();
-        if (backdropButton != null)
+        if (menuButton != null)
         {
-            backdropButton.onClick.AddListener(CloseMenu);
+            menuButton.onClick.AddListener(OpenMenu);
+        }
+        if (closeButton != null)
+        {
+            closeButton.onClick.AddListener(CloseMenu);
+        }
+
+        if (backdrop != null)
+        {
+            var backdropButton = backdrop.GetComponent<Button>();
+            if (backdropButton != null)
+            {
+                backdropButton.onClick.AddListener(CloseMenu);
+            }
         }
     }
 
     private void OnDisable()
     {
         if (!initialized) return;
-        menuButton.onClick.RemoveListener(OpenMenu);
-        closeButton.onClick.RemoveListener(CloseMenu);
-
-        var backdropButton = backdrop.GetComponent<Button>();
-        if (backdropButton != null)
+        
+        if (menuButton != null)
         {
-            backdropButton.onClick.RemoveListener(CloseMenu);
+            menuButton.onClick.RemoveListener(OpenMenu);
+        }
+        if (closeButton != null)
+        {
+            closeButton.onClick.RemoveListener(CloseMenu);
+        }
+
+        if (backdrop != null)
+        {
+            var backdropButton = backdrop.GetComponent<Button>();
+            if (backdropButton != null)
+            {
+                backdropButton.onClick.RemoveListener(CloseMenu);
+            }
         }
     }
 
@@ -78,6 +97,7 @@ public class MenuButton : MonoBehaviour
     private void OpenMenu()
     {
         if (!initialized) return;
+        if (backdrop == null || menuPanel == null) return;
 
         backdrop.SetActive(true);
         menuPanel.gameObject.SetActive(true);
@@ -91,14 +111,21 @@ public class MenuButton : MonoBehaviour
     private void CloseMenu()
     {
         if (!initialized) return;
+        if (menuPanel == null || backdrop == null) return;
 
         panelTween?.Kill();
         panelTween = menuPanel.DOAnchorPos(closedPos, animationDuration)
             .SetEase(Ease.InQuad)
             .OnComplete(() =>
             {
-                menuPanel.gameObject.SetActive(false);
-                backdrop.SetActive(false);
+                if (menuPanel != null)
+                {
+                    menuPanel.gameObject.SetActive(false);
+                }
+                if (backdrop != null)
+                {
+                    backdrop.SetActive(false);
+                }
             });
     }
 }
