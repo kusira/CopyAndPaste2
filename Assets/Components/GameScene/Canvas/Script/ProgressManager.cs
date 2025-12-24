@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProgressGenerator : MonoBehaviour
+public class ProgressManager : MonoBehaviour
 {
     [Header("Prefabs")]
     [Tooltip("ProgressStarのPrefabをアサインします")]
     [SerializeField] private GameObject progressStarPrefab;
     
-    [Tooltip("ProgressPentagonのPrefabをアサインします")]
-    [SerializeField] private GameObject progressPentagonPrefab;
+    [Tooltip("ProgressHeartのPrefabをアサインします")]
+    [SerializeField] private GameObject progressHeartPrefab;
     
-    [Tooltip("ProgressCircleのPrefabをアサインします")]
-    [SerializeField] private GameObject progressCirclePrefab;
+    [Tooltip("ProgressCloverのPrefabをアサインします")]
+    [SerializeField] private GameObject progressCloverPrefab;
 
     [Header("References")]
     [Tooltip("現在のゲームステータスを参照します")]
@@ -43,7 +43,7 @@ public class ProgressGenerator : MonoBehaviour
     public class ProgressItemData
     {
         public GameObject gameObject;
-        public string patternKey; // "S", "P", "C"
+        public string patternKey; // "S", "H", "C"
         public Vector2Int gridPosition; // グリッド座標 (w, h)
         public bool isAcquired;
 
@@ -62,7 +62,7 @@ public class ProgressGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// グリッドの初期盤面から.S, .P, .Cの数をカウントしてProgressアイテムを生成します
+    /// グリッドの初期盤面から.S, .H, .Cの数をカウントしてProgressアイテムを生成します
     /// </summary>
     public void CreateProgressItems()
     {
@@ -88,10 +88,10 @@ public class ProgressGenerator : MonoBehaviour
             return;
         }
 
-        // .S, .P, .Cの座標を記録
+        // .S, .H, .Cの座標を記録
         List<ProgressItemData> starItems = new List<ProgressItemData>();
-        List<ProgressItemData> pentagonItems = new List<ProgressItemData>();
-        List<ProgressItemData> circleItems = new List<ProgressItemData>();
+        List<ProgressItemData> heartItems = new List<ProgressItemData>();
+        List<ProgressItemData> cloverItems = new List<ProgressItemData>();
 
         List<StageDatabase.RowData> massStatus = stageData.massStatus;
         for (int h = 0; h < massStatus.Count; h++)
@@ -117,20 +117,20 @@ public class ProgressGenerator : MonoBehaviour
                         {
                             starItems.Add(new ProgressItemData(null, "S", gridPos));
                         }
-                        else if (key == "P")
+                        else if (key == "H")
                         {
-                            pentagonItems.Add(new ProgressItemData(null, "P", gridPos));
+                            heartItems.Add(new ProgressItemData(null, "H", gridPos));
                         }
                         else if (key == "C")
                         {
-                            circleItems.Add(new ProgressItemData(null, "C", gridPos));
+                            cloverItems.Add(new ProgressItemData(null, "C", gridPos));
                         }
                     }
                 }
             }
         }
 
-        Debug.Log($"ProgressGenerator: S={starItems.Count}, P={pentagonItems.Count}, C={circleItems.Count}");
+        Debug.Log($"ProgressManager: S={starItems.Count}, H={heartItems.Count}, C={cloverItems.Count}");
 
         // 左上を基準として配置
         Vector3 startPosition = transform.position;
@@ -151,34 +151,34 @@ public class ProgressGenerator : MonoBehaviour
             }
         }
 
-        // Pをその下に、少し右にずらして並べる
-        for (int i = 0; i < pentagonItems.Count; i++)
+        // Hをその下に、少し右にずらして並べる
+        for (int i = 0; i < heartItems.Count; i++)
         {
-            if (progressPentagonPrefab != null)
+            if (progressHeartPrefab != null)
             {
                 Vector3 position = startPosition + new Vector3(rowOffset + i * itemSpacing, -rowSpacing, 0);
-                GameObject instance = Instantiate(progressPentagonPrefab, position, Quaternion.identity, transform);
+                GameObject instance = Instantiate(progressHeartPrefab, position, Quaternion.identity, transform);
                 if (instance != null)
                 {
-                    pentagonItems[i].gameObject = instance;
+                    heartItems[i].gameObject = instance;
                     SetProgressItemState(instance, false);
-                    createdProgressItems.Add(pentagonItems[i]);
+                    createdProgressItems.Add(heartItems[i]);
                 }
             }
         }
 
         // Cをその下に、さらに右にずらして並べる
-        for (int i = 0; i < circleItems.Count; i++)
+        for (int i = 0; i < cloverItems.Count; i++)
         {
-            if (progressCirclePrefab != null)
+            if (progressCloverPrefab != null)
             {
                 Vector3 position = startPosition + new Vector3(rowOffset * 2 + i * itemSpacing, -rowSpacing * 2, 0);
-                GameObject instance = Instantiate(progressCirclePrefab, position, Quaternion.identity, transform);
+                GameObject instance = Instantiate(progressCloverPrefab, position, Quaternion.identity, transform);
                 if (instance != null)
                 {
-                    circleItems[i].gameObject = instance;
+                    cloverItems[i].gameObject = instance;
                     SetProgressItemState(instance, false);
-                    createdProgressItems.Add(circleItems[i]);
+                    createdProgressItems.Add(cloverItems[i]);
                 }
             }
         }
@@ -228,13 +228,30 @@ public class ProgressGenerator : MonoBehaviour
 
     /// <summary>
     /// 指定された座標とパターンキーに対応するProgressアイテムの条件が満たされたことを記録します
-    /// 既にAcquiredになっているアイテムの数を数えて、その数+1個目のアイテム（左側から）をAcquiredにします
+    /// 指定されたパターンキー（S, H, C）に対応する行で、既にAcquiredになっているアイテムの数を数えて、
+    /// その数+1個目のアイテム（左側から）をAcquiredにします
     /// </summary>
     public void SetProgressAcquired(Vector2Int gridPosition, string patternKey)
     {
-        // 既にAcquiredになっているアイテムの数を数える
-        int acquiredCount = 0;
+        // 指定されたパターンキーに対応するアイテムのみをフィルタリング
+        List<ProgressItemData> filteredItems = new List<ProgressItemData>();
         foreach (var item in createdProgressItems)
+        {
+            if (item != null && item.patternKey == patternKey)
+            {
+                filteredItems.Add(item);
+            }
+        }
+
+        if (filteredItems.Count == 0)
+        {
+            Debug.LogWarning($"ProgressManager: パターンキー '{patternKey}' に対応するアイテムが見つかりません");
+            return;
+        }
+
+        // そのパターンキー行で既にAcquiredになっているアイテムの数を数える
+        int acquiredCount = 0;
+        foreach (var item in filteredItems)
         {
             if (item != null && item.isAcquired)
             {
@@ -244,14 +261,14 @@ public class ProgressGenerator : MonoBehaviour
 
         // その数+1個目のアイテム（左側から）をAcquiredにする
         int targetIndex = acquiredCount; // 0-indexedなので、acquiredCountが次のアイテムのインデックス
-        if (targetIndex < createdProgressItems.Count)
+        if (targetIndex < filteredItems.Count)
         {
-            var targetItem = createdProgressItems[targetIndex];
+            var targetItem = filteredItems[targetIndex];
             if (targetItem != null && targetItem.gameObject != null && !targetItem.isAcquired)
             {
                 targetItem.isAcquired = true;
                 SetProgressItemState(targetItem.gameObject, true);
-                Debug.Log($"ProgressGenerator: {targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をAcquiredにしました（{acquiredCount + 1}個目）");
+                Debug.Log($"ProgressManager: {targetItem.patternKey}行の{targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をAcquiredにしました（{patternKey}行の{acquiredCount + 1}個目）");
 
                 // すべてのProgressがAcquiredになったかチェック
                 if (IsAllAcquired())
@@ -268,7 +285,7 @@ public class ProgressGenerator : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning("ProgressGenerator: ResultShowerが見つかりません。リザルトを表示できません。");
+                        Debug.LogWarning("ProgressManager: ResultShowerが見つかりません。リザルトを表示できません。");
                     }
                 }
             }

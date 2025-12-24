@@ -214,10 +214,10 @@ public class UndoRedoManager : MonoBehaviour
 
         // 4. Progressの状態を更新
         // Progressアイテムを再生成（初期状態に戻す）
-        var progressGenerator = Object.FindFirstObjectByType<ProgressGenerator>();
-        if (progressGenerator != null)
+        var ProgressManager = Object.FindFirstObjectByType<ProgressManager>();
+        if (ProgressManager != null)
         {
-            progressGenerator.CreateProgressItems();
+            ProgressManager.CreateProgressItems();
         }
 
         // GridMonitorの監視状態をリセットして再計算

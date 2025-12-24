@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b527de6208afe7a40973cb6f8ddca7f2
+guid: d3a801aa20fd36c468fe9b694d7bef2e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3746850513718084054
-    second: Mass_0
+      213: -4433984675669195344
+    second: RockHeart_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 500
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Mass_0
+      name: RockHeart_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 100
-        height: 100
+        x: 76
+        y: 67
+        width: 351
+        height: 323
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a2ef7573f43800cc0800000000000000
-      internalID: -3746850513718084054
+      spriteID: 0b546330e625772c0800000000000000
+      internalID: -4433984675669195344
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Mass_0: -3746850513718084054
+      RockHeart_0: -4433984675669195344
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// グリッドの状態を監視し、.Sと#S、.Pと#P、.Cと#Cが同じ座標になったときにProgressを進めます
+/// グリッドの状態を監視し、.Sと#S、.Hと#H、.Cと#Cが同じ座標になったときにProgressを進めます
 /// </summary>
 public class GridMonitor : MonoBehaviour
 {
@@ -10,8 +10,8 @@ public class GridMonitor : MonoBehaviour
     [Tooltip("現在のゲームステータスを参照します")]
     [SerializeField] private CurrentGameStatus currentGameStatus;
     
-    [Tooltip("ProgressGeneratorへの参照")]
-    [SerializeField] private ProgressGenerator progressGenerator;
+    [Tooltip("ProgressManagerへの参照")]
+    [SerializeField] private ProgressManager ProgressManager;
 
     [Header("Monitor Settings")]
     [Tooltip("監視の更新間隔（秒）")]
@@ -22,15 +22,15 @@ public class GridMonitor : MonoBehaviour
 
     private void Start()
     {
-        // ProgressGeneratorが見つからない場合は自動検索
-        if (progressGenerator == null)
+        // ProgressManagerが見つからない場合は自動検索
+        if (ProgressManager == null)
         {
-            progressGenerator = FindFirstObjectByType<ProgressGenerator>();
+            ProgressManager = FindFirstObjectByType<ProgressManager>();
         }
 
-        if (progressGenerator == null)
+        if (ProgressManager == null)
         {
-            Debug.LogWarning("GridMonitor: ProgressGeneratorが見つかりません");
+            Debug.LogWarning("GridMonitor: ProgressManagerが見つかりません");
         }
 
         if (currentGameStatus == null)
@@ -59,7 +59,7 @@ public class GridMonitor : MonoBehaviour
     /// </summary>
     private void CheckProgressConditions()
     {
-        if (currentGameStatus == null || progressGenerator == null)
+        if (currentGameStatus == null || ProgressManager == null)
         {
             return;
         }
@@ -73,7 +73,7 @@ public class GridMonitor : MonoBehaviour
         List<StageDatabase.RowData> massStatus = stageData.massStatus;
         List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
 
-        // 各座標で.Sと#S、.Pと#P、.Cと#Cが一致しているかチェック
+        // 各座標で.Sと#S、.Hと#H、.Cと#Cが一致しているかチェック
         for (int h = 0; h < massStatus.Count; h++)
         {
             if (massStatus[h] == null || massStatus[h].columns == null) continue;
@@ -88,12 +88,12 @@ public class GridMonitor : MonoBehaviour
                 List<string> massKeys = new List<string>();
                 RangeSelectorHelper.ParseCell(massValue, out massBaseChar, massKeys);
 
-                // .S, .P, .Cをチェック
+                // .S, .H, .Cをチェック
                 if (massBaseChar == '.')
                 {
                     foreach (var key in massKeys)
                     {
-                        if (key == "S" || key == "P" || key == "C")
+                        if (key == "S" || key == "H" || key == "C")
                         {
                             // 同じ座標のRockStatusをチェック
                             if (h < rockStatus.Count && 
@@ -108,7 +108,7 @@ public class GridMonitor : MonoBehaviour
                                     List<string> rockKeys = new List<string>();
                                     RangeSelectorHelper.ParseCell(rockValue, out rockBaseChar, rockKeys);
 
-                                    // #S, #P, #Cをチェック
+                                    // #S, #H, #Cをチェック
                                     if (rockBaseChar == '#' && rockKeys.Contains(key))
                                     {
                                         // 条件を満たしている
@@ -118,7 +118,7 @@ public class GridMonitor : MonoBehaviour
                                         if (!acquiredProgressKeys.Contains(progressKey))
                                         {
                                             acquiredProgressKeys.Add(progressKey);
-                                            progressGenerator.SetProgressAcquired(gridPos, key);
+                                            ProgressManager.SetProgressAcquired(gridPos, key);
                                         }
                                     }
                                 }
@@ -143,13 +143,13 @@ public class GridMonitor : MonoBehaviour
     /// </summary>
     public void RecalculateProgress()
     {
-        if (currentGameStatus == null || progressGenerator == null)
+        if (currentGameStatus == null || ProgressManager == null)
         {
             return;
         }
 
         // まず、すべてのProgressアイテムを初期状態にリセット
-        var progressItems = progressGenerator.GetProgressItems();
+        var progressItems = ProgressManager.GetProgressItems();
         foreach (var item in progressItems)
         {
             if (item != null && item.gameObject != null)
@@ -168,6 +168,9 @@ public class GridMonitor : MonoBehaviour
             }
         }
 
+        // acquiredProgressKeysもクリア
+        acquiredProgressKeys.Clear();
+
         // 現在のグリッド状態をチェックして、条件を満たしているProgressをAcquiredにする
         StageDatabase.StageData stageData = currentGameStatus.GetCurrentStageData();
         if (stageData == null || stageData.massStatus == null || stageData.rockStatus == null)
@@ -178,7 +181,13 @@ public class GridMonitor : MonoBehaviour
         List<StageDatabase.RowData> massStatus = stageData.massStatus;
         List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
 
-        // 各座標で.Sと#S、.Pと#P、.Cと#Cが一致しているかチェック
+        // 各パターンキー（S, H, C）ごとに、条件を満たしているアイテムのリストを作成
+        Dictionary<string, List<Vector2Int>> satisfiedPositions = new Dictionary<string, List<Vector2Int>>();
+        satisfiedPositions["S"] = new List<Vector2Int>();
+        satisfiedPositions["H"] = new List<Vector2Int>();
+        satisfiedPositions["C"] = new List<Vector2Int>();
+
+        // 各座標で.Sと#S、.Hと#H、.Cと#Cが一致しているかチェック
         for (int h = 0; h < massStatus.Count; h++)
         {
             if (massStatus[h] == null || massStatus[h].columns == null) continue;
@@ -193,12 +202,12 @@ public class GridMonitor : MonoBehaviour
                 List<string> massKeys = new List<string>();
                 RangeSelectorHelper.ParseCell(massValue, out massBaseChar, massKeys);
 
-                // .S, .P, .Cをチェック
+                // .S, .H, .Cをチェック
                 if (massBaseChar == '.')
                 {
                     foreach (var key in massKeys)
                     {
-                        if (key == "S" || key == "P" || key == "C")
+                        if (key == "S" || key == "H" || key == "C")
                         {
                             // 同じ座標のRockStatusをチェック
                             if (h < rockStatus.Count && 
@@ -213,23 +222,37 @@ public class GridMonitor : MonoBehaviour
                                     List<string> rockKeys = new List<string>();
                                     RangeSelectorHelper.ParseCell(rockValue, out rockBaseChar, rockKeys);
 
-                                    // #S, #P, #Cをチェック
+                                    // #S, #H, #Cをチェック
                                     if (rockBaseChar == '#' && rockKeys.Contains(key))
                                     {
                                         // 条件を満たしている
                                         Vector2Int gridPos = new Vector2Int(w, h);
-                                        string progressKey = $"{key}_{gridPos.x}_{gridPos.y}";
-
-                                        if (!acquiredProgressKeys.Contains(progressKey))
-                                        {
-                                            acquiredProgressKeys.Add(progressKey);
-                                            progressGenerator.SetProgressAcquired(gridPos, key);
-                                        }
+                                        satisfiedPositions[key].Add(gridPos);
                                     }
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+
+        // 各パターンキーごとに、条件を満たしているアイテムの数だけ順番にAcquiredにする
+        foreach (var kvp in satisfiedPositions)
+        {
+            string key = kvp.Key;
+            List<Vector2Int> positions = kvp.Value;
+            
+            // 条件を満たしているアイテムの数だけ、順番にSetProgressAcquiredを呼び出す
+            for (int i = 0; i < positions.Count; i++)
+            {
+                Vector2Int gridPos = positions[i];
+                string progressKey = $"{key}_{gridPos.x}_{gridPos.y}";
+                
+                if (!acquiredProgressKeys.Contains(progressKey))
+                {
+                    acquiredProgressKeys.Add(progressKey);
+                    ProgressManager.SetProgressAcquired(gridPos, key);
                 }
             }
         }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 60e27eb06ec728347b3b1835ba9f1627
+guid: 888776c2cad3dd447b2ce58e3ac65569
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6981481357855213104
-    second: RockStar_0
+      213: 9223320588138540759
+    second: FadeMask_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 300
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RockStar_0
+      name: FadeMask_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 191
-        height: 181
+        x: 182
+        y: 204
+        width: 128
+        height: 123
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 036c8f43e4433e060800000000000000
-      internalID: 6981481357855213104
+      spriteID: 7de6b892531dfff70800000000000000
+      internalID: 9223320588138540759
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      RockStar_0: 6981481357855213104
+      FadeMask_0: 9223320588138540759
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

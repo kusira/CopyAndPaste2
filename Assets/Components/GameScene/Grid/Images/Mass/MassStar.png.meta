@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 939bde27eae0ef348868acabd59eea51
+guid: b8bfe3aa8e9aa91409704b2296c44b96
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8167106763392272915
-    second: MenuPanel_0
+      213: -4770266185572575904
+    second: MassStar_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 500
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MenuPanel_0
+      name: MassStar_0
       rect:
         serializedVersion: 2
-        x: 179
-        y: 15
-        width: 1678
-        height: 1057
+        x: 63
+        y: 74
+        width: 376
+        height: 362
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 31acfa28454675170800000000000000
-      internalID: 8167106763392272915
+      spriteID: 06593ec9d2c9ccdb0800000000000000
+      internalID: -4770266185572575904
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MenuPanel_0: 8167106763392272915
+      MassStar_0: -4770266185572575904
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

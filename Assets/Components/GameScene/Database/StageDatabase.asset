@@ -19,16 +19,42 @@ MonoBehaviour:
       - .
       - .
       - .
+      - .
+      - .
     - columns:
       - .C
+      - .
       - .S
       - .S
+      - .
     - columns:
-      - .P
-      - .P
-      - .P
+      - .H
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .H
+      - .H
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
     rockStatus:
     - columns:
+      - '#S'
+      - 
+      - '#H'
+      - 
+      - '#C'
+    - columns:
+      - 
+      - 
       - 
       - 
       - 
@@ -36,15 +62,25 @@ MonoBehaviour:
       - 
       - 
       - 
+      - 
+      - 
     - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
       - 
       - 
       - 
     rangeSelectorItems:
-    - height: 3
+    - height: 2
       width: 2
-    - height: 1
-      width: 3
+    - height: 2
+      width: 2
     - height: 2
       width: 2
   - stageName: Stage 1
@@ -109,7 +145,7 @@ MonoBehaviour:
       - .
       - .
       - .S
-      - .S
+      - .H
       - .
     - columns:
       - .
@@ -147,7 +183,7 @@ MonoBehaviour:
       - '#'
       - '#S'
       - 
-      - '#S'
+      - '#H'
     - columns:
       - 
       - '#S'
