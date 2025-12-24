@@ -3026,7 +3026,8 @@ MonoBehaviour:
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
   itemSpacing: 70
   rowSpacing: 80
-  rowOffset: 0.5
+  acquiredAnimationDuration: 0.3
+  acquiredAnimationEase: 27
   resultShower: {fileID: 691284512}
 --- !u!1 &691697629
 GameObject:

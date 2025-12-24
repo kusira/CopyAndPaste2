@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class ProgressManager : MonoBehaviour
 {
@@ -26,9 +27,13 @@ public class ProgressManager : MonoBehaviour
     
     [Tooltip("行間の間隔")]
     [SerializeField] private float rowSpacing = 80;
+
+    [Header("Animation Settings")]
+    [Tooltip("Acquired時のアニメーション秒数")]
+    [SerializeField] private float acquiredAnimationDuration = 0.3f;
     
-    [Tooltip("各行の右方向へのオフセット（段差）")]
-    [SerializeField] private float rowOffset = 0.5f;
+    [Tooltip("Acquired時のアニメーションイージング")]
+    [SerializeField] private Ease acquiredAnimationEase = Ease.OutQuad;
 
     [Header("Result")]
     [Tooltip("すべてAcquiredになったときにリザルトを表示するコンポーネント")]
@@ -151,12 +156,12 @@ public class ProgressManager : MonoBehaviour
             }
         }
 
-        // Hをその下に、少し右にずらして並べる
+        // Hをその下に並べる
         for (int i = 0; i < heartItems.Count; i++)
         {
             if (progressHeartPrefab != null)
             {
-                Vector3 position = startPosition + new Vector3(rowOffset + i * itemSpacing, -rowSpacing, 0);
+                Vector3 position = startPosition + new Vector3(i * itemSpacing, -rowSpacing, 0);
                 GameObject instance = Instantiate(progressHeartPrefab, position, Quaternion.identity, transform);
                 if (instance != null)
                 {
@@ -167,12 +172,12 @@ public class ProgressManager : MonoBehaviour
             }
         }
 
-        // Cをその下に、さらに右にずらして並べる
+        // Cをその下に並べる
         for (int i = 0; i < cloverItems.Count; i++)
         {
             if (progressCloverPrefab != null)
             {
-                Vector3 position = startPosition + new Vector3(rowOffset * 2 + i * itemSpacing, -rowSpacing * 2, 0);
+                Vector3 position = startPosition + new Vector3(i * itemSpacing, -rowSpacing * 2, 0);
                 GameObject instance = Instantiate(progressCloverPrefab, position, Quaternion.identity, transform);
                 if (instance != null)
                 {
@@ -209,7 +214,7 @@ public class ProgressManager : MonoBehaviour
     /// <summary>
     /// Progressアイテムの状態を設定します（Acquired/NotAcquired）
     /// </summary>
-    private void SetProgressItemState(GameObject progressItem, bool acquired)
+    private void SetProgressItemState(GameObject progressItem, bool acquired, bool withAnimation = false)
     {
         if (progressItem == null) return;
 
@@ -218,7 +223,28 @@ public class ProgressManager : MonoBehaviour
 
         if (acquiredTransform != null)
         {
-            acquiredTransform.gameObject.SetActive(acquired);
+            if (acquired)
+            {
+                acquiredTransform.gameObject.SetActive(true);
+                
+                // アニメーション付きでAcquiredにする場合
+                if (withAnimation)
+                {
+                    // スケールを0に設定してからアニメーション
+                    acquiredTransform.localScale = Vector3.zero;
+                    acquiredTransform.DOScale(Vector3.one, acquiredAnimationDuration).SetEase(acquiredAnimationEase);
+                }
+                else
+                {
+                    // アニメーションなしの場合は通常のスケール
+                    acquiredTransform.localScale = Vector3.one;
+                }
+            }
+            else
+            {
+                acquiredTransform.gameObject.SetActive(false);
+                acquiredTransform.localScale = Vector3.one; // リセット
+            }
         }
         if (notAcquiredTransform != null)
         {
@@ -267,7 +293,7 @@ public class ProgressManager : MonoBehaviour
             if (targetItem != null && targetItem.gameObject != null && !targetItem.isAcquired)
             {
                 targetItem.isAcquired = true;
-                SetProgressItemState(targetItem.gameObject, true);
+                SetProgressItemState(targetItem.gameObject, true, true); // アニメーション付きで設定
                 Debug.Log($"ProgressManager: {targetItem.patternKey}行の{targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をAcquiredにしました（{patternKey}行の{acquiredCount + 1}個目）");
 
                 // すべてのProgressがAcquiredになったかチェック
