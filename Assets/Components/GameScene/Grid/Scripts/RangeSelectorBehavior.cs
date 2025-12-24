@@ -48,6 +48,12 @@ public class RangeSelectorBehavior : MonoBehaviour
     private int lastPreviewRotationIndex = -1;
     private bool lastCanPaste = true;
 
+    // 点線表示用
+    [Header("Prefabs")]
+    [Tooltip("コピー時の矩形を囲む点線のPrefabをアサインします")]
+    [SerializeField] private GameObject dashLinePrefab;
+    private GameObject dashLineInstance;
+
     // 色制御
     private SpriteRenderer spriteRenderer;
     private Color normalColor = Color.white;
@@ -267,6 +273,8 @@ public class RangeSelectorBehavior : MonoBehaviour
         
         // プレビュー消去
         ClearPreviewChildren();
+        // 点線を削除
+        ClearDashLine();
         UpdateDebugSnapshot(copiedOffsets); // 空リストで更新
         SetValidColor(true); // 通常色に戻す
         
@@ -352,6 +360,9 @@ public class RangeSelectorBehavior : MonoBehaviour
         {
             Debug.Log($"Rockパターンをコピーしました。セル数: {copiedOffsets.Count}");
             UpdateDebugState($"コピー完了: {copiedOffsets.Count}セル", copiedOffsets.Count, rotationIndex, true);
+            
+            // コピーした矩形の周囲を点線で囲む
+            CreateDashLine(minX, minY, maxX, maxY);
         }
 
         // コピー時も現在の回転インデックスを維持したまま見た目を更新
@@ -601,6 +612,9 @@ public class RangeSelectorBehavior : MonoBehaviour
 
         // プレビュー更新 (貼り付け後はSelector消えるので不要だが一応)
         UpdatePreviewAndValidity();
+
+        // 点線を削除
+        ClearDashLine();
 
         // 貼り付け成功したら削除（アイテムごと）
         DestroySelectorAndItem();
@@ -1039,6 +1053,9 @@ public class RangeSelectorBehavior : MonoBehaviour
 
     private void DestroySelectorAndItem()
     {
+        // 点線を削除
+        ClearDashLine();
+        
         if (sourceItem != null)
         {
             // アイテムもろとも削除
@@ -1046,6 +1063,80 @@ public class RangeSelectorBehavior : MonoBehaviour
             RangeSelectorItemBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
         }
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// コピーした矩形の周囲を点線で囲むDashLineを生成します
+    /// </summary>
+    /// <param name="minX">矩形の最小X座標（グリッドインデックス）</param>
+    /// <param name="minY">矩形の最小Y座標（グリッドインデックス）</param>
+    /// <param name="maxX">矩形の最大X座標（グリッドインデックス）</param>
+    /// <param name="maxY">矩形の最大Y座標（グリッドインデックス）</param>
+    private void CreateDashLine(int minX, int minY, int maxX, int maxY)
+    {
+        if (dashLinePrefab == null)
+        {
+            Debug.LogWarning("DashLinePrefabがアサインされていません");
+            return;
+        }
+
+        // 既存の点線を削除
+        ClearDashLine();
+
+        // DashLineを生成
+        Transform parent = transform.parent != null ? transform.parent : transform;
+        dashLineInstance = Instantiate(dashLinePrefab, parent);
+        if (dashLineInstance == null)
+        {
+            Debug.LogError("DashLineの生成に失敗しました");
+            return;
+        }
+
+        dashLineInstance.name = "DashLine";
+
+        // LineRendererを取得
+        LineRenderer lineRenderer = dashLineInstance.GetComponent<LineRenderer>();
+        if (lineRenderer == null)
+        {
+            Debug.LogError("DashLinePrefabにLineRendererがアタッチされていません");
+            return;
+        }
+
+        // 矩形の4つの角のワールド座標を計算
+        // セルの中心座標から、セルの境界（矩形の外側）を計算
+        Vector3 bottomLeft = GridIndexToWorld(minX, minY, transform.position.z) - new Vector3(0.5f, 0.5f, 0f);
+        Vector3 topLeft = GridIndexToWorld(minX, maxY, transform.position.z) - new Vector3(0.5f, -0.5f, 0f);
+        Vector3 topRight = GridIndexToWorld(maxX, maxY, transform.position.z) + new Vector3(0.5f, 0.5f, 0f);
+        Vector3 bottomRight = GridIndexToWorld(maxX, minY, transform.position.z) + new Vector3(0.5f, -0.5f, 0f);
+
+        // LineRendererで矩形を描画（5つの頂点：左下→左上→右上→右下→左下）
+        lineRenderer.positionCount = 5;
+        lineRenderer.SetPosition(0, bottomLeft);
+        lineRenderer.SetPosition(1, topLeft);
+        lineRenderer.SetPosition(2, topRight);
+        lineRenderer.SetPosition(3, bottomRight);
+        lineRenderer.SetPosition(4, bottomLeft); // 閉じる
+
+        Debug.Log($"DashLineを生成しました: ({minX}, {minY}) ～ ({maxX}, {maxY})");
+    }
+
+    /// <summary>
+    /// DashLineを削除します
+    /// </summary>
+    private void ClearDashLine()
+    {
+        if (dashLineInstance != null)
+        {
+            if (Application.isPlaying)
+            {
+                Destroy(dashLineInstance);
+            }
+            else
+            {
+                DestroyImmediate(dashLineInstance);
+            }
+            dashLineInstance = null;
+        }
     }
 }
 

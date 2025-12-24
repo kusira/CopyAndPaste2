@@ -116,4 +116,5 @@ MonoBehaviour:
   debugSelMaxX: 0
   debugSelMinY: 0
   debugSelMaxY: 0
+  dashLinePrefab: {fileID: 2669778957739458681, guid: ce4b24a1bc8245c4c80309e758de92d6, type: 3}
   invalidColor: {r: 1, g: 0, b: 0, a: 1}
