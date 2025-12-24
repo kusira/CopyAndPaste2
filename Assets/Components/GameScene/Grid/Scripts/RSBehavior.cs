@@ -24,21 +24,6 @@ public class RSBehavior : MonoBehaviour
     private Vector3 initialScale;
     private Vector3 dragOffset = Vector3.zero; // 回転時の位置ずれを吸収するためのマウスとのオフセット
 
-    // デバッグ表示用
-    [SerializeField] private bool debugHasCopy = false;
-    [SerializeField] private int debugCopiedCount = 0;
-    [SerializeField] private int debugRotationIndex = 0;
-    [SerializeField] private string debugStateMessage = "未コピー";
-    [SerializeField, HideInInspector] private List<RSHelper.CopiedRockData> debugSnapshotOffsets = new List<RSHelper.CopiedRockData>();
-    [SerializeField, HideInInspector] private int debugMinX = 0;
-    [SerializeField, HideInInspector] private int debugMaxX = 0;
-    [SerializeField, HideInInspector] private int debugMinY = 0;
-    [SerializeField, HideInInspector] private int debugMaxY = 0;
-    [SerializeField, HideInInspector] private int debugSelMinX = 0;
-    [SerializeField, HideInInspector] private int debugSelMaxX = 0;
-    [SerializeField, HideInInspector] private int debugSelMinY = 0;
-    [SerializeField, HideInInspector] private int debugSelMaxY = 0;
-
     // プレビュー用
     private GameObject rockPreviewPrefab;
     private readonly List<GameObject> previewObjects = new List<GameObject>();
@@ -73,6 +58,12 @@ public class RSBehavior : MonoBehaviour
     
     [Tooltip("右下のSelectionオブジェクトをアサインします")]
     [SerializeField] private GameObject selectionRB;
+
+    // 各Selectionの初期スケール（元の大きさ）
+    private Vector3 initialScaleLT = Vector3.one;
+    private Vector3 initialScaleRT = Vector3.one;
+    private Vector3 initialScaleLB = Vector3.one;
+    private Vector3 initialScaleRB = Vector3.one;
 
     private void Start()
     {
@@ -113,6 +104,24 @@ public class RSBehavior : MonoBehaviour
 
         // 初期スケールを保存
         initialScale = transform.localScale;
+
+        // 各Selectionの初期スケールを保存
+        if (selectionLT != null)
+        {
+            initialScaleLT = selectionLT.transform.localScale;
+        }
+        if (selectionRT != null)
+        {
+            initialScaleRT = selectionRT.transform.localScale;
+        }
+        if (selectionLB != null)
+        {
+            initialScaleLB = selectionLB.transform.localScale;
+        }
+        if (selectionRB != null)
+        {
+            initialScaleRB = selectionRB.transform.localScale;
+        }
 
         // 四隅のSelectionを配置
         SetupSelectionCorners();
@@ -157,6 +166,38 @@ public class RSBehavior : MonoBehaviour
         {
             Vector3 rbPos = center + new Vector3(halfWidth, -halfHeight, 0f);
             selectionRB.transform.position = rbPos;
+        }
+
+        // SelectionのサイズをRSのサイズの逆数に設定
+        UpdateSelectionSizes();
+    }
+
+    /// <summary>
+    /// Selectionオブジェクトのサイズを元の大きさ×RSのサイズの逆数に設定します
+    /// </summary>
+    private void UpdateSelectionSizes()
+    {
+        // RSの現在のサイズを取得
+        Vector3 scale = transform.localScale;
+        float invX = scale.x != 0f ? 1f / Mathf.Abs(scale.x) : 1f;
+        float invY = scale.y != 0f ? 1f / Mathf.Abs(scale.y) : 1f;
+
+        // 各Selectionのサイズを更新（元の大きさ×逆数）
+        if (selectionLT != null)
+        {
+            selectionLT.transform.localScale = new Vector3(initialScaleLT.x * invX, initialScaleLT.y * invY, initialScaleLT.z);
+        }
+        if (selectionRT != null)
+        {
+            selectionRT.transform.localScale = new Vector3(initialScaleRT.x * invX, initialScaleRT.y * invY, initialScaleRT.z);
+        }
+        if (selectionLB != null)
+        {
+            selectionLB.transform.localScale = new Vector3(initialScaleLB.x * invX, initialScaleLB.y * invY, initialScaleLB.z);
+        }
+        if (selectionRB != null)
+        {
+            selectionRB.transform.localScale = new Vector3(initialScaleRB.x * invX, initialScaleRB.y * invY, initialScaleRB.z);
         }
     }
 
@@ -229,10 +270,7 @@ public class RSBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 入力処理（左クリックコピー、ホイール回転、右クリック貼り付け）
-    /// </summary>
-    /// <summary>
-    /// 入力処理（右クリックでコピー/ペースト、左クリックでキャンセル/削除、ホイール回転）
+    /// 入力処理（左クリックでコピー/ペースト、右クリックでキャンセル/削除、ホイール回転）
     /// </summary>
     private void HandleInput()
     {
@@ -320,10 +358,7 @@ public class RSBehavior : MonoBehaviour
         ClearPreviewChildren();
         // 点線を削除
         ClearDashLine();
-        UpdateDebugSnapshot(copiedOffsets); // 空リストで更新
         SetValidColor(true); // 通常色に戻す
-        
-        UpdateDebugState("未コピー", 0, 0, false);
     }
 
     /// <summary>
@@ -431,12 +466,10 @@ public class RSBehavior : MonoBehaviour
         if (!hasCopy)
         {
             Debug.Log("コピー対象のRockがありませんでした");
-            UpdateDebugState("コピーなし", 0, rotationIndex, false);
         }
         else
         {
             Debug.Log($"Rockパターンをコピーしました。セル数: {copiedOffsets.Count}");
-            UpdateDebugState($"コピー完了: {copiedOffsets.Count}セル", copiedOffsets.Count, rotationIndex, true);
             
             // コピーした矩形の周囲を点線で囲む
             CreateDashLine(minX, minY, maxX, maxY);
@@ -457,7 +490,6 @@ public class RSBehavior : MonoBehaviour
         if (!hasCopy)
         {
             ClearPreviewChildren();
-            UpdateDebugSnapshot(rotatedOffsets);
             SetValidColor(true);
             return;
         }
@@ -578,8 +610,6 @@ public class RSBehavior : MonoBehaviour
         lastPreviewCenterY = centerY;
         lastPreviewRotationIndex = rotationIndex;
         previewDirty = false;
-
-        UpdateDebugSnapshot(rotatedOffsets);
     }
 
     /// <summary>
@@ -589,7 +619,6 @@ public class RSBehavior : MonoBehaviour
     {
         if (!hasCopy || currentGameStatus == null)
         {
-            UpdateDebugState("貼り付け失敗: コピーなし", copiedOffsets.Count, rotationIndex, false);
             return;
         }
 
@@ -628,7 +657,6 @@ public class RSBehavior : MonoBehaviour
         {
             Debug.Log("この位置には貼り付けできません");
             SetValidColor(false);
-            UpdateDebugState("貼り付け失敗: 配置不可", copiedOffsets.Count, rotationIndex, true);
             return;
         }
 
@@ -663,7 +691,6 @@ public class RSBehavior : MonoBehaviour
         }
 
         Debug.Log("Rockパターンを貼り付けました");
-        UpdateDebugState("貼り付け完了", copiedOffsets.Count, rotationIndex, true);
         previewDirty = true;
 
         // グリッドを再生成して見た目を更新
@@ -694,24 +721,6 @@ public class RSBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// オフセットを90度単位で回転
-    /// </summary>
-    private Vector2Int RotateOffset(Vector2Int offset, int rot)
-    {
-        switch (rot % 4)
-        {
-            case 1: // 90度
-                return new Vector2Int(offset.y, -offset.x);
-            case 2: // 180度
-                return new Vector2Int(-offset.x, -offset.y);
-            case 3: // 270度
-                return new Vector2Int(-offset.y, offset.x);
-            default: // 0度
-                return offset;
-        }
-    }
-
-    /// <summary>
     /// プレビュー用の子オブジェクトを全削除
     /// </summary>
     private void ClearPreviewChildren()
@@ -736,20 +745,6 @@ public class RSBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// デバッグ表示用の状態を更新します
-    /// </summary>
-    private void UpdateDebugState(string message, int copiedCount, int rotIndex, bool hasCopied)
-    {
-        debugStateMessage = message;
-        debugCopiedCount = copiedCount;
-        debugRotationIndex = rotIndex;
-        debugHasCopy = hasCopied;
-    }
-
-    /// <summary>
-    /// RS本体の回転（見た目）をrotationIndexに合わせて更新します
-    /// </summary>
-    /// <summary>
     /// RS本体の回転（見た目）をrotationIndexに合わせて更新します
     /// 都合上、Z回転ではなくTransformのスケール変更（XY入れ替え）で表現します
     /// </summary>
@@ -770,6 +765,9 @@ public class RSBehavior : MonoBehaviour
 
         // 回転自体は常に0
         transform.rotation = Quaternion.identity;
+
+        // Selectionの位置とサイズを更新
+        SetupSelectionCorners();
     }
 
     /// <summary>
@@ -786,10 +784,6 @@ public class RSBehavior : MonoBehaviour
         Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset);
 
         var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
-        debugSelMinX = minX;
-        debugSelMaxX = maxX;
-        debugSelMinY = minY;
-        debugSelMaxY = maxY;
     }
 
     /// <summary>
@@ -830,33 +824,6 @@ public class RSBehavior : MonoBehaviour
             spriteRenderer.color = targetColor;
         }
     }
-
-    /// <summary>
-    /// デバッグ用に現在のコピー形状を保存します
-    /// </summary>
-    private void UpdateDebugSnapshot(List<RSHelper.CopiedRockData> offsets)
-    {
-        debugSnapshotOffsets.Clear();
-        debugSnapshotOffsets.AddRange(offsets);
-
-        if (offsets.Count == 0)
-        {
-            debugMinX = debugMaxX = debugMinY = debugMaxY = 0;
-            return;
-        }
-
-        debugMinX = debugMaxX = offsets[0].offset.x;
-        debugMinY = debugMaxY = offsets[0].offset.y;
-        foreach (var data in offsets)
-        {
-            Vector2Int o = data.offset;
-            if (o.x < debugMinX) debugMinX = o.x;
-            if (o.x > debugMaxX) debugMaxX = o.x;
-            if (o.y < debugMinY) debugMinY = o.y;
-            if (o.y > debugMaxY) debugMaxY = o.y;
-        }
-    }
-
 
     /// <summary>
     /// 現在のステージデータを取得します（ランタイムではDeepCopy済みを返す）
