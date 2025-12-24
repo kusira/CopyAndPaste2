@@ -17,17 +17,20 @@ public class StickyNotesGenerator : MonoBehaviour
     [SerializeField] private CurrentGameStatus currentGameStatus;
 
     [Header("Layout Settings")]
-    [Tooltip("最初のStickyNoteを配置するワールド座標")]
+    [Tooltip("最初のStickyNoteを配置するローカル座標（StickyNoteParentが指定されている場合はその親からの相対座標）")]
     [SerializeField] private Vector2 startPosition = new Vector2(-1.2f, 1.5f);
 
-    [Tooltip("横方向の間隔")]
-    [SerializeField] private float cellWidth = 2.4f; // -1.2 -> 1.2
+    [Tooltip("Itemどうしの間隔（X方向）")]
+    [SerializeField] private float itemSpaceX = 2.4f;
 
-    [Tooltip("縦方向の間隔（下方向が正）")]
-    [SerializeField] private float cellHeight = 3.0f; // 1.5 -> -1.5
+    [Tooltip("Itemどうしの間隔（Y方向）")]
+    [SerializeField] private float itemSpaceY = 3.0f;
 
-    [Tooltip("1行あたりの列数")]
-    [SerializeField] private int columns = 2;
+    [Tooltip("各StickyNoteのスケール（X, Y同じ）")]
+    [SerializeField] private float stickyNoteScale = 1.0f;
+
+    // 1行あたりの列数（固定値）
+    private const int columns = 2;
 
     private void Start()
     {
@@ -68,7 +71,7 @@ public class StickyNotesGenerator : MonoBehaviour
 
         int count = stageData.RSItems.Count;
 
-        // 親Transformを決定（未指定ならこのGameObject）
+        // 親Transformを決定
         Transform parent = stickyNoteParent != null ? stickyNoteParent : transform;
 
         for (int i = 0; i < count; i++)
@@ -77,12 +80,17 @@ public class StickyNotesGenerator : MonoBehaviour
             int row = i / Mathf.Max(1, columns);
             int col = i % Mathf.Max(1, columns);
 
-            float x = startPosition.x + col * cellWidth;
-            float y = startPosition.y - row * cellHeight;
+            // ローカル座標を計算
+            float x = startPosition.x + col * itemSpaceX;
+            float y = startPosition.y - row * itemSpaceY;
+            Vector3 localPos = new Vector3(x, y, 0f);
 
-            Vector3 pos = new Vector3(x, y, 0f);
-
-            GameObject note = Instantiate(stickyNotePrefab, pos, Quaternion.identity, parent);
+            // StickyNoteParentが指定されている場合は相対座標（ローカル座標）で配置
+            // 指定されていない場合はこのGameObjectを親として配置
+            GameObject note = Instantiate(stickyNotePrefab, parent);
+            note.transform.localPosition = localPos;
+            note.transform.localScale = Vector3.one * stickyNoteScale;
+            note.transform.localRotation = Quaternion.identity;
             note.name = $"StickyNote_{i}";
 
             // RSItemBehavior に論理サイズとインデックスを設定
@@ -120,9 +128,12 @@ public class StickyNotesGenerator : MonoBehaviour
 
     private void ClearChildren()
     {
-        for (int i = transform.childCount - 1; i >= 0; i--)
+        // 親Transformを決定
+        Transform parent = stickyNoteParent != null ? stickyNoteParent : transform;
+
+        for (int i = parent.childCount - 1; i >= 0; i--)
         {
-            var child = transform.GetChild(i);
+            var child = parent.GetChild(i);
             if (child != null)
             {
                 if (Application.isPlaying)

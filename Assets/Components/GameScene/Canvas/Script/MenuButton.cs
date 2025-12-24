@@ -49,19 +49,19 @@ public class MenuButton : MonoBehaviour
         if (!initialized) return;
         if (menuButton != null)
         {
-            menuButton.onClick.AddListener(OpenMenu);
+        menuButton.onClick.AddListener(OpenMenu);
         }
         if (closeButton != null)
         {
-            closeButton.onClick.AddListener(CloseMenu);
+        closeButton.onClick.AddListener(CloseMenu);
         }
 
         if (backdrop != null)
         {
-            var backdropButton = backdrop.GetComponent<Button>();
-            if (backdropButton != null)
-            {
-                backdropButton.onClick.AddListener(CloseMenu);
+        var backdropButton = backdrop.GetComponent<Button>();
+        if (backdropButton != null)
+        {
+            backdropButton.onClick.AddListener(CloseMenu);
             }
         }
     }
@@ -72,19 +72,19 @@ public class MenuButton : MonoBehaviour
         
         if (menuButton != null)
         {
-            menuButton.onClick.RemoveListener(OpenMenu);
+        menuButton.onClick.RemoveListener(OpenMenu);
         }
         if (closeButton != null)
         {
-            closeButton.onClick.RemoveListener(CloseMenu);
+        closeButton.onClick.RemoveListener(CloseMenu);
         }
 
         if (backdrop != null)
         {
-            var backdropButton = backdrop.GetComponent<Button>();
-            if (backdropButton != null)
-            {
-                backdropButton.onClick.RemoveListener(CloseMenu);
+        var backdropButton = backdrop.GetComponent<Button>();
+        if (backdropButton != null)
+        {
+            backdropButton.onClick.RemoveListener(CloseMenu);
             }
         }
     }
@@ -119,12 +119,12 @@ public class MenuButton : MonoBehaviour
             .OnComplete(() =>
             {
                 if (menuPanel != null)
-                {
-                    menuPanel.gameObject.SetActive(false);
+            {
+                menuPanel.gameObject.SetActive(false);
                 }
                 if (backdrop != null)
                 {
-                    backdrop.SetActive(false);
+                backdrop.SetActive(false);
                 }
             });
     }
