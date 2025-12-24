@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StageDatabase
   m_EditorClassIdentifier: Assembly-CSharp::StageDatabase
   stages:
-  - stageName: Stage 0
+  - stageName: Stage 1-1
     massStatus:
     - columns:
       - .
