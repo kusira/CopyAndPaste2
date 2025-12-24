@@ -120,7 +120,7 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     }
 
     /// <summary>
-    /// RSを生成します
+    /// RSを生成します（RSParentを親として配置）
     /// </summary>
     private void GenerateRS()
     {
@@ -137,8 +137,16 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
             existingSelector.CancelSelection();
         }
 
+        // RSParentを探す
+        Transform parent = FindRSParent();
+        if (parent == null)
+        {
+            Debug.LogWarning("RSParentが見つかりません");
+            return;
+        }
+
         // このオブジェクトのスケールからサイズを取得（論理サイズ優先）
-        float width, height;
+        int width, height;
         if (logicalSize.x > 0 && logicalSize.y > 0)
         {
             width = logicalSize.x;
@@ -146,33 +154,27 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
         }
         else
         {
-            width = transform.localScale.x;
-            height = transform.localScale.y;
+            width = Mathf.RoundToInt(transform.localScale.x);
+            height = Mathf.RoundToInt(transform.localScale.y);
         }
-        Vector3 targetScale = new Vector3(width, height, 1f);
-        
-        // RSParentをシーン内から検索
-        Transform parent = FindRSParent();
-        
-        // Itemの位置に生成する（直後にBehavior側でマウス追従が始まる）
-        // Parentがある場合はParent下に入れる
-        GameObject instance;
-        if (parent != null)
+
+        if (width <= 0 || height <= 0)
         {
-            instance = Instantiate(RSPrefab, parent);
+            Debug.LogWarning($"RSItemBehavior: 無効なサイズです (width={width}, height={height})");
+            return;
         }
-        else
-        {
-            instance = Instantiate(RSPrefab);
-        }
+
+        // RSParentを親としてRSを生成
+        GameObject instance = Instantiate(RSPrefab, parent);
         
         if (instance != null)
         {
-            // 位置を設定（取り急ぎItemと同じ位置）
-            instance.transform.position = transform.position;
+            // グリッドの中心（ローカル座標(0,0)）に配置
+            instance.transform.localPosition = Vector3.zero;
             
-            // 同じサイズにスケールを設定
-            instance.transform.localScale = targetScale;
+            // 論理サイズをそのままスケールに設定（gridScaleは無関係）
+            instance.transform.localScale = new Vector3(width, height, 1f);
+            instance.transform.localRotation = Quaternion.identity;
             instance.name = "RS";
 
             // Selectorに自身を登録
@@ -182,7 +184,7 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
                 behavior.SetSourceItem(this);
             }
             
-            Debug.Log($"RSを生成しました: サイズ({targetScale.x}, {targetScale.y})");
+            Debug.Log($"RSをグリッドに追加しました: サイズ({width}, {height})");
         }
     }
 
