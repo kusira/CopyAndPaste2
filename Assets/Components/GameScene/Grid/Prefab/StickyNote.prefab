@@ -423,7 +423,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
   RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
+  RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}
+  RSItemMasses: {fileID: 4399566794775994387}
   selection: {fileID: 6150345130779730232}
+  itemWidth: 0
+  itemHeight: 0
   itemIndex: -1
 --- !u!1 &6150345130779730232
 GameObject:

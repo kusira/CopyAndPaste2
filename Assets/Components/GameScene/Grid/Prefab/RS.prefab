@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4664865608225755667}
   - component: {fileID: 6039706494604441133}
-  - component: {fileID: -8662629293334482819}
+  - component: {fileID: 617340564057229764}
   m_Layer: 0
   m_Name: RS
   m_TagString: RS
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-8662629293334482819
+--- !u!114 &617340564057229764
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6544520345476898276}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f13de2f431a10f41b9adbf8a2871945, type: 3}
+  m_Script: {fileID: 11500000, guid: 38e910c42594bf44d9b9c3a0b698c0f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RSBehavior
   debugHasCopy: 0

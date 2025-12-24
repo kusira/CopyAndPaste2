@@ -104,6 +104,9 @@ public class StickyNotesGenerator : MonoBehaviour
                 // RSItemBehavior は (width, height) の順で受け取る
                 behavior.SetLogicalSize(w, h);
                 behavior.SetItemIndex(i);
+
+                // RSItemMassを生成
+                behavior.GenerateItemMasses();
             }
         }
 

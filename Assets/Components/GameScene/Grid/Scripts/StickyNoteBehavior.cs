@@ -14,9 +14,27 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     [Tooltip("RSのPrefabをアサインします")]
     [SerializeField] private GameObject RSPrefab;
 
+    [Tooltip("RSItemMassのPrefabをアサインします")]
+    [SerializeField] private GameObject RSItemMassPrefab;
+
+    [Header("Parents")]
+    [Tooltip("RSItemMassを配置する親GameObject（RSItemMasses）をアサインします")]
+    [SerializeField] private GameObject RSItemMasses;
+
     [Header("Selection")]
     [Tooltip("マウスホバー時に表示するSelectionオブジェクトをアサインします")]
     [SerializeField] private GameObject selection;
+    
+    [Header("Item Info")]
+    [Tooltip("アイテムの幅（W）")]
+    [SerializeField] private int itemWidth = 0;
+    
+    [Tooltip("アイテムの高さ（H）")]
+    [SerializeField] private int itemHeight = 0;
+
+    [Header("Grid Settings")]
+    [Tooltip("グリッド全体のスケール（デフォルト0.5倍）")]
+    [SerializeField] private float gridScale = 0.5f;
     
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
@@ -31,6 +49,9 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
         {
             selection.SetActive(false);
         }
+
+        // RSItemMassを生成
+        GenerateItemMasses();
     }
 
     /// <summary>
@@ -166,6 +187,109 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     }
 
     /// <summary>
+    /// RSItemMassesの中にRSItemMassをH×W個のグリッドで生成します
+    /// </summary>
+    public void GenerateItemMasses()
+    {
+        if (RSItemMassPrefab == null)
+        {
+            Debug.LogWarning("RSItemMassPrefabがアサインされていません");
+            return;
+        }
+
+        if (RSItemMasses == null)
+        {
+            Debug.LogWarning("RSItemMassesがアサインされていません");
+            return;
+        }
+
+        // 論理サイズを取得（H=height, W=width）
+        int width, height;
+        if (logicalSize.x > 0 && logicalSize.y > 0)
+        {
+            width = logicalSize.x;  // W
+            height = logicalSize.y; // H
+        }
+        else
+        {
+            width = Mathf.RoundToInt(transform.localScale.x);
+            height = Mathf.RoundToInt(transform.localScale.y);
+        }
+
+        if (width <= 0 || height <= 0)
+        {
+            Debug.LogWarning($"RSItemBehavior: 無効なサイズです (width={width}, height={height})");
+            return;
+        }
+
+        Transform parent = RSItemMasses.transform;
+
+        // 既存の子をクリア
+        ClearRSItemMassesChildren(parent);
+
+        // グリッドで敷き詰める（各マスのサイズは1.0と仮定）
+        float cellSize = 1.0f;
+        float scaledCellSize = cellSize * gridScale;
+        int totalCount = height * width; // H × W
+
+        // グリッド全体のサイズを計算
+        float gridWidth = width * scaledCellSize;
+        float gridHeight = height * scaledCellSize;
+
+        // グリッドの中心が(0,0)になるように、左上の位置を計算
+        float offsetX = -gridWidth / 2f + scaledCellSize / 2f;
+        float offsetY = gridHeight / 2f - scaledCellSize / 2f;
+
+        for (int i = 0; i < totalCount; i++)
+        {
+            // グリッド上の行・列を計算（左上から右→下の順）
+            int row = i / width;
+            int col = i % width;
+
+            // ローカル座標を計算（グリッドの中心が(0,0)になるようにオフセット）
+            float x = offsetX + col * scaledCellSize;
+            float y = offsetY - row * scaledCellSize;
+            Vector3 localPos = new Vector3(x, y, 0f);
+
+            // RSItemMassを生成
+            GameObject mass = Instantiate(RSItemMassPrefab, parent);
+            mass.transform.localPosition = localPos;
+            mass.transform.localScale = Vector3.one * gridScale;
+            mass.transform.localRotation = Quaternion.identity;
+            mass.name = $"RSItemMass_{row}_{col}";
+        }
+
+        Debug.Log($"RSItemMassを {totalCount} 個生成しました (H={height}, W={width})");
+    }
+
+    /// <summary>
+    /// RSItemMasses配下の子を全破棄します
+    /// </summary>
+    private void ClearRSItemMassesChildren(Transform parent)
+    {
+        if (parent == null)
+        {
+            return;
+        }
+
+        for (int i = parent.childCount - 1; i >= 0; i--)
+        {
+            var child = parent.GetChild(i);
+            if (child != null)
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(child.gameObject);
+                }
+                else
+                {
+                    DestroyImmediate(child.gameObject);
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// 指定フレーム待ってからRSを生成します
     /// </summary>
     private System.Collections.IEnumerator GenerateSelectorAfterFrames(int waitFrames)
@@ -186,6 +310,8 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     public void SetLogicalSize(int width, int height)
     {
         logicalSize = new Vector2Int(width, height);
+        itemWidth = width;
+        itemHeight = height;
     }
 
     /// <summary>
