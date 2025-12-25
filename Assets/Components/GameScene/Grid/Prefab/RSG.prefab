@@ -434,6 +434,7 @@ MonoBehaviour:
   selectionRT: {fileID: 1671452532271192144}
   selectionLB: {fileID: 8096952087035709573}
   selectionRB: {fileID: 6240161179255765007}
+  gravityArrow: {fileID: 6958314460248222237}
 --- !u!1 &6958314460248222237
 GameObject:
   m_ObjectHideFlags: 0

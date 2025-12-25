@@ -43,11 +43,15 @@ public class RSGBehavior : MonoBehaviour
     [Tooltip("右下のSelectionオブジェクトをアサインします")]
     [SerializeField] private GameObject selectionRB;
 
+    [Tooltip("重力方向を示す矢印オブジェクトをアサインします")]
+    [SerializeField] private GameObject gravityArrow;
+
     // 各Selectionの初期スケール（元の大きさ）
     private Vector3 initialScaleLT = Vector3.one;
     private Vector3 initialScaleRT = Vector3.one;
     private Vector3 initialScaleLB = Vector3.one;
     private Vector3 initialScaleRB = Vector3.one;
+    private Vector3 initialScaleGravityArrow = Vector3.one;
 
     private void Start()
     {
@@ -84,6 +88,10 @@ public class RSGBehavior : MonoBehaviour
         if (selectionRB != null)
         {
             initialScaleRB = selectionRB.transform.localScale;
+        }
+        if (gravityArrow != null)
+        {
+            initialScaleGravityArrow = gravityArrow.transform.localScale;
         }
 
         // RSGをグリッドの中央に配置（SetupSelectionCorners()も内部で呼ばれる）
@@ -133,6 +141,12 @@ public class RSGBehavior : MonoBehaviour
 
         // SelectionのサイズをRSGのサイズの逆数に設定
         UpdateSelectionSizes();
+
+        // GravityArrowをRSGの中心に配置
+        if (gravityArrow != null)
+        {
+            gravityArrow.transform.position = center;
+        }
     }
 
     /// <summary>
@@ -161,6 +175,24 @@ public class RSGBehavior : MonoBehaviour
         if (selectionRB != null)
         {
             selectionRB.transform.localScale = new Vector3(initialScaleRB.x * invX, initialScaleRB.y * invY, initialScaleRB.z);
+        }
+
+        // GravityArrowのサイズも更新（RSGのサイズの逆数）
+        // 回転インデックスが1または3の時（90度または270度）、xとyを入れ替える
+        if (gravityArrow != null)
+        {
+            int rot = ((rotationIndex % 4) + 4) % 4;
+            float gravityInvX = invX;
+            float gravityInvY = invY;
+            
+            if (rot == 1 || rot == 3)
+            {
+                // 90度または270度の時、xとyを入れ替え
+                gravityInvX = invY;
+                gravityInvY = invX;
+            }
+            
+            gravityArrow.transform.localScale = new Vector3(initialScaleGravityArrow.x * gravityInvX, initialScaleGravityArrow.y * gravityInvY, initialScaleGravityArrow.z);
         }
     }
 
@@ -592,6 +624,13 @@ public class RSGBehavior : MonoBehaviour
 
         // 回転自体は常に0
         transform.rotation = Quaternion.identity;
+
+        // GravityArrowの回転を更新（回転インデックスに応じてZ軸回転）
+        if (gravityArrow != null)
+        {
+            float rotationZ = rot * 90f; // 0°, 90°, 180°, 270°
+            gravityArrow.transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
+        }
 
         // Selectionの位置とサイズを更新
         SetupSelectionCorners();
