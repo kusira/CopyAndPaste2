@@ -27,7 +27,20 @@ public class StickyNotesGenerator : MonoBehaviour
     [SerializeField] private float itemSpaceY = 3.0f;
 
     [Tooltip("各StickyNoteのスケール（X, Y同じ）")]
-    [SerializeField] private float stickyNoteScale = 1.0f;
+    [SerializeField] private float stickyNoteScale = 0.9f;
+
+    [Header("Layout Settings (5-6 Items)")]
+    [Tooltip("アイテム数が5または6の場合の開始位置")]
+    [SerializeField] private Vector2 startPositionFor5Or6 = new Vector2(-1.1f, 1.85f);
+
+    [Tooltip("アイテム数が5または6の場合のItemどうしの間隔（X方向）")]
+    [SerializeField] private float itemSpaceXFor5Or6 = 2.2f;
+
+    [Tooltip("アイテム数が5または6の場合のItemどうしの間隔（Y方向）")]
+    [SerializeField] private float itemSpaceYFor5Or6 = 2.6f;
+
+    [Tooltip("アイテム数が5または6の場合の各StickyNoteのスケール（X, Y同じ）")]
+    [SerializeField] private float stickyNoteScaleFor5Or6 = 0.8f;
 
     // 1行あたりの列数（固定値）
     private const int columns = 2;
@@ -71,6 +84,20 @@ public class StickyNotesGenerator : MonoBehaviour
 
         int count = stageData.RSItems.Count;
 
+        // アイテム数に応じてパラメータを設定
+        Vector2 actualStartPosition = startPosition;
+        float actualItemSpaceX = itemSpaceX;
+        float actualItemSpaceY = itemSpaceY;
+        float actualStickyNoteScale = stickyNoteScale;
+
+        if (count == 5 || count == 6)
+        {
+            actualStartPosition = startPositionFor5Or6;
+            actualItemSpaceX = itemSpaceXFor5Or6;
+            actualItemSpaceY = itemSpaceYFor5Or6;
+            actualStickyNoteScale = stickyNoteScaleFor5Or6;
+        }
+
         // 親Transformを決定
         Transform parent = stickyNoteParent != null ? stickyNoteParent : transform;
 
@@ -81,15 +108,15 @@ public class StickyNotesGenerator : MonoBehaviour
             int col = i % Mathf.Max(1, columns);
 
             // ローカル座標を計算
-            float x = startPosition.x + col * itemSpaceX;
-            float y = startPosition.y - row * itemSpaceY;
+            float x = actualStartPosition.x + col * actualItemSpaceX;
+            float y = actualStartPosition.y - row * actualItemSpaceY;
             Vector3 localPos = new Vector3(x, y, 0f);
 
             // StickyNoteParentが指定されている場合は相対座標（ローカル座標）で配置
             // 指定されていない場合はこのGameObjectを親として配置
             GameObject note = Instantiate(stickyNotePrefab, parent);
             note.transform.localPosition = localPos;
-            note.transform.localScale = Vector3.one * stickyNoteScale;
+            note.transform.localScale = Vector3.one * actualStickyNoteScale;
             note.transform.localRotation = Quaternion.identity;
             note.name = $"StickyNote_{i}";
 
