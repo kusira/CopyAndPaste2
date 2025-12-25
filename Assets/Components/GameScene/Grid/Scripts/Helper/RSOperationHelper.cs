@@ -360,6 +360,160 @@ public static class RSHelper
 
         return destroyedCount;
     }
+
+    /// <summary>
+    /// 指定範囲内のRockを下に詰めます（重力で落ちるように）
+    /// 各列ごとに処理し、途中でMassがない場所があったら止まります
+    /// </summary>
+    /// <param name="stageData">ステージデータ</param>
+    /// <param name="minX">範囲の最小X座標（グリッドインデックス）</param>
+    /// <param name="minY">範囲の最小Y座標（グリッドインデックス）</param>
+    /// <param name="maxX">範囲の最大X座標（グリッドインデックス）</param>
+    /// <param name="maxY">範囲の最大Y座標（グリッドインデックス）</param>
+    /// <param name="gridParentPosition">グリッド親のワールド座標</param>
+    /// <param name="gridOffset">グリッドオフセット</param>
+    public static void ApplyGravityToRocksInRange(
+        StageDatabase.StageData stageData,
+        int minX, int minY, int maxX, int maxY,
+        Vector3 gridParentPosition, Vector3 gridOffset)
+    {
+        if (stageData == null || stageData.rockStatus == null || stageData.massStatus == null)
+        {
+            return;
+        }
+
+        List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
+        List<StageDatabase.RowData> massStatus = stageData.massStatus;
+
+        // 各列ごとに処理
+        for (int x = minX; x <= maxX; x++)
+        {
+            // この列の範囲内（minYからmaxY）のRockを収集
+            List<string> rocksInColumn = new List<string>();
+            for (int y = minY; y <= maxY; y++)
+            {
+                if (y >= rockStatus.Count || rockStatus[y] == null || rockStatus[y].columns == null)
+                {
+                    continue;
+                }
+                if (x >= rockStatus[y].columns.Count)
+                {
+                    continue;
+                }
+
+                string cellValue = rockStatus[y].columns[x] ?? "";
+                char baseChar;
+                List<string> keys = new List<string>();
+                ParseCell(cellValue, out baseChar, keys);
+
+                if (baseChar == '#')
+                {
+                    rocksInColumn.Add(cellValue); // Rockの値を保存（パターン情報も含む）
+                    // 元の位置をクリア
+                    rockStatus[y].columns[x] = "0";
+                }
+            }
+
+            if (rocksInColumn.Count == 0)
+            {
+                continue; // この列にRockがない場合はスキップ
+            }
+
+            // 下から上に走査して、Rockを配置する位置を決定
+            // まず、この列の範囲内で配置可能な位置（Massがあり、Rockがない）を下から順にリストアップ
+            List<int> availablePositions = new List<int>();
+            for (int y = maxY; y >= minY; y--)
+            {
+                // MassStatusをチェック（Massがない場所があったら止まる）
+                if (y >= massStatus.Count || massStatus[y] == null || massStatus[y].columns == null)
+                {
+                    break; // MassStatusが存在しない場合は止まる
+                }
+                if (x >= massStatus[y].columns.Count)
+                {
+                    break; // 範囲外の場合は止まる
+                }
+
+                string massValue = massStatus[y].columns[x] ?? "";
+                char massBaseChar;
+                List<string> massKeys = new List<string>();
+                ParseCell(massValue, out massBaseChar, massKeys);
+
+                // Mass（'.'）がない場合は止まる
+                if (massBaseChar != '.')
+                {
+                    break;
+                }
+
+                // この位置に既にRockがないかチェック
+                bool hasRock = false;
+                if (y < rockStatus.Count && rockStatus[y] != null && rockStatus[y].columns != null &&
+                    x < rockStatus[y].columns.Count)
+                {
+                    string existingRock = rockStatus[y].columns[x] ?? "";
+                    char existingBaseChar;
+                    List<string> existingKeys = new List<string>();
+                    ParseCell(existingRock, out existingBaseChar, existingKeys);
+                    hasRock = (existingBaseChar == '#');
+                }
+
+                // Rockがない位置のみ追加
+                if (!hasRock)
+                {
+                    availablePositions.Add(y);
+                }
+            }
+
+            // 収集したRockを下から順に配置
+            int rockIndex = 0;
+            for (int i = 0; i < availablePositions.Count && rockIndex < rocksInColumn.Count; i++)
+            {
+                int y = availablePositions[i];
+
+                // 行と列が存在することを確認
+                if (y >= rockStatus.Count)
+                {
+                    while (rockStatus.Count <= y)
+                    {
+                        rockStatus.Add(new StageDatabase.RowData());
+                    }
+                }
+                if (rockStatus[y] == null)
+                {
+                    rockStatus[y] = new StageDatabase.RowData();
+                }
+                if (rockStatus[y].columns == null)
+                {
+                    rockStatus[y].columns = new List<string>();
+                }
+                while (rockStatus[y].columns.Count <= x)
+                {
+                    rockStatus[y].columns.Add("0");
+                }
+
+                // Rockを配置
+                rockStatus[y].columns[x] = rocksInColumn[rockIndex];
+                rockIndex++;
+            }
+        }
+
+        // シーン上のRockオブジェクトを更新（一度全て削除してから再生成）
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+        foreach (GameObject rock in rocks)
+        {
+            if (rock == null) continue;
+
+            // Rockの位置をグリッドインデックスに変換
+            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset);
+
+            // 範囲内にあるRockは削除（再生成時に正しい位置に配置される）
+            if (rockGridIndex.x >= minX && rockGridIndex.x <= maxX &&
+                rockGridIndex.y >= minY && rockGridIndex.y <= maxY)
+            {
+                Object.Destroy(rock);
+            }
+        }
+    }
 }
 
 

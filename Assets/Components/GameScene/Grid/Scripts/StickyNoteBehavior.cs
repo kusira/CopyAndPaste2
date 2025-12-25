@@ -226,7 +226,7 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             return;
         }
 
-        // 既存のRSまたはRSPがあれば、選択をキャンセルしてから新しいものを生成（常に1つだけにする）
+        // 既存のRS、RSP、またはRSGがあれば、選択をキャンセルしてから新しいものを生成（常に1つだけにする）
         var existingSelector = Object.FindFirstObjectByType<RSBehavior>();
         if (existingSelector != null)
         {
@@ -236,6 +236,11 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
         if (existingRSPSelector != null)
         {
             existingRSPSelector.CancelSelection();
+        }
+        var existingRSGSelector = Object.FindFirstObjectByType<RSGBehavior>();
+        if (existingRSGSelector != null)
+        {
+            existingRSGSelector.CancelSelection();
         }
 
         // RSParentまたはRSPParentを探す（タイプに応じて）
@@ -279,8 +284,7 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             instance.transform.localRotation = Quaternion.identity;
             instance.name = "RS";
 
-            // Selectorに自身を登録（タイプに応じてRSBehaviorまたはRSPBehavior）
-            // PickaxeタイプはRSPBehavior、Normal/GravityタイプはRSBehaviorを使用
+            // Selectorに自身を登録（タイプに応じてRSBehavior、RSPBehavior、またはRSGBehaviorを使用）
             if (itemType == StageDatabase.RSItemType.Pickaxe)
             {
                 var rspBehavior = instance.GetComponent<RSPBehavior>();
@@ -289,10 +293,17 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
                     rspBehavior.SetSourceItem(this);
                 }
             }
+            else if (itemType == StageDatabase.RSItemType.Gravity)
+            {
+                var rsgBehavior = instance.GetComponent<RSGBehavior>();
+                if (rsgBehavior != null)
+                {
+                    rsgBehavior.SetSourceItem(this);
+                }
+            }
             else
             {
-                // NormalタイプとGravityタイプはRSBehaviorを使用
-                // （将来的にGravity専用のBehaviorが必要な場合はここを修正）
+                // NormalタイプはRSBehaviorを使用
                 var behavior = instance.GetComponent<RSBehavior>();
                 if (behavior != null)
                 {
