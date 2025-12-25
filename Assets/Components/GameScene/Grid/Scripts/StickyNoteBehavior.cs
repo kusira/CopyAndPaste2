@@ -299,13 +299,10 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
     /// </summary>
     private void UpdateUIForNoSelection()
     {
-        // すべてのUIを非アクティブにする
+        // LeftClickIconとLeftClickTextのみを非アクティブにする
         if (leftClickIcon != null) leftClickIcon.SetActive(false);
         if (leftClickText != null) leftClickText.gameObject.SetActive(false);
-        if (rightClickIcon != null) rightClickIcon.SetActive(false);
-        if (rightClickText != null) rightClickText.gameObject.SetActive(false);
-        if (mouseWheelIcon != null) mouseWheelIcon.SetActive(false);
-        if (mouseWheelText != null) mouseWheelText.gameObject.SetActive(false);
+        // RightClickIcon、RightClickText、MauseWheelIcon、MauseWheelTextは常に表示
 
         // LeftClickIconとLeftClickTextのY座標を0に設定
         if (leftClickIcon != null)

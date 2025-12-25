@@ -433,6 +433,9 @@ MonoBehaviour:
   selectionRT: {fileID: 1671452532271192144}
   selectionLB: {fileID: 8096952087035709573}
   selectionRB: {fileID: 6240161179255765007}
+  leftClickText: "\u7834\u58CA"
+  rightClickText: "\u30AD\u30E3\u30F3\u30BB\u30EB"
+  mouseWheelText: "\u56DE\u8EE2"
 --- !u!1 &8096952087035709573
 GameObject:
   m_ObjectHideFlags: 0
