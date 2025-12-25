@@ -352,9 +352,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 107719662464910289}
   - {fileID: 6977481401452362127}
   - {fileID: 3349847323185107585}
+  - {fileID: 107719662464910289}
   - {fileID: 4249194333395909178}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -431,6 +431,7 @@ MonoBehaviour:
   dashLinePrefab: {fileID: 2669778957739458681, guid: ce4b24a1bc8245c4c80309e758de92d6, type: 3}
   invalidColor: {r: 1, g: 0, b: 0, a: 1}
   previewAlpha: 0.3
+  invalidAlpha: 0.3
   selectionLT: {fileID: 6510291865257567780}
   selectionRT: {fileID: 1671452532271192144}
   selectionLB: {fileID: 8096952087035709573}
