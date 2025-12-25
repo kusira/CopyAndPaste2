@@ -127,8 +127,8 @@ public class StageDatabaseEditor : Editor
         if (gridWidth != currentWidth || gridHeight != currentHeight)
         {
             Undo.RecordObject(database, "グリッドサイズを変更");
-            ResizeGrid(stageData.massStatus, gridWidth, gridHeight);
-            ResizeGrid(stageData.rockStatus, gridWidth, gridHeight);
+            ResizeGrid(stageData.massStatus, gridWidth, gridHeight, true); // MassStatusは"."で埋める
+            ResizeGrid(stageData.rockStatus, gridWidth, gridHeight, false); // RockStatusは空文字列
             EditorUtility.SetDirty(database);
             RefreshGrid();
         }
@@ -153,14 +153,14 @@ public class StageDatabaseEditor : Editor
         if (GUILayout.Button("MassStatusをクリア"))
         {
             Undo.RecordObject(database, "MassStatusをクリア");
-            ClearGrid(stageData.massStatus);
+            ClearGrid(stageData.massStatus, true); // MassStatusは"."で埋める
             EditorUtility.SetDirty(database);
             RefreshGrid();
         }
         if (GUILayout.Button("RockStatusをクリア"))
         {
             Undo.RecordObject(database, "RockStatusをクリア");
-            ClearGrid(stageData.rockStatus);
+            ClearGrid(stageData.rockStatus, false); // RockStatusは空文字列
             EditorUtility.SetDirty(database);
             RefreshGrid();
         }
@@ -353,7 +353,7 @@ public class StageDatabaseEditor : Editor
             MessageType.Info);
     }
 
-    private void ResizeGrid(List<StageDatabase.RowData> grid, int width, int height)
+    private void ResizeGrid(List<StageDatabase.RowData> grid, int width, int height, bool fillWithDot = false)
     {
         // 高さの調整
         while (grid.Count < height)
@@ -376,9 +376,20 @@ public class StageDatabaseEditor : Editor
             {
                 grid[h].columns = new List<string>();
             }
+            
+            // 既存のセルが空文字列の場合は、fillWithDotがtrueなら"."で埋める
+            for (int w = 0; w < grid[h].columns.Count; w++)
+            {
+                if (fillWithDot && string.IsNullOrEmpty(grid[h].columns[w]))
+                {
+                    grid[h].columns[w] = ".";
+                }
+            }
+            
+            // 幅が足りない場合は追加
             while (grid[h].columns.Count < width)
             {
-                grid[h].columns.Add("");
+                grid[h].columns.Add(fillWithDot ? "." : "");
             }
             while (grid[h].columns.Count > width)
             {
@@ -387,7 +398,7 @@ public class StageDatabaseEditor : Editor
         }
     }
 
-    private void ClearGrid(List<StageDatabase.RowData> grid)
+    private void ClearGrid(List<StageDatabase.RowData> grid, bool fillWithDot = false)
     {
         for (int h = 0; h < grid.Count; h++)
         {
@@ -395,7 +406,7 @@ public class StageDatabaseEditor : Editor
             {
                 for (int w = 0; w < grid[h].columns.Count; w++)
                 {
-                    grid[h].columns[w] = "";
+                    grid[h].columns[w] = fillWithDot ? "." : "";
                 }
             }
         }

@@ -26,6 +26,11 @@ public class GridGenerator : MonoBehaviour
 
     [Tooltip("ステージデータベース。ここからステージデータを取得します")]
     [SerializeField] private StageDatabase stageDatabase;
+
+    [Header("GridFrame Settings")]
+    [Tooltip("GridFrameのSizeに加算するオフセット値（Width, Height）")]
+    [SerializeField] private Vector2 gridFrameSizeOffset = Vector2.zero;
+
     private void Start()
     {
         GenerateGrid();
@@ -386,20 +391,17 @@ public class GridGenerator : MonoBehaviour
     {
         if (gridFrame == null) return;
 
-        // グリッド部分の比率: (860 - 120) / 860 = 740 / 860
-        const float gridRatio = 740f / 860f;
-        
-        // 全体のサイズ = グリッドサイズ / グリッド比率
-        // 上下左右にアウトラインがあるので、全体サイズはグリッドサイズより大きくなる
-        float totalWidth = gridWidth / gridRatio;
-        float totalHeight = gridHeight / gridRatio;
+        // Width = グリッドの横幅 + オフセット
+        // Height = グリッドの縦幅 + オフセット
+        float totalWidth = gridWidth + gridFrameSizeOffset.x;
+        float totalHeight = gridHeight + gridFrameSizeOffset.y;
 
         // RectTransformがある場合はSizeDeltaを変更
         RectTransform rectTransform = gridFrame.GetComponent<RectTransform>();
         if (rectTransform != null)
         {
             rectTransform.sizeDelta = new Vector2(totalWidth, totalHeight);
-            Debug.Log($"GridFrameのサイズを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight})");
+            Debug.Log($"GridFrameのサイズを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight}, オフセット: {gridFrameSizeOffset})");
             return;
         }
 
@@ -412,13 +414,13 @@ public class GridGenerator : MonoBehaviour
             
             // SizeプロパティでWidthとHeightを直接設定
             spriteRenderer.size = new Vector2(totalWidth, totalHeight);
-            Debug.Log($"GridFrameのサイズを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight})");
+            Debug.Log($"GridFrameのサイズを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight}, オフセット: {gridFrameSizeOffset})");
             return;
         }
 
         // TransformのScaleを直接変更（デフォルト）
         gridFrame.transform.localScale = new Vector3(totalWidth, totalHeight, 1f);
-        Debug.Log($"GridFrameのスケールを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight})");
+        Debug.Log($"GridFrameのスケールを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight}, オフセット: {gridFrameSizeOffset})");
     }
 }
 
