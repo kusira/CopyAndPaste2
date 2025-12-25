@@ -226,6 +226,7 @@ public class RSPBehavior : MonoBehaviour
         StageDatabase.StageData stageData = GetStageData();
         var (width, height, parentPos, offset) = RSGridHelper.GetGridInfo(gridGenerator, stageData);
         
+        gridWidth = width;
         gridHeight = height;
         gridParentPosition = parentPos;
         gridOffset = offset;
@@ -272,14 +273,13 @@ public class RSPBehavior : MonoBehaviour
             Mathf.RoundToInt(centerY), 
             transform.position.z, 
             gridParentPosition, 
-            gridOffset,
-            gridScale);
+            gridOffset);
 
         // RSPのサイズを考慮してスナップ
-        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
+        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH);
 
         // グリッド範囲内に収まるようにクランプ
-        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
+        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH);
 
         // Selectionの位置も更新
         SetupSelectionCorners();
@@ -305,7 +305,7 @@ public class RSPBehavior : MonoBehaviour
         mouseWorldPosition.z = transform.position.z;
 
         // マウスがグリッド内にあるかチェック
-        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset, gridScale);
+        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset);
         bool isMouseInGrid = mouseGridIndex.x >= 0 && mouseGridIndex.x < gridWidth && 
                             mouseGridIndex.y >= 0 && mouseGridIndex.y < gridHeight;
 
@@ -640,7 +640,7 @@ public class RSPBehavior : MonoBehaviour
         }
 
         // 現在の中心セル
-        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset);
+        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset, gridScale);
         int centerX = centerIndex.x;
         int centerY = centerIndex.y;
 
@@ -777,7 +777,7 @@ public class RSPBehavior : MonoBehaviour
         }
 
         // 現在の中心セル
-        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset, gridScale);
+        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset);
         int centerX = centerIndex.x;
         int centerY = centerIndex.y;
 

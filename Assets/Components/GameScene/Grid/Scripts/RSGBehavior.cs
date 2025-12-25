@@ -244,6 +244,7 @@ public class RSGBehavior : MonoBehaviour
         StageDatabase.StageData stageData = GetStageData();
         var (width, height, parentPos, offset) = RSGridHelper.GetGridInfo(gridGenerator, stageData);
         
+        gridWidth = width;
         gridHeight = height;
         gridParentPosition = parentPos;
         gridOffset = offset;
@@ -290,14 +291,13 @@ public class RSGBehavior : MonoBehaviour
             Mathf.RoundToInt(centerY), 
             transform.position.z, 
             gridParentPosition, 
-            gridOffset,
-            gridScale);
+            gridOffset);
 
         // RSGのサイズを考慮してスナップ
-        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
+        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH);
 
         // グリッド範囲内に収まるようにクランプ
-        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
+        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH);
 
         // Selectionの位置も更新
         SetupSelectionCorners();
@@ -323,7 +323,7 @@ public class RSGBehavior : MonoBehaviour
         mouseWorldPosition.z = transform.position.z;
 
         // マウスがグリッド内にあるかチェック
-        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset, gridScale);
+        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset);
         bool isMouseInGrid = mouseGridIndex.x >= 0 && mouseGridIndex.x < gridWidth && 
                             mouseGridIndex.y >= 0 && mouseGridIndex.y < gridHeight;
 
