@@ -19,6 +19,7 @@ public class RSGBehavior : MonoBehaviour
     private int gridHeight = 0;
     private Vector3 gridParentPosition;
     private Vector3 gridOffset;
+    private float gridScale = 1.0f;
 
     private Vector3 initialScale;
     private bool shouldFollowMouse = false; // マウス追跡を開始するかどうか
@@ -243,10 +244,25 @@ public class RSGBehavior : MonoBehaviour
         StageDatabase.StageData stageData = GetStageData();
         var (width, height, parentPos, offset) = RSGridHelper.GetGridInfo(gridGenerator, stageData);
         
-        gridWidth = width;
         gridHeight = height;
         gridParentPosition = parentPos;
         gridOffset = offset;
+
+        // scaleを更新
+        Transform massParent = null;
+        if (gridGenerator != null)
+        {
+            FieldInfo massParentField = typeof(GridGenerator).GetField("massParent", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (massParentField != null)
+            {
+                Transform t = (Transform)massParentField.GetValue(gridGenerator);
+                massParent = t != null ? t : gridGenerator.transform;
+            }
+        }
+        if (massParent != null) 
+        { 
+            gridScale = massParent.lossyScale.x; 
+        }
     }
 
     /// <summary>
@@ -274,13 +290,14 @@ public class RSGBehavior : MonoBehaviour
             Mathf.RoundToInt(centerY), 
             transform.position.z, 
             gridParentPosition, 
-            gridOffset);
+            gridOffset,
+            gridScale);
 
         // RSGのサイズを考慮してスナップ
-        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH);
+        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
 
         // グリッド範囲内に収まるようにクランプ
-        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH);
+        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
 
         // Selectionの位置も更新
         SetupSelectionCorners();
@@ -306,7 +323,7 @@ public class RSGBehavior : MonoBehaviour
         mouseWorldPosition.z = transform.position.z;
 
         // マウスがグリッド内にあるかチェック
-        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset);
+        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset, gridScale);
         bool isMouseInGrid = mouseGridIndex.x >= 0 && mouseGridIndex.x < gridWidth && 
                             mouseGridIndex.y >= 0 && mouseGridIndex.y < gridHeight;
 
@@ -330,10 +347,10 @@ public class RSGBehavior : MonoBehaviour
         int selectorW = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
         int selectorH = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
         
-        Vector3 snappedPosition = RSGridHelper.SnapToGrid(snapperTarget, gridParentPosition, gridOffset, selectorW, selectorH);
+        Vector3 snappedPosition = RSGridHelper.SnapToGrid(snapperTarget, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
 
         // グリッド範囲内に収まるようにクランプ
-        transform.position = RSGridHelper.ClampToGrid(snappedPosition, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH);
+        transform.position = RSGridHelper.ClampToGrid(snappedPosition, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
 
         // 選択矩形をデバッグ更新
         UpdateSelectionBoundsFromTransform();
@@ -442,7 +459,7 @@ public class RSGBehavior : MonoBehaviour
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
 
         // RSGの中心セルを計算
-        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset);
+        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
         var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
 
         Debug.Log($"重力適用範囲: ({minX}, {minY}) ～ ({maxX}, {maxY})");
@@ -528,7 +545,7 @@ public class RSGBehavior : MonoBehaviour
             if (rock == null) continue;
 
             // Rockの位置をグリッドインデックスに変換
-            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset);
+            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset, gridScale);
 
             // 範囲内にあるかチェック（範囲内のすべてのRockを対象とする）
             if (rockGridIndex.x < minX || rockGridIndex.x > maxX ||
@@ -552,7 +569,8 @@ public class RSGBehavior : MonoBehaviour
                 toPosition.y,
                 0f,
                 gridParentPosition,
-                gridOffset);
+                gridOffset,
+                gridScale);
 
             // アニメーション中のRockとして登録
             animatingRocks.Add(rock);
@@ -678,7 +696,7 @@ public class RSGBehavior : MonoBehaviour
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
 
         // 中心座標（GridGeneratorの座標系に合わせる）
-        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset);
+        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
 
         var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
     }
@@ -739,9 +757,10 @@ public class RSGBehavior : MonoBehaviour
         return RSRotationHelper.CalculatePivotBasedShift(
             rotationStep,
             rotationIndex,
-            new Vector2Int(selWidth, selHeight),
+             new Vector2Int(selWidth, selHeight),
             transform.position,
-            mouseWorldPos);
+            mouseWorldPos,
+            gridScale);
     }
 
     /// <summary>

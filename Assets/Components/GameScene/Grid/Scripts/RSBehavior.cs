@@ -13,6 +13,7 @@ public class RSBehavior : MonoBehaviour
     private int gridHeight = 0;
     private Vector3 gridParentPosition;
     private Vector3 gridOffset;
+    private float gridScale = 1.0f;
 
     // コピーされたRockパターン（中心からのオフセット）
     private readonly List<RSHelper.CopiedRockData> copiedOffsets = new List<RSHelper.CopiedRockData>();
@@ -254,6 +255,22 @@ public class RSBehavior : MonoBehaviour
         gridHeight = height;
         gridParentPosition = parentPos;
         gridOffset = offset;
+
+        // scaleを更新
+        Transform massParent = null;
+        if (gridGenerator != null)
+        {
+            FieldInfo massParentField = typeof(GridGenerator).GetField("massParent", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (massParentField != null)
+            {
+                Transform t = (Transform)massParentField.GetValue(gridGenerator);
+                massParent = t != null ? t : gridGenerator.transform;
+            }
+        }
+        if (massParent != null) 
+        { 
+            gridScale = massParent.lossyScale.x; 
+        }
     }
 
     /// <summary>
@@ -339,11 +356,11 @@ public class RSBehavior : MonoBehaviour
         int selectorW = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
         int selectorH = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
         
-        Vector3 snappedPosition = RSGridHelper.SnapToGrid(snapperTarget, gridParentPosition, gridOffset, selectorW, selectorH);
+        Vector3 snappedPosition = RSGridHelper.SnapToGrid(snapperTarget, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
 
         // グリッドの範囲内かチェック
         // グリッド範囲内に収まるようにクランプ
-        transform.position = RSGridHelper.ClampToGrid(snappedPosition, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH);
+        transform.position = RSGridHelper.ClampToGrid(snappedPosition, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
 
         // 選択矩形をデバッグ更新（コピー状態に依存せず常に）
         UpdateSelectionBoundsFromTransform();
@@ -522,16 +539,20 @@ public class RSBehavior : MonoBehaviour
         copiedSize = new Vector2Int(canonicalW, canonicalH);
         dragOffset = Vector3.zero; // コピー時にオフセットはリセット
 
-        // RSの中心がどのセルかを計算
-        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset);
-        int centerX = centerIndex.x;
-        int centerY = centerIndex.y;
+        // RangeSelectorの中心がどのセルかを計算
+        Vector3 localPos = transform.position - gridParentPosition;
+        // Helperを使用して計算（スケール考慮）
+        Vector2 gridCenter = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
+        float floatCenterX = gridCenter.x;
+        float floatCenterY = gridCenter.y;
+        
+        int centerX = Mathf.FloorToInt(floatCenterX + 0.5f);
+        int centerY = Mathf.FloorToInt(floatCenterY + 0.5f);
 
-        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset);
-        Debug.Log($"コピー開始: RS位置({transform.position.x}, {transform.position.y}), 中心セル({centerX}, {centerY}), サイズ({selWidth}, {selHeight})");
+        Debug.Log($"コピー開始: RS位置({transform.position.x}, {transform.position.y}), ローカル位置({localPos.x}, {localPos.y}), オフセット({gridOffset.x}, {gridOffset.y}), 中心セル({centerX}, {centerY}), サイズ({selWidth}, {selHeight})");
 
         // 選択範囲の矩形（グリッドインデックス）
-        var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
+        var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(floatCenterX, floatCenterY, selWidth, selHeight);
 
         Debug.Log($"コピー範囲: ({minX}, {minY}) ～ ({maxX}, {maxY})");
 
@@ -608,7 +629,7 @@ public class RSBehavior : MonoBehaviour
         }
 
         // 現在の中心セル
-        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset);
+        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset, gridScale);
         int centerX = centerIndex.x;
         int centerY = centerIndex.y;
 
@@ -696,7 +717,7 @@ public class RSBehavior : MonoBehaviour
             // プレビュー用オブジェクトを生成（自身の兄弟として作成）
             if (rockPreviewPrefab != null)
             {
-                Vector3 worldPreviewPos = RSGridHelper.GridIndexToWorld(gx, gy, transform.position.z, gridParentPosition, gridOffset);
+                Vector3 worldPreviewPos = RSGridHelper.GridIndexToWorld(gx, gy, transform.position.z, gridParentPosition, gridOffset, gridScale);
                 GameObject preview = Instantiate(rockPreviewPrefab, worldPreviewPos, Quaternion.identity, previewParent);
                 previewObjects.Add(preview);
 
@@ -906,7 +927,7 @@ public class RSBehavior : MonoBehaviour
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
 
         // 中心座標（GridGeneratorの座標系に合わせる）
-        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset);
+        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
 
         var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
     }
@@ -931,7 +952,8 @@ public class RSBehavior : MonoBehaviour
             rotationIndex,
             copiedSize,
             transform.position,
-            mouseWorldPos);
+            mouseWorldPos,
+            gridScale);
     }
 
     /// <summary>
@@ -1094,10 +1116,10 @@ public class RSBehavior : MonoBehaviour
 
         // 矩形の4つの角のワールド座標を計算
         // セルの中心座標から、セルの境界（矩形の外側）を計算
-        Vector3 bottomLeft = RSGridHelper.GridIndexToWorld(minX, minY, transform.position.z, gridParentPosition, gridOffset) - new Vector3(0.5f, 0.5f, 0f);
-        Vector3 topLeft = RSGridHelper.GridIndexToWorld(minX, maxY, transform.position.z, gridParentPosition, gridOffset) - new Vector3(0.5f, -0.5f, 0f);
-        Vector3 topRight = RSGridHelper.GridIndexToWorld(maxX, maxY, transform.position.z, gridParentPosition, gridOffset) + new Vector3(0.5f, 0.5f, 0f);
-        Vector3 bottomRight = RSGridHelper.GridIndexToWorld(maxX, minY, transform.position.z, gridParentPosition, gridOffset) + new Vector3(0.5f, -0.5f, 0f);
+        Vector3 bottomLeft = RSGridHelper.GridIndexToWorld(minX, minY, transform.position.z, gridParentPosition, gridOffset, gridScale) - new Vector3(0.5f * gridScale, 0.5f * gridScale, 0f);
+        Vector3 topLeft = RSGridHelper.GridIndexToWorld(minX, maxY, transform.position.z, gridParentPosition, gridOffset, gridScale) - new Vector3(0.5f * gridScale, -0.5f * gridScale, 0f);
+        Vector3 topRight = RSGridHelper.GridIndexToWorld(maxX, maxY, transform.position.z, gridParentPosition, gridOffset, gridScale) + new Vector3(0.5f * gridScale, 0.5f * gridScale, 0f);
+        Vector3 bottomRight = RSGridHelper.GridIndexToWorld(maxX, minY, transform.position.z, gridParentPosition, gridOffset, gridScale) + new Vector3(0.5f * gridScale, -0.5f * gridScale, 0f);
 
         // LineRendererで矩形を描画（5つの頂点：左下→左上→右上→右下→左下）
         lineRenderer.positionCount = 5;

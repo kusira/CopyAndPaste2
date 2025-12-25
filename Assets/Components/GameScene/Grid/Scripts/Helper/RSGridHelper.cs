@@ -8,27 +8,23 @@ public static class RSGridHelper
     /// <summary>
     /// グリッドインデックスをワールド座標に変換します
     /// </summary>
-    /// <param name="gx">グリッドXインデックス</param>
-    /// <param name="gy">グリッドYインデックス</param>
-    /// <param name="z">Z座標</param>
-    /// <param name="gridParentPosition">グリッド親のワールド座標</param>
-    /// <param name="gridOffset">グリッドオフセット</param>
-    /// <returns>ワールド座標</returns>
-    public static Vector3 GridIndexToWorld(int gx, int gy, float z, Vector3 gridParentPosition, Vector3 gridOffset)
+    /// <summary>
+    /// グリッドインデックスをワールド座標に変換します
+    /// </summary>
+    public static Vector3 GridIndexToWorld(int gx, int gy, float z, Vector3 gridParentPosition, Vector3 gridOffset, float scale = 1.0f)
     {
-        return gridParentPosition + new Vector3(gridOffset.x + gx, gridOffset.y + gy, z);
+        return gridParentPosition + (new Vector3(gridOffset.x + gx, gridOffset.y + gy, 0f) * scale) + new Vector3(0f, 0f, z);
     }
 
     /// <summary>
     /// ワールド座標からグリッドの中心座標（グリッドインデックス）を計算します
     /// </summary>
-    /// <param name="worldPosition">ワールド座標</param>
-    /// <param name="gridParentPosition">グリッド親のワールド座標</param>
-    /// <param name="gridOffset">グリッドオフセット</param>
-    /// <returns>グリッド中心座標（float）</returns>
-    public static Vector2 WorldToGridCenter(Vector3 worldPosition, Vector3 gridParentPosition, Vector3 gridOffset)
+    public static Vector2 WorldToGridCenter(Vector3 worldPosition, Vector3 gridParentPosition, Vector3 gridOffset, float scale = 1.0f)
     {
-        Vector3 localPos = worldPosition - gridParentPosition;
+        // 親からの相対座標をスケールで割ってグリッド単位にする
+        Vector3 vec = worldPosition - gridParentPosition;
+        Vector3 localPos = vec / scale;
+        
         float floatCenterX = localPos.x - gridOffset.x;
         float floatCenterY = localPos.y - gridOffset.y;
         return new Vector2(floatCenterX, floatCenterY);
@@ -37,13 +33,9 @@ public static class RSGridHelper
     /// <summary>
     /// ワールド座標からグリッドの中心セルインデックスを計算します
     /// </summary>
-    /// <param name="worldPosition">ワールド座標</param>
-    /// <param name="gridParentPosition">グリッド親のワールド座標</param>
-    /// <param name="gridOffset">グリッドオフセット</param>
-    /// <returns>グリッド中心セルインデックス</returns>
-    public static Vector2Int WorldToGridIndex(Vector3 worldPosition, Vector3 gridParentPosition, Vector3 gridOffset)
+    public static Vector2Int WorldToGridIndex(Vector3 worldPosition, Vector3 gridParentPosition, Vector3 gridOffset, float scale = 1.0f)
     {
-        Vector2 center = WorldToGridCenter(worldPosition, gridParentPosition, gridOffset);
+        Vector2 center = WorldToGridCenter(worldPosition, gridParentPosition, gridOffset, scale);
         int centerX = Mathf.FloorToInt(center.x + 0.5f);
         int centerY = Mathf.FloorToInt(center.y + 0.5f);
         return new Vector2Int(centerX, centerY);
@@ -71,16 +63,11 @@ public static class RSGridHelper
     /// <summary>
     /// 位置をグリッドにスナップします（偶数サイズでは中心を半整数座標に補正）
     /// </summary>
-    /// <param name="worldPosition">ワールド座標</param>
-    /// <param name="gridParentPosition">グリッド親のワールド座標</param>
-    /// <param name="gridOffset">グリッドオフセット</param>
-    /// <param name="selectorWidth">セレクターの幅（セル数）</param>
-    /// <param name="selectorHeight">セレクターの高さ（セル数）</param>
-    /// <returns>スナップ後のワールド座標</returns>
-    public static Vector3 SnapToGrid(Vector3 worldPosition, Vector3 gridParentPosition, Vector3 gridOffset, int selectorWidth, int selectorHeight)
+    public static Vector3 SnapToGrid(Vector3 worldPosition, Vector3 gridParentPosition, Vector3 gridOffset, int selectorWidth, int selectorHeight, float scale = 1.0f)
     {
-        // グリッドの親位置を基準にローカル座標に変換
-        Vector3 localPosition = worldPosition - gridParentPosition;
+        // グリッドの親位置を基準にローカル座標に変換(スケール考慮)
+        Vector3 vec = worldPosition - gridParentPosition;
+        Vector3 localPosition = vec / scale;
 
         // グリッドオフセット
         float ox = gridOffset.x;
@@ -121,23 +108,16 @@ public static class RSGridHelper
         }
 
         // ワールド座標に戻す
-        return gridParentPosition + new Vector3(targetX, targetY, worldPosition.z);
+        return gridParentPosition + (new Vector3(targetX, targetY, 0f) * scale) + new Vector3(0f, 0f, worldPosition.z);
     }
 
     /// <summary>
     /// グリッド範囲内に位置を制限（パディング考慮）
     /// </summary>
-    /// <param name="worldPosition">ワールド座標</param>
-    /// <param name="gridParentPosition">グリッド親のワールド座標</param>
-    /// <param name="gridOffset">グリッドオフセット</param>
-    /// <param name="gridWidth">グリッド幅（セル数）</param>
-    /// <param name="gridHeight">グリッド高さ（セル数）</param>
-    /// <param name="selectorWidth">セレクターの幅（セル数）</param>
-    /// <param name="selectorHeight">セレクターの高さ（セル数）</param>
-    /// <returns>クランプ後のワールド座標</returns>
-    public static Vector3 ClampToGrid(Vector3 worldPosition, Vector3 gridParentPosition, Vector3 gridOffset, int gridWidth, int gridHeight, int selectorWidth, int selectorHeight)
+    public static Vector3 ClampToGrid(Vector3 worldPosition, Vector3 gridParentPosition, Vector3 gridOffset, int gridWidth, int gridHeight, int selectorWidth, int selectorHeight, float scale = 1.0f)
     {
-        Vector3 local = worldPosition - gridParentPosition;
+        Vector3 vec = worldPosition - gridParentPosition;
+        Vector3 local = vec / scale;
 
         // セレクターの半サイズ
         float halfW = selectorWidth * 0.5f;
@@ -163,7 +143,7 @@ public static class RSGridHelper
         float cx = Mathf.Clamp(local.x, minX, maxX);
         float cy = Mathf.Clamp(local.y, minY, maxY);
 
-        return gridParentPosition + new Vector3(cx, cy, worldPosition.z);
+        return gridParentPosition + (new Vector3(cx, cy, 0f) * scale) + new Vector3(0f, 0f, worldPosition.z);
     }
 
     /// <summary>

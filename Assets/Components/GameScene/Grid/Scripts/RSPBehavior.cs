@@ -17,6 +17,7 @@ public class RSPBehavior : MonoBehaviour
     private int gridHeight = 0;
     private Vector3 gridParentPosition;
     private Vector3 gridOffset;
+    private float gridScale = 1.0f;
 
     // コピーされたRockパターン（中心からのオフセット）
     private readonly List<RSHelper.CopiedRockData> copiedOffsets = new List<RSHelper.CopiedRockData>();
@@ -225,10 +226,25 @@ public class RSPBehavior : MonoBehaviour
         StageDatabase.StageData stageData = GetStageData();
         var (width, height, parentPos, offset) = RSGridHelper.GetGridInfo(gridGenerator, stageData);
         
-        gridWidth = width;
         gridHeight = height;
         gridParentPosition = parentPos;
         gridOffset = offset;
+
+        // scaleを更新
+        Transform massParent = null;
+        if (gridGenerator != null)
+        {
+            FieldInfo massParentField = typeof(GridGenerator).GetField("massParent", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (massParentField != null)
+            {
+                Transform t = (Transform)massParentField.GetValue(gridGenerator);
+                massParent = t != null ? t : gridGenerator.transform;
+            }
+        }
+        if (massParent != null) 
+        { 
+            gridScale = massParent.lossyScale.x; 
+        }
     }
 
     /// <summary>
@@ -256,13 +272,14 @@ public class RSPBehavior : MonoBehaviour
             Mathf.RoundToInt(centerY), 
             transform.position.z, 
             gridParentPosition, 
-            gridOffset);
+            gridOffset,
+            gridScale);
 
         // RSPのサイズを考慮してスナップ
-        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH);
+        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
 
         // グリッド範囲内に収まるようにクランプ
-        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH);
+        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
 
         // Selectionの位置も更新
         SetupSelectionCorners();
@@ -288,7 +305,7 @@ public class RSPBehavior : MonoBehaviour
         mouseWorldPosition.z = transform.position.z;
 
         // マウスがグリッド内にあるかチェック
-        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset);
+        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset, gridScale);
         bool isMouseInGrid = mouseGridIndex.x >= 0 && mouseGridIndex.x < gridWidth && 
                             mouseGridIndex.y >= 0 && mouseGridIndex.y < gridHeight;
 
@@ -312,10 +329,10 @@ public class RSPBehavior : MonoBehaviour
         int selectorW = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
         int selectorH = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
         
-        Vector3 snappedPosition = RSGridHelper.SnapToGrid(snapperTarget, gridParentPosition, gridOffset, selectorW, selectorH);
+        Vector3 snappedPosition = RSGridHelper.SnapToGrid(snapperTarget, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
 
         // グリッド範囲内に収まるようにクランプ
-        transform.position = RSGridHelper.ClampToGrid(snappedPosition, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH);
+        transform.position = RSGridHelper.ClampToGrid(snappedPosition, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
 
         // 選択矩形をデバッグ更新（コピー状態に依存せず常に）
         UpdateSelectionBoundsFromTransform();
@@ -412,7 +429,7 @@ public class RSPBehavior : MonoBehaviour
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
 
         // RSPの中心セルを計算
-        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset);
+        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
         var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
 
         Debug.Log($"破壊範囲: ({minX}, {minY}) ～ ({maxX}, {maxY})");
@@ -544,11 +561,11 @@ public class RSPBehavior : MonoBehaviour
         dragOffset = Vector3.zero; // コピー時にオフセットはリセット
 
         // RSPの中心がどのセルかを計算
-        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset);
+        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset, gridScale);
         int centerX = centerIndex.x;
         int centerY = centerIndex.y;
 
-        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset);
+        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
         Debug.Log($"コピー開始: RSP位置({transform.position.x}, {transform.position.y}), 中心セル({centerX}, {centerY}), サイズ({selWidth}, {selHeight})");
 
         // 選択範囲の矩形（グリッドインデックス）
@@ -708,7 +725,7 @@ public class RSPBehavior : MonoBehaviour
             // プレビュー用オブジェクトを生成（自身の兄弟として作成）
             if (rockPreviewPrefab != null)
             {
-                Vector3 worldPreviewPos = RSGridHelper.GridIndexToWorld(gx, gy, transform.position.z, gridParentPosition, gridOffset);
+                Vector3 worldPreviewPos = RSGridHelper.GridIndexToWorld(gx, gy, transform.position.z, gridParentPosition, gridOffset, gridScale);
                 GameObject preview = Instantiate(rockPreviewPrefab, worldPreviewPos, Quaternion.identity, previewParent);
                 previewObjects.Add(preview);
 
@@ -760,7 +777,7 @@ public class RSPBehavior : MonoBehaviour
         }
 
         // 現在の中心セル
-        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset);
+        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset, gridScale);
         int centerX = centerIndex.x;
         int centerY = centerIndex.y;
 
@@ -897,8 +914,8 @@ public class RSPBehavior : MonoBehaviour
         int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(scale.y)));
 
         // 中心座標（GridGeneratorの座標系に合わせる）
-        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset);
-
+        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
+        
         var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
     }
 
@@ -922,7 +939,8 @@ public class RSPBehavior : MonoBehaviour
             rotationIndex,
             copiedSize,
             transform.position,
-            mouseWorldPos);
+            mouseWorldPos,
+            gridScale);
     }
 
     /// <summary>

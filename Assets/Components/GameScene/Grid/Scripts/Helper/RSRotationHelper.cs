@@ -19,7 +19,8 @@ public static class RSRotationHelper
         int currentRotationIndex,
         Vector2Int copiedSize,
         Vector3 selectorPosition,
-        Vector3 mouseWorldPosition)
+        Vector3 mouseWorldPosition,
+        float scale = 1.0f)
     {
         // 更新前の rotationIndex
         int prevRot = (currentRotationIndex - rotationStep + 4) % 4;
@@ -49,8 +50,8 @@ public static class RSRotationHelper
         }
         // w == h の場合は (0,0) なのでそのままでOK
 
-        // カーソル位置（中心からの相対座標）
-        Vector3 mouseLocal = mouseWorldPosition - selectorPosition;
+        // カーソル位置（中心からの相対座標）をスケールで割ってグリッド単位にする
+        Vector3 mouseLocal = (mouseWorldPosition - selectorPosition) / scale;
 
         // 近い方のピボットを採用
         float d1 = (mouseLocal - pivot1).sqrMagnitude;
@@ -82,7 +83,9 @@ public static class RSRotationHelper
         }
 
         Vector3 shift = chosenPivot - rotatedPivot;
-        return shift;
+        
+        // グリッド単位のシフト量をワールド単位（スケール適用）に戻して返す
+        return shift * scale;
     }
 }
 
