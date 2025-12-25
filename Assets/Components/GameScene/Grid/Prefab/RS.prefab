@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3349847323185107585}
   - component: {fileID: 6953721166842409431}
+  - component: {fileID: 7261875490791041018}
   m_Layer: 0
   m_Name: Selection_RT
   m_TagString: Untagged
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 100
+  m_SortingOrder: 110
   m_Sprite: {fileID: 7656520243891468104, guid: 3eb85ddb9dc58694cba1bd9741aa03f3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -90,6 +91,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7261875490791041018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671452532271192144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19d6592f85dd8e4cbc78bd8867e164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionPartsAnimator
+  direction: 1
+  moveMultiplier: 0.1
+  duration: 0.5
+  easeType: 4
 --- !u!1 &6240161179255765007
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,6 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4249194333395909178}
   - component: {fileID: 4442030210942287306}
+  - component: {fileID: 1757885071295988911}
   m_Layer: 0
   m_Name: Selection_RB
   m_TagString: Untagged
@@ -168,7 +186,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 100
+  m_SortingOrder: 110
   m_Sprite: {fileID: 7943123106050321195, guid: 80f9cc33f4088a8469ab10dfecba06fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -180,6 +198,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1757885071295988911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6240161179255765007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19d6592f85dd8e4cbc78bd8867e164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionPartsAnimator
+  direction: 3
+  moveMultiplier: 0.1
+  duration: 0.5
+  easeType: 4
 --- !u!1 &6510291865257567780
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6977481401452362127}
   - component: {fileID: 6567160779698801513}
+  - component: {fileID: 1856843390896533731}
   m_Layer: 0
   m_Name: Slelection_LT
   m_TagString: Untagged
@@ -258,7 +293,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 100
+  m_SortingOrder: 110
   m_Sprite: {fileID: 758331739856156071, guid: 04e68d31a00c9b143aa3cff07bf88c8e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -270,6 +305,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1856843390896533731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6510291865257567780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19d6592f85dd8e4cbc78bd8867e164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionPartsAnimator
+  direction: 0
+  moveMultiplier: 0.1
+  duration: 0.5
+  easeType: 4
 --- !u!1 &6544520345476898276
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,6 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RSBehavior
   dashLinePrefab: {fileID: 2669778957739458681, guid: ce4b24a1bc8245c4c80309e758de92d6, type: 3}
   invalidColor: {r: 1, g: 0, b: 0, a: 1}
+  previewAlpha: 0.3
   selectionLT: {fileID: 6510291865257567780}
   selectionRT: {fileID: 1671452532271192144}
   selectionLB: {fileID: 8096952087035709573}
@@ -393,6 +445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 107719662464910289}
   - component: {fileID: 6479758274102085961}
+  - component: {fileID: 6722901405760793983}
   m_Layer: 0
   m_Name: Selection_LB
   m_TagString: Untagged
@@ -461,7 +514,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 100
+  m_SortingOrder: 110
   m_Sprite: {fileID: 691517111956024340, guid: 93e89257c16529346a9feae16bdb12fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -473,3 +526,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6722901405760793983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096952087035709573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19d6592f85dd8e4cbc78bd8867e164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionPartsAnimator
+  direction: 2
+  moveMultiplier: 0.1
+  duration: 0.5
+  easeType: 4

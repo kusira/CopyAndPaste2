@@ -42,6 +42,8 @@ public class RSBehavior : MonoBehaviour
     // 色制御
     [Header("Color")]
     [SerializeField] private Color invalidColor = Color.red;
+    [Tooltip("コピーしたもの（プレビュー）の透明度を指定します（0.0～1.0）")]
+    [SerializeField] [Range(0f, 1f)] private float previewAlpha = 0.5f;
     private SpriteRenderer spriteRenderer;
     private Color normalColor = Color.white;
 
@@ -591,7 +593,7 @@ public class RSBehavior : MonoBehaviour
                 if (sr != null)
                 {
                     Color c = sr.color;
-                    c.a = 0.5f;
+                    c.a = previewAlpha;
                     sr.color = c;
                 }
 

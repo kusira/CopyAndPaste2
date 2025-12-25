@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9127832438153493847}
   - component: {fileID: 1939376558785793011}
+  - component: {fileID: 6816245509498870999}
   m_Layer: 0
   m_Name: Selection_LB
   m_TagString: Untagged
@@ -90,6 +91,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6816245509498870999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267418911324807587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19d6592f85dd8e4cbc78bd8867e164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionPartsAnimator
+  direction: 1
+  moveMultiplier: 0.1
+  duration: 0.5
+  easeType: 4
 --- !u!1 &3389793726718830510
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,6 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6452171366313480307}
   - component: {fileID: 6325001601719871283}
+  - component: {fileID: 1035338801420519861}
   m_Layer: 0
   m_Name: Slelection_LT
   m_TagString: Untagged
@@ -180,6 +198,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1035338801420519861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389793726718830510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19d6592f85dd8e4cbc78bd8867e164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionPartsAnimator
+  direction: 3
+  moveMultiplier: 0.1
+  duration: 0.5
+  easeType: 4
 --- !u!1 &4399566794775994387
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +542,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8979317777289611138}
   - component: {fileID: 2078709641895293066}
+  - component: {fileID: 5436387462749590099}
   m_Layer: 0
   m_Name: Selection_RB
   m_TagString: Untagged
@@ -588,6 +623,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5436387462749590099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7100710624981275698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19d6592f85dd8e4cbc78bd8867e164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionPartsAnimator
+  direction: 0
+  moveMultiplier: 0.1
+  duration: 0.5
+  easeType: 4
 --- !u!1 &9174191473441325174
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +649,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1699490221812707906}
   - component: {fileID: 5725516077552371681}
+  - component: {fileID: 888791252051917522}
   m_Layer: 0
   m_Name: Selection_RT
   m_TagString: Untagged
@@ -678,3 +730,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &888791252051917522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9174191473441325174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19d6592f85dd8e4cbc78bd8867e164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionPartsAnimator
+  direction: 2
+  moveMultiplier: 0.1
+  duration: 0.5
+  easeType: 4

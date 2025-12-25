@@ -6,6 +6,7 @@ public class RSBehaviorEditor : Editor
 {
     private SerializedProperty dashLinePrefabProperty;
     private SerializedProperty invalidColorProperty;
+    private SerializedProperty previewAlphaProperty;
     private SerializedProperty selectionLTProperty;
     private SerializedProperty selectionRTProperty;
     private SerializedProperty selectionLBProperty;
@@ -15,6 +16,7 @@ public class RSBehaviorEditor : Editor
     {
         dashLinePrefabProperty = serializedObject.FindProperty("dashLinePrefab");
         invalidColorProperty = serializedObject.FindProperty("invalidColor");
+        previewAlphaProperty = serializedObject.FindProperty("previewAlpha");
         selectionLTProperty = serializedObject.FindProperty("selectionLT");
         selectionRTProperty = serializedObject.FindProperty("selectionRT");
         selectionLBProperty = serializedObject.FindProperty("selectionLB");
@@ -39,6 +41,10 @@ public class RSBehaviorEditor : Editor
         if (invalidColorProperty != null)
         {
             EditorGUILayout.PropertyField(invalidColorProperty, new GUIContent("Invalid Color"));
+        }
+        if (previewAlphaProperty != null)
+        {
+            EditorGUILayout.PropertyField(previewAlphaProperty, new GUIContent("Preview Alpha", "コピーしたもの（プレビュー）の透明度を指定します（0.0～1.0）"));
         }
 
         EditorGUILayout.Space();
