@@ -79,16 +79,22 @@ MonoBehaviour:
     RSItems:
     - height: 1
       width: 2
+      type: 0
     - height: 1
       width: 2
+      type: 0
     - height: 2
       width: 3
+      type: 0
     - height: 2
       width: 3
+      type: 0
     - height: 1
       width: 1
+      type: 1
     - height: 1
       width: 1
+      type: 1
   - stageName: Stage 1
     massStatus:
     - columns:
@@ -143,8 +149,10 @@ MonoBehaviour:
     RSItems:
     - height: 3
       width: 2
+      type: 0
     - height: 2
       width: 2
+      type: 0
   - stageName: Stage 2
     massStatus:
     - columns:
@@ -199,8 +207,10 @@ MonoBehaviour:
     RSItems:
     - height: 3
       width: 2
+      type: 0
     - height: 2
       width: 2
+      type: 0
   - stageName: Stage 3
     massStatus:
     - columns:
@@ -277,10 +287,13 @@ MonoBehaviour:
     RSItems:
     - height: 3
       width: 2
+      type: 0
     - height: 1
       width: 3
+      type: 0
     - height: 2
       width: 2
+      type: 0
   - stageName: Stage 4
     massStatus:
     - columns:
@@ -371,9 +384,13 @@ MonoBehaviour:
     RSItems:
     - height: 2
       width: 3
+      type: 0
     - height: 2
       width: 2
+      type: 0
     - height: 1
       width: 4
+      type: 0
     - height: 1
       width: 4
+      type: 0

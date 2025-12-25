@@ -28,6 +28,15 @@ public class StageDatabase : ScriptableObject
         }
     }
 
+    /// <summary>
+    /// アイテムのタイプ
+    /// </summary>
+    public enum RSItemType
+    {
+        Normal,
+        Pickaxe
+    }
+
     [System.Serializable]
     public class RSItemData
     {
@@ -37,13 +46,17 @@ public class StageDatabase : ScriptableObject
         [Tooltip("範囲選択アイテムの幅（W）")]
         public int width = 1;
 
+        [Tooltip("アイテムのタイプ")]
+        public RSItemType type = RSItemType.Normal;
+
         // ▼ 追加: ディープコピー用メソッド
         public RSItemData DeepCopy()
         {
             return new RSItemData
             {
                 height = this.height,
-                width = this.width
+                width = this.width,
+                type = this.type
             };
         }
     }

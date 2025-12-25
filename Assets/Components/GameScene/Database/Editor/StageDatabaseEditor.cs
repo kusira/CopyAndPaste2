@@ -217,7 +217,9 @@ public class StageDatabaseEditor : Editor
             newHeight = Mathf.Max(1, newHeight);
             newWidth = Mathf.Max(1, newWidth);
 
-            if (newHeight != item.height || newWidth != item.width)
+            bool sizeChanged = newHeight != item.height || newWidth != item.width;
+
+            if (sizeChanged)
             {
                 Undo.RecordObject(database, $"RSItem[{i}]を変更");
                 item.height = newHeight;
@@ -227,6 +229,44 @@ public class StageDatabaseEditor : Editor
             }
 
             EditorGUILayout.EndHorizontal();
+
+            // タイプの選択（ラジオボタン）
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("タイプ:", GUILayout.Width(80));
+            
+            StageDatabase.RSItemType newType = item.type;
+            bool typeChanged = false;
+            
+            // Normalラジオボタン
+            bool isNormal = EditorGUILayout.Toggle(newType == StageDatabase.RSItemType.Normal, GUILayout.Width(20));
+            EditorGUILayout.LabelField("Normal", GUILayout.Width(60));
+            
+            // Pickaxeラジオボタン
+            bool isPickaxe = EditorGUILayout.Toggle(newType == StageDatabase.RSItemType.Pickaxe, GUILayout.Width(20));
+            EditorGUILayout.LabelField("Pickaxe", GUILayout.Width(60));
+            
+            // ラジオボタンの状態を更新
+            if (isNormal && newType != StageDatabase.RSItemType.Normal)
+            {
+                newType = StageDatabase.RSItemType.Normal;
+                typeChanged = true;
+            }
+            else if (isPickaxe && newType != StageDatabase.RSItemType.Pickaxe)
+            {
+                newType = StageDatabase.RSItemType.Pickaxe;
+                typeChanged = true;
+            }
+
+            if (typeChanged)
+            {
+                Undo.RecordObject(database, $"RSItem[{i}]のタイプを変更");
+                item.type = newType;
+                EditorUtility.SetDirty(database);
+                RefreshItemGenerator();
+            }
+
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Space(5);
         }
     }
 

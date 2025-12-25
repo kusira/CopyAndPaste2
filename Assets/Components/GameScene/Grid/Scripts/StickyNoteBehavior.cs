@@ -10,16 +10,31 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     private static RSItemBehavior currentSelectedItem;
     private Coroutine generateRoutine;
 
-    [Header("Prefabs")]
-    [Tooltip("RSのPrefabをアサインします")]
-    [SerializeField] private GameObject RSPrefab;
+    [System.Serializable]
+    public class TypeSettings
+    {
+        [Header("Prefabs")]
+        [Tooltip("RSのPrefabをアサインします")]
+        public GameObject RSPrefab;
 
-    [Tooltip("RSItemMassのPrefabをアサインします")]
-    [SerializeField] private GameObject RSItemMassPrefab;
+        [Tooltip("RSItemMassのPrefabをアサインします")]
+        public GameObject RSItemMassPrefab;
 
-    [Header("Parents")]
-    [Tooltip("RSItemMassを配置する親GameObject（RSItemMasses）をアサインします")]
-    [SerializeField] private GameObject RSItemMasses;
+        [Header("Parents")]
+        [Tooltip("RSItemMassを配置する親GameObject（RSItemMasses）をアサインします")]
+        public GameObject RSItemMasses;
+
+        [Header("Sprite")]
+        [Tooltip("このタイプのスプライト画像をアサインします")]
+        public Sprite sprite;
+    }
+
+    [Header("Type Settings")]
+    [Tooltip("Normalタイプの設定")]
+    [SerializeField] private TypeSettings normalSettings = new TypeSettings();
+
+    [Tooltip("Pickaxeタイプの設定")]
+    [SerializeField] private TypeSettings pickaxeSettings = new TypeSettings();
 
     [Header("Selection")]
     [Tooltip("マウスホバー時に表示するSelectionオブジェクトをアサインします")]
@@ -45,6 +60,9 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     // このアイテムのインデックス（StickyNotesGeneratorで設定される）
     [SerializeField] private int itemIndex = -1;
 
+    // このアイテムのタイプ（StickyNotesGeneratorで設定される）
+    private StageDatabase.RSItemType itemType = StageDatabase.RSItemType.Normal;
+
     private void Start()
     {
         // 初期状態ではSelectionとSelection_Backを非表示にする
@@ -58,8 +76,46 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
             selectionBack.SetActive(false);
         }
 
+        // タイプに応じてスプライトを設定
+        ApplyTypeSettings();
+
         // RSItemMassを生成
         GenerateItemMasses();
+    }
+
+    /// <summary>
+    /// タイプに応じた設定を適用します
+    /// </summary>
+    private void ApplyTypeSettings()
+    {
+        TypeSettings settings = GetTypeSettings(itemType);
+        if (settings == null) return;
+
+        // スプライトを設定
+        if (settings.sprite != null)
+        {
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sprite = settings.sprite;
+            }
+        }
+    }
+
+    /// <summary>
+    /// タイプに応じた設定を取得します
+    /// </summary>
+    private TypeSettings GetTypeSettings(StageDatabase.RSItemType type)
+    {
+        switch (type)
+        {
+            case StageDatabase.RSItemType.Normal:
+                return normalSettings;
+            case StageDatabase.RSItemType.Pickaxe:
+                return pickaxeSettings;
+            default:
+                return normalSettings;
+        }
     }
 
     /// <summary>
@@ -152,7 +208,14 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     /// </summary>
     private void GenerateRS()
     {
-        if (RSPrefab == null)
+        TypeSettings settings = GetTypeSettings(itemType);
+        if (settings == null)
+        {
+            Debug.LogWarning("タイプ設定が見つかりません");
+            return;
+        }
+
+        if (settings.RSPrefab == null)
         {
             Debug.LogWarning("RSPrefabがアサインされていません");
             return;
@@ -165,11 +228,12 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
             existingSelector.CancelSelection();
         }
 
-        // RSParentを探す
-        Transform parent = FindRSParent();
+        // RSParentまたはRSPParentを探す（タイプに応じて）
+        Transform parent = FindRSParent(itemType);
         if (parent == null)
         {
-            Debug.LogWarning("RSParentが見つかりません");
+            string parentName = itemType == StageDatabase.RSItemType.Pickaxe ? "RSPParent" : "RSParent";
+            Debug.LogWarning($"{parentName}が見つかりません");
             return;
         }
 
@@ -193,7 +257,7 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
         }
 
         // RSParentを親としてRSを生成
-        GameObject instance = Instantiate(RSPrefab, parent);
+        GameObject instance = Instantiate(settings.RSPrefab, parent);
         
         if (instance != null)
         {
@@ -221,13 +285,20 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     /// </summary>
     public void GenerateItemMasses()
     {
-        if (RSItemMassPrefab == null)
+        TypeSettings settings = GetTypeSettings(itemType);
+        if (settings == null)
+        {
+            Debug.LogWarning("タイプ設定が見つかりません");
+            return;
+        }
+
+        if (settings.RSItemMassPrefab == null)
         {
             Debug.LogWarning("RSItemMassPrefabがアサインされていません");
             return;
         }
 
-        if (RSItemMasses == null)
+        if (settings.RSItemMasses == null)
         {
             Debug.LogWarning("RSItemMassesがアサインされていません");
             return;
@@ -252,7 +323,7 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
             return;
         }
 
-        Transform parent = RSItemMasses.transform;
+        Transform parent = settings.RSItemMasses.transform;
 
         // 既存の子をクリア
         ClearRSItemMassesChildren(parent);
@@ -282,14 +353,16 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
             Vector3 localPos = new Vector3(x, y, 0f);
 
             // RSItemMassを生成
-            GameObject mass = Instantiate(RSItemMassPrefab, parent);
+            GameObject mass = Instantiate(settings.RSItemMassPrefab, parent);
             mass.transform.localPosition = localPos;
             mass.transform.localScale = Vector3.one * gridScale;
             mass.transform.localRotation = Quaternion.identity;
-            mass.name = $"RSItemMass_{row}_{col}";
+            string massNamePrefix = itemType == StageDatabase.RSItemType.Pickaxe ? "RSPItemMass" : "RSItemMass";
+            mass.name = $"{massNamePrefix}_{row}_{col}";
         }
 
-        Debug.Log($"RSItemMassを {totalCount} 個生成しました (H={height}, W={width})");
+        string massTypeName = itemType == StageDatabase.RSItemType.Pickaxe ? "RSPItemMass" : "RSItemMass";
+        Debug.Log($"{massTypeName}を {totalCount} 個生成しました (H={height}, W={width})");
     }
 
     /// <summary>
@@ -350,6 +423,15 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     public void SetItemIndex(int index)
     {
         itemIndex = index;
+    }
+
+    /// <summary>
+    /// アイテムのタイプを設定します
+    /// </summary>
+    public void SetItemType(StageDatabase.RSItemType type)
+    {
+        itemType = type;
+        ApplyTypeSettings();
     }
 
     /// <summary>
@@ -419,14 +501,15 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     }
 
     /// <summary>
-    /// RSParentを探し、Transformを返します
+    /// RSParentまたはRSPParentを探し、Transformを返します（タイプに応じて）
     /// </summary>
-    private Transform FindRSParent()
+    private Transform FindRSParent(StageDatabase.RSItemType type)
     {
+        string parentName = type == StageDatabase.RSItemType.Pickaxe ? "RSPParent" : "RSParent";
         var transforms = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None);
         foreach (var t in transforms)
         {
-            if (t != null && t.name == "RSParent")
+            if (t != null && t.name == parentName)
             {
                 return t;
             }
@@ -435,22 +518,34 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     }
 
     /// <summary>
-    /// RSParent配下の子を全破棄します
+    /// RSParentまたはRSPParent配下の子を全破棄します
     /// </summary>
     private void ClearRSParentChildren()
     {
-        Transform parent = FindRSParent();
-        if (parent == null)
+        // 両方の親を探してクリア
+        Transform rsParent = FindRSParent(StageDatabase.RSItemType.Normal);
+        if (rsParent != null)
         {
-            return;
+            for (int i = rsParent.childCount - 1; i >= 0; i--)
+            {
+                var child = rsParent.GetChild(i);
+                if (child != null)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
         }
 
-        for (int i = parent.childCount - 1; i >= 0; i--)
+        Transform rspParent = FindRSParent(StageDatabase.RSItemType.Pickaxe);
+        if (rspParent != null)
         {
-            var child = parent.GetChild(i);
-            if (child != null)
+            for (int i = rspParent.childCount - 1; i >= 0; i--)
             {
-                Destroy(child.gameObject);
+                var child = rspParent.GetChild(i);
+                if (child != null)
+                {
+                    Destroy(child.gameObject);
+                }
             }
         }
     }
