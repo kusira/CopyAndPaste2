@@ -44,6 +44,8 @@ public class RSBehavior : MonoBehaviour
     [SerializeField] private Color invalidColor = Color.red;
     [Tooltip("コピーしたもの（プレビュー）の透明度を指定します（0.0～1.0）")]
     [SerializeField] [Range(0f, 1f)] private float previewAlpha = 0.5f;
+    [Tooltip("Invalid状態になったときのRSオブジェクトの透明度を指定します（0.0～1.0）")]
+    [SerializeField] [Range(0f, 1f)] private float invalidAlpha = 0.3f;
     private SpriteRenderer spriteRenderer;
     private Color normalColor = Color.white;
 
@@ -738,12 +740,24 @@ public class RSBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 有効/無効に応じて色を変更
+    /// 有効/無効に応じて色と透明度を変更
     /// </summary>
     private void SetValidColor(bool isValid)
     {
         if (spriteRenderer == null) return;
-        spriteRenderer.color = isValid ? normalColor : invalidColor;
+        
+        if (isValid)
+        {
+            // 有効な場合は通常色（アルファも元に戻す）
+            spriteRenderer.color = normalColor;
+        }
+        else
+        {
+            // 無効な場合は無効色で、アルファを指定値に設定
+            Color invalid = invalidColor;
+            invalid.a = invalidAlpha;
+            spriteRenderer.color = invalid;
+        }
     }
 
     /// <summary>
