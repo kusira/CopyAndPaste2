@@ -1,6 +1,7 @@
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -57,6 +58,25 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
     [Tooltip("グリッド全体のスケール（デフォルト0.5倍）")]
     [SerializeField] private float gridScale = 0.5f;
     
+    [Header("UI Elements")]
+    [Tooltip("左クリックアイコン（自動検索でアサインされます）")]
+    private GameObject leftClickIcon;
+    
+    [Tooltip("左クリックテキスト（自動検索でアサインされます）")]
+    private TextMeshProUGUI leftClickText;
+    
+    [Tooltip("右クリックアイコン（自動検索でアサインされます）")]
+    private GameObject rightClickIcon;
+    
+    [Tooltip("右クリックテキスト（自動検索でアサインされます）")]
+    private TextMeshProUGUI rightClickText;
+    
+    [Tooltip("マウスホイールアイコン（自動検索でアサインされます）")]
+    private GameObject mouseWheelIcon;
+    
+    [Tooltip("マウスホイールテキスト（自動検索でアサインされます）")]
+    private TextMeshProUGUI mouseWheelText;
+    
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
     
@@ -79,11 +99,304 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             selectionBack.SetActive(false);
         }
 
+        // UI要素を自動検索でアサイン
+        FindAndAssignUIElements();
+
+        // UIの初期状態を設定（何も選択していない状態）
+        UpdateUIForNoSelection();
+
         // タイプに応じてスプライトを設定
         ApplyTypeSettings();
 
         // RSItemMassを生成
         GenerateItemMasses();
+    }
+
+    /// <summary>
+    /// UI要素を自動検索でアサインします
+    /// </summary>
+    private void FindAndAssignUIElements()
+    {
+        // まず子要素から検索
+        Transform[] children = GetComponentsInChildren<Transform>(true);
+        
+        foreach (Transform child in children)
+        {
+            if (child.name == "LeftClickIcon" && leftClickIcon == null)
+            {
+                leftClickIcon = child.gameObject;
+            }
+            else if (child.name == "LeftClickText" && leftClickText == null)
+            {
+                leftClickText = child.GetComponent<TextMeshProUGUI>();
+            }
+            else if (child.name == "RightClickIcon" && rightClickIcon == null)
+            {
+                rightClickIcon = child.gameObject;
+            }
+            else if (child.name == "RightClickText" && rightClickText == null)
+            {
+                rightClickText = child.GetComponent<TextMeshProUGUI>();
+            }
+            else if ((child.name == "MauseWheelIcon" || child.name == "MouseWheelIcon") && mouseWheelIcon == null)
+            {
+                mouseWheelIcon = child.gameObject;
+            }
+            else if ((child.name == "MauseWheelText" || child.name == "MouseWheelText") && mouseWheelText == null)
+            {
+                mouseWheelText = child.GetComponent<TextMeshProUGUI>();
+            }
+        }
+        
+        // 子要素で見つからなかった場合は、Canvas配下を検索
+        Canvas[] canvases = Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+        foreach (Canvas canvas in canvases)
+        {
+            if (canvas == null) continue;
+            
+            // Canvas配下のすべての子要素を再帰的に検索
+            SearchInChildren(canvas.transform);
+        }
+        
+        // まだ見つからなかった場合は、シーン全体から検索（非アクティブも含む）
+        if (leftClickIcon == null)
+        {
+            GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+            foreach (GameObject obj in allObjects)
+            {
+                if (obj.name == "LeftClickIcon")
+                {
+                    leftClickIcon = obj;
+                    break;
+                }
+            }
+        }
+        
+        if (leftClickText == null)
+        {
+            TextMeshProUGUI[] allTMPs = Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsSortMode.None);
+            foreach (var tmp in allTMPs)
+            {
+                if (tmp.name == "LeftClickText")
+                {
+                    leftClickText = tmp;
+                    break;
+                }
+            }
+        }
+        
+        if (rightClickIcon == null)
+        {
+            GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+            foreach (GameObject obj in allObjects)
+            {
+                if (obj.name == "RightClickIcon")
+                {
+                    rightClickIcon = obj;
+                    break;
+                }
+            }
+        }
+        
+        if (rightClickText == null)
+        {
+            TextMeshProUGUI[] allTMPs = Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsSortMode.None);
+            foreach (var tmp in allTMPs)
+            {
+                if (tmp.name == "RightClickText")
+                {
+                    rightClickText = tmp;
+                    break;
+                }
+            }
+        }
+        
+        if (mouseWheelIcon == null)
+        {
+            GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+            foreach (GameObject obj in allObjects)
+            {
+                if (obj.name == "MauseWheelIcon" || obj.name == "MouseWheelIcon")
+                {
+                    mouseWheelIcon = obj;
+                    break;
+                }
+            }
+        }
+        
+        if (mouseWheelText == null)
+        {
+            TextMeshProUGUI[] allTMPs = Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsSortMode.None);
+            foreach (var tmp in allTMPs)
+            {
+                if (tmp.name == "MauseWheelText" || tmp.name == "MouseWheelText")
+                {
+                    mouseWheelText = tmp;
+                    break;
+                }
+            }
+        }
+        
+        // 見つからなかった場合は警告
+        if (leftClickIcon == null) Debug.LogWarning("LeftClickIconが見つかりませんでした");
+        if (leftClickText == null) Debug.LogWarning("LeftClickTextが見つかりませんでした");
+        if (rightClickIcon == null) Debug.LogWarning("RightClickIconが見つかりませんでした");
+        if (rightClickText == null) Debug.LogWarning("RightClickTextが見つかりませんでした");
+        if (mouseWheelIcon == null) Debug.LogWarning("MauseWheelIcon/MouseWheelIconが見つかりませんでした");
+        if (mouseWheelText == null) Debug.LogWarning("MauseWheelText/MouseWheelTextが見つかりませんでした");
+    }
+
+    /// <summary>
+    /// 指定されたTransform配下の子要素を再帰的に検索します
+    /// </summary>
+    private void SearchInChildren(Transform parent)
+    {
+        if (parent == null) return;
+        
+        // このTransformのGameObjectをチェック
+        if (parent.name == "LeftClickIcon" && leftClickIcon == null)
+        {
+            leftClickIcon = parent.gameObject;
+        }
+        else if (parent.name == "LeftClickText" && leftClickText == null)
+        {
+            leftClickText = parent.GetComponent<TextMeshProUGUI>();
+        }
+        else if (parent.name == "RightClickIcon" && rightClickIcon == null)
+        {
+            rightClickIcon = parent.gameObject;
+        }
+        else if (parent.name == "RightClickText" && rightClickText == null)
+        {
+            rightClickText = parent.GetComponent<TextMeshProUGUI>();
+        }
+        else if ((parent.name == "MauseWheelIcon" || parent.name == "MouseWheelIcon") && mouseWheelIcon == null)
+        {
+            mouseWheelIcon = parent.gameObject;
+        }
+        else if ((parent.name == "MauseWheelText" || parent.name == "MouseWheelText") && mouseWheelText == null)
+        {
+            mouseWheelText = parent.GetComponent<TextMeshProUGUI>();
+        }
+        
+        // 子要素を再帰的に検索
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child != null)
+            {
+                SearchInChildren(child);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 何も選択していない状態のUIを更新します
+    /// </summary>
+    private void UpdateUIForNoSelection()
+    {
+        // すべてのUIを非アクティブにする
+        if (leftClickIcon != null) leftClickIcon.SetActive(false);
+        if (leftClickText != null) leftClickText.gameObject.SetActive(false);
+        if (rightClickIcon != null) rightClickIcon.SetActive(false);
+        if (rightClickText != null) rightClickText.gameObject.SetActive(false);
+        if (mouseWheelIcon != null) mouseWheelIcon.SetActive(false);
+        if (mouseWheelText != null) mouseWheelText.gameObject.SetActive(false);
+
+        // LeftClickIconとLeftClickTextのY座標を0に設定
+        if (leftClickIcon != null)
+        {
+            RectTransform iconRect = leftClickIcon.GetComponent<RectTransform>();
+            if (iconRect != null)
+            {
+                Vector2 pos = iconRect.anchoredPosition;
+                pos.y = 0f;
+                iconRect.anchoredPosition = pos;
+            }
+        }
+        
+        if (leftClickText != null)
+        {
+            RectTransform textRect = leftClickText.GetComponent<RectTransform>();
+            if (textRect != null)
+            {
+                Vector2 pos = textRect.anchoredPosition;
+                pos.y = 0f;
+                textRect.anchoredPosition = pos;
+            }
+        }
+
+        // LeftClickIconとLeftClickTextのみを表示
+        if (leftClickIcon != null)
+        {
+            leftClickIcon.SetActive(true);
+        }
+        
+        if (leftClickText != null)
+        {
+            leftClickText.text = "付箋選択";
+            leftClickText.gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// 選択時のUIを更新します
+    /// </summary>
+    private void UpdateUIForSelection()
+    {
+        // LeftClickIconとLeftClickTextのY座標を0に設定
+        if (leftClickIcon != null)
+        {
+            RectTransform iconRect = leftClickIcon.GetComponent<RectTransform>();
+            if (iconRect != null)
+            {
+                Vector2 pos = iconRect.anchoredPosition;
+                pos.y = 0f;
+                iconRect.anchoredPosition = pos;
+            }
+        }
+        
+        if (leftClickText != null)
+        {
+            RectTransform textRect = leftClickText.GetComponent<RectTransform>();
+            if (textRect != null)
+            {
+                Vector2 pos = textRect.anchoredPosition;
+                pos.y = 0f;
+                textRect.anchoredPosition = pos;
+            }
+        }
+
+        // すべてのUIを表示
+        if (leftClickIcon != null)
+        {
+            leftClickIcon.SetActive(true);
+        }
+        
+        if (leftClickText != null)
+        {
+            leftClickText.gameObject.SetActive(true);
+        }
+        
+        if (rightClickIcon != null)
+        {
+            rightClickIcon.SetActive(true);
+        }
+        
+        if (rightClickText != null)
+        {
+            rightClickText.gameObject.SetActive(true);
+        }
+        
+        if (mouseWheelIcon != null)
+        {
+            mouseWheelIcon.SetActive(true);
+        }
+        
+        if (mouseWheelText != null)
+        {
+            mouseWheelText.gameObject.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -150,6 +463,8 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             {
                 currentSelectedItem.selectionBack.SetActive(false);
             }
+            // 以前選択されていたアイテムのUIを非選択状態に戻す
+            currentSelectedItem.UpdateUIForNoSelection();
         }
 
         // 他のアイテムを選択した場合は、このアイテムを現在の選択として更新
@@ -160,6 +475,9 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
         {
             selectionBack.SetActive(true);
         }
+
+        // 選択時のUIを更新
+        UpdateUIForSelection();
 
         // 既存の生成待ちを止め、即時生成
         if (generateRoutine != null)
@@ -204,6 +522,11 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             if (item != null && item.selectionBack != null)
             {
                 item.selectionBack.SetActive(false);
+            }
+            // 選択解除時にUIを非選択状態に戻す
+            if (item != null)
+            {
+                item.UpdateUIForNoSelection();
             }
         }
     }
