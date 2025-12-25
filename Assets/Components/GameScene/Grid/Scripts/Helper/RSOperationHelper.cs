@@ -377,8 +377,8 @@ public static class RSHelper
     }
 
     /// <summary>
-    /// 指定範囲内のRockを下に詰めます（重力で落ちるように）
-    /// すべてのRockを同時に処理し、互いに干渉しながら下に落ちます
+    /// 指定範囲内のRockを回転方向に応じて詰めます（重力で落ちるように）
+    /// すべてのRockを同時に処理し、互いに干渉しながら落ちます
     /// </summary>
     /// <param name="stageData">ステージデータ</param>
     /// <param name="minX">範囲の最小X座標（グリッドインデックス）</param>
@@ -387,11 +387,13 @@ public static class RSHelper
     /// <param name="maxY">範囲の最大Y座標（グリッドインデックス）</param>
     /// <param name="gridParentPosition">グリッド親のワールド座標</param>
     /// <param name="gridOffset">グリッドオフセット</param>
+    /// <param name="rotationIndex">回転インデックス（0=上, 1=右, 2=下, 3=左）</param>
     /// <param name="moveInfos">移動情報のリスト（出力）</param>
     public static void ApplyGravityToRocksInRange(
         StageDatabase.StageData stageData,
         int minX, int minY, int maxX, int maxY,
         Vector3 gridParentPosition, Vector3 gridOffset,
+        int rotationIndex,
         List<RockMoveInfo> moveInfos)
     {
         if (moveInfos == null)
@@ -451,7 +453,11 @@ public static class RSHelper
             rockPositions[originalPos] = originalPos; // 初期位置は元の位置
         }
 
-        // 複数回のパスで、各Rockが1セルずつ下に移動できるかチェック
+        // 回転方向に応じて重力の方向を決定
+        // 0=上, 1=右, 2=下, 3=左
+        int rot = ((rotationIndex % 4) + 4) % 4;
+        
+        // 複数回のパスで、各Rockが1セルずつ重力方向に移動できるかチェック
         // 移動できるRockがなくなるまで繰り返す
         bool moved = true;
         int maxIterations = (maxY - minY + 1) * (maxX - minX + 1); // 無限ループ防止
@@ -462,42 +468,82 @@ public static class RSHelper
             moved = false;
             iteration++;
 
-            // 下から上に走査（下のRockから先に処理することで、自然な落下を実現）
-            // 現在位置が下にあるRockから順に処理
+            // 重力方向の反対側から走査（重力方向の先頭にあるRockから先に処理することで、自然な落下を実現）
             List<Vector2Int> sortedRocks = new List<Vector2Int>(rockPositions.Keys);
             sortedRocks.Sort((a, b) => 
             {
                 Vector2Int posA = rockPositions[a];
                 Vector2Int posB = rockPositions[b];
-                // Y座標が大きい（下にある）順、同じならX座標が小さい順
-                if (posA.y != posB.y) return posB.y.CompareTo(posA.y);
-                return posA.x.CompareTo(posB.x);
+                
+                // 回転に応じてソート順を変更
+                switch (rot)
+                {
+                    case 0: // 上方向: 上から下に（Y座標が小さい順）
+                        if (posA.y != posB.y) return posA.y.CompareTo(posB.y);
+                        return posA.x.CompareTo(posB.x);
+                    case 1: // 右方向: 右から左に（X座標が大きい順）
+                        if (posA.x != posB.x) return posB.x.CompareTo(posA.x);
+                        return posA.y.CompareTo(posB.y);
+                    case 2: // 下方向: 下から上に（Y座標が大きい順）
+                        if (posA.y != posB.y) return posB.y.CompareTo(posA.y);
+                        return posA.x.CompareTo(posB.x);
+                    case 3: // 左方向: 左から右に（X座標が小さい順）
+                        if (posA.x != posB.x) return posA.x.CompareTo(posB.x);
+                        return posA.y.CompareTo(posB.y);
+                    default:
+                        return 0;
+                }
             });
 
             foreach (Vector2Int originalPos in sortedRocks)
             {
                 Vector2Int currentPos = rockPositions[originalPos];
-                
-                // 下の位置（y+1）をチェック
-                int nextY = currentPos.y + 1;
+                Vector2Int nextPos;
+                bool canCheckMove = false;
+
+                // 回転に応じて移動方向を決定
+                switch (rot)
+                {
+                    case 0: // 上方向（Y座標が減る）
+                        nextPos = new Vector2Int(currentPos.x, currentPos.y - 1);
+                        canCheckMove = (nextPos.y >= minY);
+                        break;
+                    case 1: // 右方向（X座標が増える）
+                        nextPos = new Vector2Int(currentPos.x + 1, currentPos.y);
+                        canCheckMove = (nextPos.x <= maxX);
+                        break;
+                    case 2: // 下方向（Y座標が増える）
+                        nextPos = new Vector2Int(currentPos.x, currentPos.y + 1);
+                        canCheckMove = (nextPos.y <= maxY);
+                        break;
+                    case 3: // 左方向（X座標が減る）
+                        nextPos = new Vector2Int(currentPos.x - 1, currentPos.y);
+                        canCheckMove = (nextPos.x >= minX);
+                        break;
+                    default:
+                        continue;
+                }
 
                 // 範囲外の場合はスキップ
-                if (nextY > maxY)
+                if (!canCheckMove)
                 {
                     continue;
                 }
 
                 // MassStatusをチェック（Massがない場所があったら止まる）
-                if (nextY >= massStatus.Count || massStatus[nextY] == null || massStatus[nextY].columns == null)
+                int checkY = nextPos.y;
+                int checkX = nextPos.x;
+                
+                if (checkY < 0 || checkY >= massStatus.Count || massStatus[checkY] == null || massStatus[checkY].columns == null)
                 {
                     continue;
                 }
-                if (currentPos.x >= massStatus[nextY].columns.Count)
+                if (checkX < 0 || checkX >= massStatus[checkY].columns.Count)
                 {
                     continue;
                 }
 
-                string massValue = massStatus[nextY].columns[currentPos.x] ?? "";
+                string massValue = massStatus[checkY].columns[checkX] ?? "";
                 char massBaseChar;
                 List<string> massKeys = new List<string>();
                 ParseCell(massValue, out massBaseChar, massKeys);
@@ -509,7 +555,6 @@ public static class RSHelper
                 }
 
                 // 移動先の位置に既にRockがないかチェック（他のRockが既に移動している可能性がある）
-                Vector2Int nextPos = new Vector2Int(currentPos.x, nextY);
                 bool canMove = true;
                 foreach (var pos in rockPositions.Values)
                 {

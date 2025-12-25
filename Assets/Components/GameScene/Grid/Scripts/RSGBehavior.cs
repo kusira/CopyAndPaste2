@@ -7,7 +7,7 @@ using DG.Tweening;
 
 /// <summary>
 /// RSG（重力）の挙動を制御するスクリプト
-/// 左クリックで範囲内のRockを下に詰めます
+/// 左クリックで範囲内のRockを回転方向に応じて詰めます
 /// </summary>
 public class RSGBehavior : MonoBehaviour
 {
@@ -287,10 +287,12 @@ public class RSGBehavior : MonoBehaviour
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        // 左クリック (範囲内のRockを下に詰める)
+        // 左クリック (範囲内のRockを回転方向に応じて詰める)
         if (mouse.leftButton.wasPressedThisFrame)
         {
-            Debug.Log("左クリック：範囲内のRockを下に詰めます");
+            string[] directionNames = { "上", "右", "下", "左" };
+            string directionName = directionNames[((rotationIndex % 4) + 4) % 4];
+            Debug.Log($"左クリック：範囲内のRockを{directionName}に詰めます");
             ApplyGravityToRocks();
         }
 
@@ -333,7 +335,7 @@ public class RSGBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 範囲内のRockを下に詰めます（RSG特有の処理）
+    /// 範囲内のRockを回転方向に応じて詰めます（RSG特有の処理）
     /// </summary>
     private void ApplyGravityToRocks()
     {
@@ -376,15 +378,18 @@ public class RSGBehavior : MonoBehaviour
             return;
         }
 
-        // 3. ヘルパー関数でRockを下に詰める（移動情報を取得）
+        // 3. ヘルパー関数でRockを回転方向に応じて詰める（移動情報を取得）
         List<RSHelper.RockMoveInfo> moveInfos = new List<RSHelper.RockMoveInfo>();
         RSHelper.ApplyGravityToRocksInRange(
             stageData,
             minX, minY, maxX, maxY,
             gridParentPosition, gridOffset,
+            rotationIndex,
             moveInfos);
 
-        Debug.Log($"範囲内のRockを下に詰めました（移動数: {moveInfos.Count}）");
+        string[] directionNames = { "上", "右", "下", "左" };
+        string directionName = directionNames[((rotationIndex % 4) + 4) % 4];
+        Debug.Log($"範囲内のRockを{directionName}に詰めました（移動数: {moveInfos.Count}）");
 
         // 4. 岩の移動をアニメーション化（範囲情報も渡す）
         AnimateRockMoves(moveInfos, minX, minY, maxX, maxY);
@@ -463,8 +468,9 @@ public class RSGBehavior : MonoBehaviour
             rock.transform.SetParent(null);
 
             // DOTweenでアニメーション（完了時にリストから削除）
+            // Ease.OutExpo: 最初は激しく、後半は緩やかに減速
             rock.transform.DOMove(toWorldPos, rockMoveDuration)
-                .SetEase(Ease.OutQuad)
+                .SetEase(Ease.OutExpo)
                 .OnComplete(() =>
                 {
                     if (rock != null)
