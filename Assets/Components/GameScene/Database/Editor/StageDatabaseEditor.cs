@@ -108,6 +108,18 @@ public class StageDatabaseEditor : Editor
 
         EditorGUILayout.Space();
 
+        // GridParentのScaleの編集
+        EditorGUILayout.LabelField("GridParent Scale", EditorStyles.boldLabel);
+        float newScaleXY = EditorGUILayout.FloatField("Scale (X, Y)", stageData.gridParentScaleXY);
+        if (newScaleXY != stageData.gridParentScaleXY)
+        {
+            Undo.RecordObject(database, "GridParent Scaleを変更");
+            stageData.gridParentScaleXY = newScaleXY;
+            EditorUtility.SetDirty(database);
+            RefreshGrid();
+        }
+        EditorGUILayout.Space();
+
         // グリッドサイズの設定
         EditorGUILayout.LabelField("グリッドサイズ", EditorStyles.boldLabel);
         

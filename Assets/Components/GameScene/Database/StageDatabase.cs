@@ -79,11 +79,15 @@ public class StageDatabase : ScriptableObject
         [Tooltip("範囲選択アイテムのリストです。i個目のアイテムのサイズはH_i*W_iで指定されます")]
         public List<RSItemData> RSItems = new List<RSItemData>();
 
+        [Tooltip("GridParentのScale（XとYは等しく、Zは1固定）。子オブジェクト（Mass、Rock、GridFrame）もこの影響を受けます")]
+        public float gridParentScaleXY = 1f;
+
         // ▼ 追加: ディープコピー用メソッド
         public StageData DeepCopy()
         {
             StageData copy = new StageData();
             copy.stageName = this.stageName;
+            copy.gridParentScaleXY = this.gridParentScaleXY;
 
             foreach (var mass in this.massStatus)
             {

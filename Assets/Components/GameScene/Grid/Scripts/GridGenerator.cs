@@ -31,6 +31,10 @@ public class GridGenerator : MonoBehaviour
     [Tooltip("GridFrameのSizeに加算するオフセット値（Width, Height）")]
     [SerializeField] private Vector2 gridFrameSizeOffset = Vector2.zero;
 
+    [Header("GridParent Settings")]
+    [Tooltip("GridParentのScale（フォールバック値、XとYは等しく、Zは1固定）。ステージデータにスケールが設定されている場合はそちらが優先されます。子オブジェクト（Mass、Rock、GridFrame）もこの影響を受けます")]
+    [SerializeField] private float gridParentScaleXY = 1f;
+
     private void Start()
     {
         GenerateGrid();
@@ -99,9 +103,11 @@ public class GridGenerator : MonoBehaviour
                 return;
             }
 
-            Vector3 parentPosition = parentTransform.position;
+            // GridParentのScaleを設定（先に設定することで、子オブジェクトの配置が正しくなる）
+            ApplyGridParentScale(stageData);
 
-            // グリッドの中心を計算（親の位置を中心に配置）
+            // グリッドの中心を計算（親のlocalPositionを基準に配置）
+            // Scaleの影響を受けないように、localPositionで配置する
             float offsetX = -(width - 1) * 0.5f;
             float offsetY = -(height - 1) * 0.5f;
 
@@ -124,8 +130,9 @@ public class GridGenerator : MonoBehaviour
                 {
                     try
                     {
-                        // 親の位置を基準にグリッドの中心が一致するように配置
-                        Vector3 position = parentPosition + new Vector3(offsetX + w, offsetY + h, 0f);
+                        // 親のlocalPositionを基準にグリッドの中心が一致するように配置
+                        // Scaleの影響を受けないように、localPositionで配置する
+                        Vector3 localPosition = new Vector3(offsetX + w, offsetY + h, 0f);
 
                         // MassStatusをチェック
                         string massValue = massStatus[h].columns[w];
@@ -137,9 +144,13 @@ public class GridGenerator : MonoBehaviour
                                 Transform parent = massParent != null ? massParent : transform;
                                 if (parent != null)
                                 {
-                                    GameObject instance = Instantiate(massPrefab, position, Quaternion.identity, parent);
+                                    // 親を指定してlocalPositionで配置（Scaleの影響を正しく受ける）
+                                    GameObject instance = Instantiate(massPrefab, parent);
                                     if (instance != null)
                                     {
+                                        instance.transform.localPosition = localPosition;
+                                        instance.transform.localRotation = Quaternion.identity;
+                                        
                                         // ギミック適用
                                         var assigner = instance.GetComponent<MassPatternAssigner>();
                                         if (assigner != null)
@@ -170,9 +181,13 @@ public class GridGenerator : MonoBehaviour
                                     Transform parent = rockParent != null ? rockParent : transform;
                                     if (parent != null)
                                     {
-                                        GameObject instance = Instantiate(rockPrefab, position, Quaternion.identity, parent);
+                                        // 親を指定してlocalPositionで配置（Scaleの影響を正しく受ける）
+                                        GameObject instance = Instantiate(rockPrefab, parent);
                                         if (instance != null)
                                         {
+                                            instance.transform.localPosition = localPosition;
+                                            instance.transform.localRotation = Quaternion.identity;
+                                            
                                             // ギミック適用
                                             var assigner = instance.GetComponent<RockPatternAssigner>();
                                             if (assigner != null)
@@ -222,19 +237,7 @@ public class GridGenerator : MonoBehaviour
         try
         {
             // GridFrameをクリア
-            Transform gridParentTransform = null;
-            if (massParent != null)
-            {
-                gridParentTransform = massParent.parent;
-            }
-            else if (rockParent != null)
-            {
-                gridParentTransform = rockParent.parent;
-            }
-            else
-            {
-                gridParentTransform = transform.parent;
-            }
+            Transform gridParentTransform = GetGridParentTransform();
 
             if (gridParentTransform != null)
             {
@@ -304,6 +307,50 @@ public class GridGenerator : MonoBehaviour
     }
 
     /// <summary>
+    /// GridParentのScaleを適用します
+    /// </summary>
+    /// <param name="stageData">ステージデータ（nullの場合はInspectorの値を使用）</param>
+    private void ApplyGridParentScale(StageDatabase.StageData stageData = null)
+    {
+        // GridParentを取得（massParentの親、またはrockParentの親）
+        Transform gridParentTransform = GetGridParentTransform();
+        
+        if (gridParentTransform != null)
+        {
+            // ステージデータからスケールを取得、なければInspectorの値を使用
+            // XとYは等しく、Zは1固定
+            float scaleXY = stageData != null ? stageData.gridParentScaleXY : gridParentScaleXY;
+            Vector3 scaleToApply = new Vector3(scaleXY, scaleXY, 1f);
+            gridParentTransform.localScale = scaleToApply;
+            Debug.Log($"GridParentのScaleを設定しました: {scaleToApply} (ステージデータ: {stageData != null})");
+        }
+        else
+        {
+            Debug.LogWarning("GridParentが見つかりません。Scaleを設定できませんでした。");
+        }
+    }
+
+    /// <summary>
+    /// GridParentのTransformを取得します
+    /// </summary>
+    /// <returns>GridParentのTransform。見つからない場合はnull</returns>
+    private Transform GetGridParentTransform()
+    {
+        if (massParent != null)
+        {
+            return massParent.parent;
+        }
+        else if (rockParent != null)
+        {
+            return rockParent.parent;
+        }
+        else
+        {
+            return transform.parent;
+        }
+    }
+
+    /// <summary>
     /// GridFrameを生成してサイズを調整します
     /// </summary>
     /// <param name="gridWidth">グリッドの幅</param>
@@ -316,21 +363,8 @@ public class GridGenerator : MonoBehaviour
             return;
         }
 
-        // GridParentを取得（massParentの親、またはrockParentの親）
-        Transform gridParentTransform = null;
-        if (massParent != null)
-        {
-            gridParentTransform = massParent.parent;
-        }
-        else if (rockParent != null)
-        {
-            gridParentTransform = rockParent.parent;
-        }
-        else
-        {
-            // massParentとrockParentがnullの場合は、このGameObjectの親を探す
-            gridParentTransform = transform.parent;
-        }
+        // GridParentを取得
+        Transform gridParentTransform = GetGridParentTransform();
 
         if (gridParentTransform == null)
         {
@@ -350,6 +384,10 @@ public class GridGenerator : MonoBehaviour
         }
 
         gridFrame.name = "GridFrame";
+        
+        // localPositionを0,0,0に設定（親のScaleの影響を正しく受けるため）
+        gridFrame.transform.localPosition = Vector3.zero;
+        gridFrame.transform.localRotation = Quaternion.identity;
 
         // サイズを調整
         UpdateGridFrameSize(gridFrame, gridWidth, gridHeight);
