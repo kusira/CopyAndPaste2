@@ -87,8 +87,8 @@ MonoBehaviour:
       width: 1
       type: 0
     - height: 1
-      width: 2
-      type: 1
+      width: 1
+      type: 0
   - stageName: Stage 1
     massStatus:
     - columns:
