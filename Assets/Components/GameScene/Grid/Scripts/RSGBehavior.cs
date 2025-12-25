@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 /// <summary>
 /// RSG（重力）の挙動を制御するスクリプト
@@ -22,6 +24,10 @@ public class RSGBehavior : MonoBehaviour
     private bool shouldFollowMouse = false; // マウス追跡を開始するかどうか
     private int rotationIndex = 0; // 0,1,2,3 = 0,90,180,270
     private Vector3 dragOffset = Vector3.zero; // 回転時の位置ずれを吸収するためのマウスとのオフセット
+
+    [Header("Animation Settings")]
+    [Tooltip("Rockの移動アニメーションの時間（秒）")]
+    [SerializeField] private float rockMoveDuration = 0.5f;
 
     // 四隅のSelection
     [Header("Selection Corners")]
@@ -370,21 +376,158 @@ public class RSGBehavior : MonoBehaviour
             return;
         }
 
-        // 3. ヘルパー関数でRockを下に詰める
+        // 3. ヘルパー関数でRockを下に詰める（移動情報を取得）
+        List<RSHelper.RockMoveInfo> moveInfos = new List<RSHelper.RockMoveInfo>();
         RSHelper.ApplyGravityToRocksInRange(
             stageData,
             minX, minY, maxX, maxY,
-            gridParentPosition, gridOffset);
+            gridParentPosition, gridOffset,
+            moveInfos);
 
-        Debug.Log("範囲内のRockを下に詰めました");
+        Debug.Log($"範囲内のRockを下に詰めました（移動数: {moveInfos.Count}）");
 
-        // 4. グリッドを再生成して見た目を更新
+        // 4. 岩の移動をアニメーション化（範囲情報も渡す）
+        AnimateRockMoves(moveInfos, minX, minY, maxX, maxY);
+
+        // 5. アニメーション完了後にグリッドを再生成して見た目を更新
+        StartCoroutine(RegenerateGridAfterAnimation(moveInfos.Count > 0 ? rockMoveDuration : 0f));
+
+        // 6. 使用したアイテムをデータから削除（アニメーション完了後）
+        StartCoroutine(RemoveItemAfterAnimation(moveInfos.Count > 0 ? rockMoveDuration : 0f));
+    }
+
+    // アニメーション中のRockオブジェクトを追跡（破壊を防ぐため）
+    private readonly List<GameObject> animatingRocks = new List<GameObject>();
+
+    /// <summary>
+    /// 岩の移動をアニメーション化します
+    /// 範囲内のすべてのRockタグが付いているゲームオブジェクトを走査し、移動情報に基づいてアニメーションします
+    /// </summary>
+    private void AnimateRockMoves(List<RSHelper.RockMoveInfo> moveInfos, int minX, int minY, int maxX, int maxY)
+    {
+        if (moveInfos == null || moveInfos.Count == 0)
+        {
+            return;
+        }
+
+        // アニメーション中のRockリストをクリア
+        animatingRocks.Clear();
+
+        // 移動情報を辞書に変換（高速検索のため）
+        Dictionary<Vector2Int, Vector2Int> moveInfoDict = new Dictionary<Vector2Int, Vector2Int>();
+        foreach (var moveInfo in moveInfos)
+        {
+            moveInfoDict[moveInfo.fromPosition] = moveInfo.toPosition;
+        }
+
+        // シーン上のすべてのRockタグが付いているゲームオブジェクトを取得
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        // 範囲内のすべてのRockタグが付いているオブジェクトを走査
+        foreach (GameObject rock in rocks)
+        {
+            if (rock == null) continue;
+
+            // Rockの位置をグリッドインデックスに変換
+            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset);
+
+            // 範囲内にあるかチェック（範囲内のすべてのRockを対象とする）
+            if (rockGridIndex.x < minX || rockGridIndex.x > maxX ||
+                rockGridIndex.y < minY || rockGridIndex.y > maxY)
+            {
+                continue; // 範囲外のRockはスキップ
+            }
+
+            // このRockが移動するかどうかを確認（移動情報に含まれている場合のみアニメーション）
+            if (!moveInfoDict.ContainsKey(rockGridIndex))
+            {
+                continue; // 移動しないRockはスキップ
+            }
+
+            // 移動先の位置を取得
+            Vector2Int toPosition = moveInfoDict[rockGridIndex];
+
+            // 移動先の位置を計算
+            Vector3 toWorldPos = RSGridHelper.GridIndexToWorld(
+                toPosition.x,
+                toPosition.y,
+                0f,
+                gridParentPosition,
+                gridOffset);
+
+            // アニメーション中のRockとして登録
+            animatingRocks.Add(rock);
+
+            // アニメーション中にオブジェクトが破壊されないように、一時的に親から切り離す
+            Transform originalParent = rock.transform.parent;
+            rock.transform.SetParent(null);
+
+            // DOTweenでアニメーション（完了時にリストから削除）
+            rock.transform.DOMove(toWorldPos, rockMoveDuration)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    if (rock != null)
+                    {
+                        if (animatingRocks.Contains(rock))
+                        {
+                            animatingRocks.Remove(rock);
+                        }
+                        // アニメーション完了後にオブジェクトを破壊（グリッド再生成時に再生成される）
+                        Destroy(rock);
+                    }
+                })
+                .OnKill(() =>
+                {
+                    // アニメーションが中断された場合もリストから削除
+                    if (rock != null)
+                    {
+                        if (animatingRocks.Contains(rock))
+                        {
+                            animatingRocks.Remove(rock);
+                        }
+                        // 親を元に戻す
+                        if (originalParent != null)
+                        {
+                            rock.transform.SetParent(originalParent);
+                        }
+                    }
+                });
+        }
+    }
+
+    /// <summary>
+    /// アニメーション完了後にグリッドを再生成します
+    /// </summary>
+    private IEnumerator RegenerateGridAfterAnimation(float delay)
+    {
+        // アニメーション完了まで待機
+        yield return new WaitForSeconds(delay);
+
+        // アニメーション中のRockオブジェクトを全てクリア（アニメーション完了済み）
+        animatingRocks.Clear();
+
         if (gridGenerator != null)
         {
             gridGenerator.GenerateGrid();
         }
+    }
 
-        // 5. 使用したアイテムをデータから削除
+    /// <summary>
+    /// アニメーション完了後にアイテムを削除します
+    /// </summary>
+    private IEnumerator RemoveItemAfterAnimation(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        StageDatabase.StageData stageData = GetStageData();
+        if (stageData == null)
+        {
+            DestroySelectorAndItem();
+            yield break;
+        }
+
+        // 使用したアイテムをデータから削除
         if (sourceItem != null)
         {
             int itemIndex = sourceItem.GetItemIndex();
@@ -395,14 +538,14 @@ public class RSGBehavior : MonoBehaviour
             }
         }
 
-        // 6. アイテムリストを再生成（消費されたアイテムを消すため）
+        // アイテムリストを再生成（消費されたアイテムを消すため）
         var itemGen = Object.FindFirstObjectByType<StickyNotesGenerator>();
         if (itemGen != null)
         {
             itemGen.GenerateItems();
         }
 
-        // 7. RSGとアイテムを削除
+        // RSGとアイテムを削除
         DestroySelectorAndItem();
     }
 
