@@ -403,22 +403,17 @@ public class GridGenerator : MonoBehaviour
             return;
         }
 
-        // SpriteRendererがある場合はTransformのScaleを変更
+        // SpriteRendererがある場合はSizeを変更
         SpriteRenderer spriteRenderer = gridFrame.GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null && spriteRenderer.sprite != null)
+        if (spriteRenderer != null)
         {
-            // スプライトの元のサイズを取得
-            float spriteWidth = spriteRenderer.sprite.bounds.size.x;
-            float spriteHeight = spriteRenderer.sprite.bounds.size.y;
+            // DrawModeをSlicedに設定（Sizeプロパティを使用するために必要）
+            spriteRenderer.drawMode = SpriteDrawMode.Sliced;
             
-            if (spriteWidth > 0 && spriteHeight > 0)
-            {
-                float scaleX = totalWidth / spriteWidth;
-                float scaleY = totalHeight / spriteHeight;
-                gridFrame.transform.localScale = new Vector3(scaleX, scaleY, 1f);
-                Debug.Log($"GridFrameのスケールを更新しました: {scaleX}x{scaleY} (グリッドサイズ: {gridWidth}x{gridHeight})");
-                return;
-            }
+            // SizeプロパティでWidthとHeightを直接設定
+            spriteRenderer.size = new Vector2(totalWidth, totalHeight);
+            Debug.Log($"GridFrameのサイズを更新しました: {totalWidth}x{totalHeight} (グリッドサイズ: {gridWidth}x{gridHeight})");
+            return;
         }
 
         // TransformのScaleを直接変更（デフォルト）
