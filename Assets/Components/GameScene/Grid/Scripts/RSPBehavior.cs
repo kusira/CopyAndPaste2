@@ -1014,10 +1014,16 @@ public class RSPBehavior : MonoBehaviour
     {
         if (sourceItem != null)
         {
+            // 選択を解除（アイテム削除前に実行）
+            StickyNoteBehavior.ClearCurrentSelection(sourceItem);
+            
             // アイテムもろとも削除
             Destroy(sourceItem.gameObject);
-            StickyNoteBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
         }
+        
+        // 残っているすべてのStickyNoteBehaviorのUIを更新
+        StickyNoteBehavior.UpdateAllStickyNotesUI();
+        
         Destroy(gameObject);
     }
 

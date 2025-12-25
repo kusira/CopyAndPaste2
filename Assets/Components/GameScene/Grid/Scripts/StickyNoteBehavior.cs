@@ -81,6 +81,12 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
     [Tooltip("何も選択していない状態の左クリックテキスト")]
     [SerializeField] private string noSelectionLeftClickText = "アイテム選択";
     
+    [Tooltip("何も選択していない状態の右クリックテキスト")]
+    [SerializeField] private string noSelectionRightClickText = "ー";
+    
+    [Tooltip("何も選択していない状態のマウスホイールテキスト")]
+    [SerializeField] private string noSelectionMouseWheelText = "ー";
+    
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
     
@@ -338,6 +344,19 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             leftClickText.text = noSelectionLeftClickText;
             leftClickText.gameObject.SetActive(true);
         }
+        
+        // RightClickTextとMouseWheelTextもテキストを設定（常に表示）
+        if (rightClickText != null)
+        {
+            rightClickText.text = noSelectionRightClickText;
+            rightClickText.gameObject.SetActive(true);
+        }
+        
+        if (mouseWheelText != null)
+        {
+            mouseWheelText.text = noSelectionMouseWheelText;
+            mouseWheelText.gameObject.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -528,6 +547,21 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             if (item != null)
             {
                 item.UpdateUIForNoSelection();
+            }
+        }
+    }
+
+    /// <summary>
+    /// すべてのStickyNoteBehaviorのUIを非選択状態に更新します
+    /// </summary>
+    public static void UpdateAllStickyNotesUI()
+    {
+        StickyNoteBehavior[] allItems = Object.FindObjectsByType<StickyNoteBehavior>(FindObjectsSortMode.None);
+        foreach (var stickyNote in allItems)
+        {
+            if (stickyNote != null && stickyNote != currentSelectedItem)
+            {
+                stickyNote.UpdateUIForNoSelection();
             }
         }
     }
