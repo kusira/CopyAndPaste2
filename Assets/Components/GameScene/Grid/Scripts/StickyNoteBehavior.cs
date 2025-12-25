@@ -2,12 +2,12 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     /// <summary>
     /// 現在選択中のアイテム（同じアイテムを再選択しないための静的参照）
     /// </summary>
-    private static RSItemBehavior currentSelectedItem;
+    private static StickyNoteBehavior currentSelectedItem;
     private Coroutine generateRoutine;
 
     [System.Serializable]
@@ -37,10 +37,10 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     [SerializeField] private TypeSettings pickaxeSettings = new TypeSettings();
 
     [Header("Selection")]
-    [Tooltip("マウスホバー時に表示するSelectionオブジェクトをアサインします")]
+    [Tooltip("マウスホバー時に表示するSelectionオブジェクトをアサインします（タイプに関係なく同じオブジェクトを使用）")]
     [SerializeField] private GameObject selection;
     
-    [Tooltip("選択時に表示するSelection_Backオブジェクトをアサインします")]
+    [Tooltip("選択時に表示するSelection_Backオブジェクトをアサインします（タイプに関係なく同じオブジェクトを使用）")]
     [SerializeField] private GameObject selectionBack;
     
     [Header("Item Info")]
@@ -190,7 +190,7 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     /// <summary>
     /// 指定のアイテムが選択中なら選択状態を解除します（キャンセル時など）
     /// </summary>
-    public static void ClearCurrentSelection(RSItemBehavior item)
+    public static void ClearCurrentSelection(StickyNoteBehavior item)
     {
         if (currentSelectedItem == item)
         {
@@ -221,11 +221,16 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
             return;
         }
 
-        // 既存のRSがあれば、選択をキャンセルしてから新しいものを生成（常に1つだけにする）
+        // 既存のRSまたはRSPがあれば、選択をキャンセルしてから新しいものを生成（常に1つだけにする）
         var existingSelector = Object.FindFirstObjectByType<RSBehavior>();
         if (existingSelector != null)
         {
             existingSelector.CancelSelection();
+        }
+        var existingRSPSelector = Object.FindFirstObjectByType<RSPBehavior>();
+        if (existingRSPSelector != null)
+        {
+            existingRSPSelector.CancelSelection();
         }
 
         // RSParentまたはRSPParentを探す（タイプに応じて）
@@ -252,7 +257,7 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
 
         if (width <= 0 || height <= 0)
         {
-            Debug.LogWarning($"RSItemBehavior: 無効なサイズです (width={width}, height={height})");
+            Debug.LogWarning($"StickyNoteBehavior: 無効なサイズです (width={width}, height={height})");
             return;
         }
 
@@ -269,11 +274,22 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
             instance.transform.localRotation = Quaternion.identity;
             instance.name = "RS";
 
-            // Selectorに自身を登録
-            var behavior = instance.GetComponent<RSBehavior>();
-            if (behavior != null)
+            // Selectorに自身を登録（タイプに応じてRSBehaviorまたはRSPBehavior）
+            if (itemType == StageDatabase.RSItemType.Pickaxe)
             {
-                behavior.SetSourceItem(this);
+                var rspBehavior = instance.GetComponent<RSPBehavior>();
+                if (rspBehavior != null)
+                {
+                    rspBehavior.SetSourceItem(this);
+                }
+            }
+            else
+            {
+                var behavior = instance.GetComponent<RSBehavior>();
+                if (behavior != null)
+                {
+                    behavior.SetSourceItem(this);
+                }
             }
             
             Debug.Log($"RSをグリッドに追加しました: サイズ({width}, {height})");
@@ -319,7 +335,7 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
 
         if (width <= 0 || height <= 0)
         {
-            Debug.LogWarning($"RSItemBehavior: 無効なサイズです (width={width}, height={height})");
+            Debug.LogWarning($"StickyNoteBehavior: 無効なサイズです (width={width}, height={height})");
             return;
         }
 
@@ -496,7 +512,7 @@ public class RSItemBehavior : MonoBehaviour, IPointerDownHandler, IPointerEnterH
             }
         }
 
-        Debug.LogWarning("ステージデータを取得できませんでした（RSItemBehavior）");
+        Debug.LogWarning("ステージデータを取得できませんでした（StickyNoteBehavior）");
         return null;
     }
 

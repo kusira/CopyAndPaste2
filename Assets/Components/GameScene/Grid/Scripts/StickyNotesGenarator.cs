@@ -120,15 +120,15 @@ public class StickyNotesGenerator : MonoBehaviour
             note.transform.localRotation = Quaternion.identity;
             note.name = $"StickyNote_{i}";
 
-            // RSItemBehavior に論理サイズとインデックスを設定
-            var behavior = note.GetComponent<RSItemBehavior>();
+            // StickyNoteBehavior に論理サイズとインデックスを設定
+            var behavior = note.GetComponent<StickyNoteBehavior>();
             if (behavior != null)
             {
                 var itemData = stageData.RSItems[i];
                 int h = Mathf.Max(1, itemData.height);
                 int w = Mathf.Max(1, itemData.width);
 
-                // RSItemBehavior は (width, height) の順で受け取る
+                // StickyNoteBehavior は (width, height) の順で受け取る
                 behavior.SetLogicalSize(w, h);
                 behavior.SetItemIndex(i);
                 behavior.SetItemType(itemData.type);

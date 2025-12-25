@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 29965325976113890}
   - component: {fileID: 5682363929937487994}
   - component: {fileID: 1979723722981507123}
-  - component: {fileID: 5151946027211412361}
+  - component: {fileID: 7934277518319435127}
   m_Layer: 0
   m_Name: StickyNote
   m_TagString: Untagged
@@ -418,7 +418,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.12, y: 3.08}
   m_EdgeRadius: 0
---- !u!114 &5151946027211412361
+--- !u!114 &7934277518319435127
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -429,7 +429,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1639064fc8a66da458358a8574c423bf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::StickyNoteBehavior
   normalSettings:
     RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
     RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}

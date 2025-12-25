@@ -3090,7 +3090,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1639064fc8a66da458358a8574c423bf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::StickyNoteBehavior
   RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
   RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}
   RSItemMasses: {fileID: 267426770}
@@ -6272,7 +6272,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1639064fc8a66da458358a8574c423bf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::StickyNoteBehavior
   RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
   RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}
   RSItemMasses: {fileID: 1923641259}
@@ -11026,7 +11026,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1639064fc8a66da458358a8574c423bf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::StickyNoteBehavior
   RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
   RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}
   RSItemMasses: {fileID: 1805021905}
@@ -13984,7 +13984,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1639064fc8a66da458358a8574c423bf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::StickyNoteBehavior
   RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
   RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}
   RSItemMasses: {fileID: 130691892}
@@ -14505,7 +14505,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1639064fc8a66da458358a8574c423bf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::StickyNoteBehavior
   RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
   RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}
   RSItemMasses: {fileID: 108959730}
@@ -14667,7 +14667,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1639064fc8a66da458358a8574c423bf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RSItemBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::StickyNoteBehavior
   RSPrefab: {fileID: 6544520345476898276, guid: 1edcb55f51a1e90459f7db3659e560b3, type: 3}
   RSItemMassPrefab: {fileID: 246989973394450972, guid: 3c01fc9c7ad4ee043819ae5cca3a0102, type: 3}
   RSItemMasses: {fileID: 1808637061}

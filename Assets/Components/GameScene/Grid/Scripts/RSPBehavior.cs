@@ -38,21 +38,9 @@ public class RSPBehavior : MonoBehaviour
     private int lastPreviewRotationIndex = -1;
     private bool lastCanPaste = true;
 
-    // 点線表示用
-    [Header("Prefabs")]
-    [Tooltip("コピー時の矩形を囲む点線のPrefabをアサインします")]
-    [SerializeField] private GameObject dashLinePrefab;
-    private GameObject dashLineInstance;
-
-    // 色制御
-    [Header("Color")]
-    [SerializeField] private Color invalidColor = Color.red;
+    // プレビュー用の透明度
     [Tooltip("コピーしたもの（プレビュー）の透明度を指定します（0.0～1.0）")]
     [SerializeField] [Range(0f, 1f)] private float previewAlpha = 0.5f;
-    [Tooltip("Invalid状態になったときのRSPオブジェクトの透明度を指定します（0.0～1.0）")]
-    [SerializeField] [Range(0f, 1f)] private float invalidAlpha = 0.3f;
-    private SpriteRenderer spriteRenderer;
-    private Color normalColor = Color.white;
 
     // 四隅のSelection
     [Header("Selection Corners")]
@@ -86,17 +74,6 @@ public class RSPBehavior : MonoBehaviour
         // 参照系を取得
         currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
         gridGenerator = Object.FindFirstObjectByType<GridGenerator>();
-
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            normalColor = spriteRenderer.color;
-            // 生成直後は2フレームだけ透明にする
-            var transparent = normalColor;
-            transparent.a = 0f;
-            spriteRenderer.color = transparent;
-            StartCoroutine(SetOpacityAfterFrames(2, normalColor));
-        }
 
         // GridGeneratorからRockPrefabを取得（プレビューに使用）
         if (gridGenerator != null)
@@ -332,35 +309,18 @@ public class RSPBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 入力処理（左クリックでコピー/ペースト、右クリックで範囲内のRockを破壊、ホイール回転）
+    /// 入力処理（右クリックで選択キャンセル、ホイール回転）
     /// </summary>
     private void HandleInput()
     {
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        // 左クリック (Action: Copy or Paste)
-        if (mouse.leftButton.wasPressedThisFrame)
-        {
-            if (hasCopy)
-            {
-                // ペースト
-                Debug.Log("左クリック：現在保持しているRockパターンを貼り付けします");
-                TryPaste();
-            }
-            else
-            {
-                // コピー
-                Debug.Log("左クリック：現在の範囲内のRockをコピーします");
-                CopyCurrentRegion();
-            }
-        }
-
-        // 右クリック (RSP特有: 範囲内のRockを破壊)
+        // 右クリック (選択キャンセル)
         if (mouse.rightButton.wasPressedThisFrame)
         {
-            Debug.Log("右クリック：範囲内のRockを破壊します");
-            DestroyRocksInRange();
+            Debug.Log("右クリック：選択をキャンセルします");
+            CancelSelection();
         }
 
         // ホイールで回転（90度単位）
@@ -522,9 +482,6 @@ public class RSPBehavior : MonoBehaviour
         
         // プレビュー消去
         ClearPreviewChildren();
-        // 点線を削除
-        ClearDashLine();
-        SetValidColor(true); // 通常色に戻す
     }
 
     /// <summary>
@@ -635,9 +592,6 @@ public class RSPBehavior : MonoBehaviour
         else
         {
             Debug.Log($"Rockパターンをコピーしました。セル数: {copiedOffsets.Count}");
-            
-            // コピーした矩形の周囲を点線で囲む
-            CreateDashLine(minX, minY, maxX, maxY);
         }
 
         // コピー時も現在の回転インデックスを維持したまま見た目を更新
@@ -655,7 +609,6 @@ public class RSPBehavior : MonoBehaviour
         if (!hasCopy)
         {
             ClearPreviewChildren();
-            SetValidColor(true);
             return;
         }
 
@@ -667,7 +620,6 @@ public class RSPBehavior : MonoBehaviour
         // 変化がなければプレビュー再生成をスキップ
         if (!previewDirty && centerX == lastPreviewCenterX && centerY == lastPreviewCenterY && rotationIndex == lastPreviewRotationIndex)
         {
-            SetValidColor(lastCanPaste);
             return;
         }
 
@@ -679,7 +631,6 @@ public class RSPBehavior : MonoBehaviour
         StageDatabase.StageData stageData = GetStageData();
         if (stageData == null)
         {
-            SetValidColor(false);
             return;
         }
 
@@ -689,7 +640,6 @@ public class RSPBehavior : MonoBehaviour
 
         if (massStatus == null || rockStatus == null)
         {
-            SetValidColor(false);
             return;
         }
 
@@ -769,7 +719,6 @@ public class RSPBehavior : MonoBehaviour
             }
         }
 
-        SetValidColor(canPaste);
         lastCanPaste = canPaste;
         lastPreviewCenterX = centerX;
         lastPreviewCenterY = centerY;
@@ -821,7 +770,6 @@ public class RSPBehavior : MonoBehaviour
         if (!canPaste)
         {
             Debug.Log("この位置には貼り付けできません");
-            SetValidColor(false);
             return;
         }
 
@@ -876,9 +824,6 @@ public class RSPBehavior : MonoBehaviour
         // プレビュー更新 (貼り付け後はSelector消えるので不要だが一応)
         UpdatePreviewAndValidity();
 
-        // 点線を削除
-        ClearDashLine();
-
         // 貼り付け成功したら削除（アイテムごと）
         DestroySelectorAndItem();
     }
@@ -896,27 +841,6 @@ public class RSPBehavior : MonoBehaviour
             }
         }
         previewObjects.Clear();
-    }
-
-    /// <summary>
-    /// 有効/無効に応じて色と透明度を変更
-    /// </summary>
-    private void SetValidColor(bool isValid)
-    {
-        if (spriteRenderer == null) return;
-        
-        if (isValid)
-        {
-            // 有効な場合は通常色（アルファも元に戻す）
-            spriteRenderer.color = normalColor;
-        }
-        else
-        {
-            // 無効な場合は無効色で、アルファを指定値に設定
-            Color invalid = invalidColor;
-            invalid.a = invalidAlpha;
-            spriteRenderer.color = invalid;
-        }
     }
 
     /// <summary>
@@ -985,22 +909,6 @@ public class RSPBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 指定フレーム待機後に不透明度を元に戻します
-    /// </summary>
-    private System.Collections.IEnumerator SetOpacityAfterFrames(int waitFrames, Color targetColor)
-    {
-        for (int i = 0; i < waitFrames; i++)
-        {
-            yield return new WaitForEndOfFrame();
-        }
-
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = targetColor;
-        }
-    }
-
-    /// <summary>
     /// 現在のステージデータを取得します（ランタイムではDeepCopy済みを返す）
     /// </summary>
     private StageDatabase.StageData GetStageData()
@@ -1054,10 +962,10 @@ public class RSPBehavior : MonoBehaviour
     }
     
 
-    // アイテム参照（RSItemBehaviorから設定される）
-    private RSItemBehavior sourceItem;
+    // アイテム参照（StickyNoteBehaviorから設定される）
+    private StickyNoteBehavior sourceItem;
 
-    public void SetSourceItem(RSItemBehavior item)
+    public void SetSourceItem(StickyNoteBehavior item)
     {
         sourceItem = item;
         if (sourceItem != null)
@@ -1080,96 +988,20 @@ public class RSPBehavior : MonoBehaviour
         if (sourceItem != null)
         {
             sourceItem.SetAlpha(1.0f); // 削除時は元に戻す
-            RSItemBehavior.ClearCurrentSelection(sourceItem); // キャンセル時に再選択可能にする
+            StickyNoteBehavior.ClearCurrentSelection(sourceItem); // キャンセル時に再選択可能にする
         }
         Destroy(gameObject);
     }
 
     private void DestroySelectorAndItem()
     {
-        // 点線を削除
-        ClearDashLine();
-        
         if (sourceItem != null)
         {
             // アイテムもろとも削除
             Destroy(sourceItem.gameObject);
-            RSItemBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
+            StickyNoteBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
         }
         Destroy(gameObject);
     }
 
-    /// <summary>
-    /// コピーした矩形の周囲を点線で囲むDashLineを生成します
-    /// </summary>
-    /// <param name="minX">矩形の最小X座標（グリッドインデックス）</param>
-    /// <param name="minY">矩形の最小Y座標（グリッドインデックス）</param>
-    /// <param name="maxX">矩形の最大X座標（グリッドインデックス）</param>
-    /// <param name="maxY">矩形の最大Y座標（グリッドインデックス）</param>
-    private void CreateDashLine(int minX, int minY, int maxX, int maxY)
-    {
-        if (dashLinePrefab == null)
-        {
-            Debug.LogWarning("DashLinePrefabがアサインされていません");
-            return;
-        }
-
-        // 既存の点線を削除
-        ClearDashLine();
-
-        // DashLineを生成
-        Transform parent = transform.parent != null ? transform.parent : transform;
-        dashLineInstance = Instantiate(dashLinePrefab, parent);
-        if (dashLineInstance == null)
-        {
-            Debug.LogError("DashLineの生成に失敗しました");
-            return;
-        }
-
-        dashLineInstance.name = "DashLine";
-
-        // LineRendererを取得
-        LineRenderer lineRenderer = dashLineInstance.GetComponent<LineRenderer>();
-        if (lineRenderer == null)
-        {
-            Debug.LogError("DashLinePrefabにLineRendererがアタッチされていません");
-            return;
-        }
-
-        // 矩形の4つの角のワールド座標を計算
-        // セルの中心座標から、セルの境界（矩形の外側）を計算
-        Vector3 bottomLeft = RSGridHelper.GridIndexToWorld(minX, minY, transform.position.z, gridParentPosition, gridOffset) - new Vector3(0.5f, 0.5f, 0f);
-        Vector3 topLeft = RSGridHelper.GridIndexToWorld(minX, maxY, transform.position.z, gridParentPosition, gridOffset) - new Vector3(0.5f, -0.5f, 0f);
-        Vector3 topRight = RSGridHelper.GridIndexToWorld(maxX, maxY, transform.position.z, gridParentPosition, gridOffset) + new Vector3(0.5f, 0.5f, 0f);
-        Vector3 bottomRight = RSGridHelper.GridIndexToWorld(maxX, minY, transform.position.z, gridParentPosition, gridOffset) + new Vector3(0.5f, -0.5f, 0f);
-
-        // LineRendererで矩形を描画（5つの頂点：左下→左上→右上→右下→左下）
-        lineRenderer.positionCount = 5;
-        lineRenderer.SetPosition(0, bottomLeft);
-        lineRenderer.SetPosition(1, topLeft);
-        lineRenderer.SetPosition(2, topRight);
-        lineRenderer.SetPosition(3, bottomRight);
-        lineRenderer.SetPosition(4, bottomLeft); // 閉じる
-
-        Debug.Log($"DashLineを生成しました: ({minX}, {minY}) ～ ({maxX}, {maxY})");
-    }
-
-    /// <summary>
-    /// DashLineを削除します
-    /// </summary>
-    private void ClearDashLine()
-    {
-        if (dashLineInstance != null)
-        {
-            if (Application.isPlaying)
-            {
-                Destroy(dashLineInstance);
-            }
-            else
-            {
-                DestroyImmediate(dashLineInstance);
-            }
-            dashLineInstance = null;
-        }
-    }
 }

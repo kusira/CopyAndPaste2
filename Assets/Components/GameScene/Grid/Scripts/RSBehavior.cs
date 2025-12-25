@@ -952,10 +952,10 @@ public class RSBehavior : MonoBehaviour
     }
     
 
-    // アイテム参照（RSItemBehaviorから設定される）
-    private RSItemBehavior sourceItem;
+    // アイテム参照（StickyNoteBehaviorから設定される）
+    private StickyNoteBehavior sourceItem;
 
-    public void SetSourceItem(RSItemBehavior item)
+    public void SetSourceItem(StickyNoteBehavior item)
     {
         sourceItem = item;
         if (sourceItem != null)
@@ -978,7 +978,7 @@ public class RSBehavior : MonoBehaviour
         if (sourceItem != null)
         {
             sourceItem.SetAlpha(1.0f); // 削除時は元に戻す
-            RSItemBehavior.ClearCurrentSelection(sourceItem); // キャンセル時に再選択可能にする
+            StickyNoteBehavior.ClearCurrentSelection(sourceItem); // キャンセル時に再選択可能にする
         }
         Destroy(gameObject);
     }
@@ -992,7 +992,7 @@ public class RSBehavior : MonoBehaviour
         {
             // アイテムもろとも削除
             Destroy(sourceItem.gameObject);
-            RSItemBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
+            StickyNoteBehavior.ClearCurrentSelection(sourceItem); // 削除後は選択を解放
         }
         Destroy(gameObject);
     }
