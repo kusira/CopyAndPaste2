@@ -22,27 +22,27 @@ MonoBehaviour:
       - .
       - .
     - columns:
-      - .
-      - .
-      - .
-      - .
-      - .
-    - columns:
-      - .
-      - .
       - .S
-      - .
-      - .
-    - columns:
-      - .
+      - .C
       - .
       - .H
       - .
+    - columns:
+      - .
+      - .S
+      - .C
+      - .
       - .
     - columns:
       - .
       - .
-      - .C
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .S
+      - .H
       - .
       - .
     rockStatus:
@@ -68,7 +68,7 @@ MonoBehaviour:
       - 
       - 
       - 
-      - 
+      - '#'
       - 
     - columns:
       - 
@@ -79,8 +79,14 @@ MonoBehaviour:
     RSItems:
     - height: 1
       width: 2
-    - height: 3
+    - height: 1
       width: 2
+    - height: 2
+      width: 3
+    - height: 2
+      width: 3
+    - height: 1
+      width: 1
     - height: 1
       width: 1
   - stageName: Stage 1

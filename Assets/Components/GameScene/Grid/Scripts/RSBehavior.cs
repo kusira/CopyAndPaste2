@@ -23,6 +23,7 @@ public class RSBehavior : MonoBehaviour
     private int rotationIndex = 0; // 0,1,2,3 = 0,90,180,270
     private Vector3 initialScale;
     private Vector3 dragOffset = Vector3.zero; // 回転時の位置ずれを吸収するためのマウスとのオフセット
+    private bool shouldFollowMouse = false; // マウス追跡を開始するかどうか
 
     // プレビュー用
     private GameObject rockPreviewPrefab;
@@ -109,7 +110,7 @@ public class RSBehavior : MonoBehaviour
         // 初期スケールを保存
         initialScale = transform.localScale;
 
-        // 各Selectionの初期スケールを保存
+        // 各Selectionの初期スケールを保存（PositionToGridCenter()より前に実行する必要がある）
         if (selectionLT != null)
         {
             initialScaleLT = selectionLT.transform.localScale;
@@ -127,8 +128,8 @@ public class RSBehavior : MonoBehaviour
             initialScaleRB = selectionRB.transform.localScale;
         }
 
-        // 四隅のSelectionを配置
-        SetupSelectionCorners();
+        // RSをグリッドの中央に配置（SetupSelectionCorners()も内部で呼ばれる）
+        PositionToGridCenter();
     }
 
     /// <summary>
@@ -231,6 +232,45 @@ public class RSBehavior : MonoBehaviour
     }
 
     /// <summary>
+    /// RSをグリッドの中央に配置します
+    /// </summary>
+    private void PositionToGridCenter()
+    {
+        if (gridWidth == 0 || gridHeight == 0)
+        {
+            return;
+        }
+
+        // RSのサイズを取得
+        Vector3 selectorScale = transform.localScale;
+        int selectorW = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
+        int selectorH = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
+
+        // グリッドの中央セルインデックスを計算
+        // グリッドの中央は (gridWidth / 2, gridHeight / 2) のセル位置
+        // ただし、RSのサイズを考慮して、RSがグリッド内に収まるようにする
+        float centerX = (gridWidth - 1) * 0.5f;
+        float centerY = (gridHeight - 1) * 0.5f;
+
+        // 中央位置をワールド座標に変換
+        Vector3 centerWorldPos = RSGridHelper.GridIndexToWorld(
+            Mathf.RoundToInt(centerX), 
+            Mathf.RoundToInt(centerY), 
+            transform.position.z, 
+            gridParentPosition, 
+            gridOffset);
+
+        // RSのサイズを考慮してスナップ
+        Vector3 snappedPos = RSGridHelper.SnapToGrid(centerWorldPos, gridParentPosition, gridOffset, selectorW, selectorH);
+
+        // グリッド範囲内に収まるようにクランプ
+        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH);
+
+        // Selectionの位置も更新
+        SetupSelectionCorners();
+    }
+
+    /// <summary>
     /// マウスカーソルを追跡し、グリッドにスナップします
     /// </summary>
     private void FollowMouseCursor()
@@ -248,6 +288,23 @@ public class RSBehavior : MonoBehaviour
         mouseScreenPosition.z = Mathf.Abs(mainCamera.transform.position.z); // カメラからの距離
         Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mouseScreenPosition);
         mouseWorldPosition.z = transform.position.z; // Z座標は維持
+
+        // マウスがグリッド内にあるかチェック
+        Vector2Int mouseGridIndex = RSGridHelper.WorldToGridIndex(mouseWorldPosition, gridParentPosition, gridOffset);
+        bool isMouseInGrid = mouseGridIndex.x >= 0 && mouseGridIndex.x < gridWidth && 
+                            mouseGridIndex.y >= 0 && mouseGridIndex.y < gridHeight;
+
+        // マウスがグリッド内に入ったら追跡を開始
+        if (isMouseInGrid && !shouldFollowMouse)
+        {
+            shouldFollowMouse = true;
+        }
+
+        // マウス追跡が開始されていない場合は処理をスキップ
+        if (!shouldFollowMouse)
+        {
+            return;
+        }
 
         // グリッドにスナップ（ドラッグオフセットを加味）
         Vector3 snapperTarget = mouseWorldPosition + dragOffset;
