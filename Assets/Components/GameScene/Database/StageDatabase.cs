@@ -34,7 +34,8 @@ public class StageDatabase : ScriptableObject
     public enum RSItemType
     {
         Normal,
-        Pickaxe
+        Pickaxe,
+        Gravity
     }
 
     [System.Serializable]

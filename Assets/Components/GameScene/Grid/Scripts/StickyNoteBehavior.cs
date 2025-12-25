@@ -36,6 +36,9 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
     [Tooltip("Pickaxeタイプの設定")]
     [SerializeField] private TypeSettings pickaxeSettings = new TypeSettings();
 
+    [Tooltip("Gravityタイプの設定")]
+    [SerializeField] private TypeSettings gravitySettings = new TypeSettings();
+
     [Header("Selection")]
     [Tooltip("マウスホバー時に表示するSelectionオブジェクトをアサインします（タイプに関係なく同じオブジェクトを使用）")]
     [SerializeField] private GameObject selection;
@@ -113,6 +116,8 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
                 return normalSettings;
             case StageDatabase.RSItemType.Pickaxe:
                 return pickaxeSettings;
+            case StageDatabase.RSItemType.Gravity:
+                return gravitySettings;
             default:
                 return normalSettings;
         }
@@ -275,6 +280,7 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             instance.name = "RS";
 
             // Selectorに自身を登録（タイプに応じてRSBehaviorまたはRSPBehavior）
+            // PickaxeタイプはRSPBehavior、Normal/GravityタイプはRSBehaviorを使用
             if (itemType == StageDatabase.RSItemType.Pickaxe)
             {
                 var rspBehavior = instance.GetComponent<RSPBehavior>();
@@ -285,6 +291,8 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             }
             else
             {
+                // NormalタイプとGravityタイプはRSBehaviorを使用
+                // （将来的にGravity専用のBehaviorが必要な場合はここを修正）
                 var behavior = instance.GetComponent<RSBehavior>();
                 if (behavior != null)
                 {
@@ -521,7 +529,20 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
     /// </summary>
     private Transform FindRSParent(StageDatabase.RSItemType type)
     {
-        string parentName = type == StageDatabase.RSItemType.Pickaxe ? "RSPParent" : "RSParent";
+        string parentName;
+        switch (type)
+        {
+            case StageDatabase.RSItemType.Pickaxe:
+                parentName = "RSPParent";
+                break;
+            case StageDatabase.RSItemType.Gravity:
+                parentName = "RSParent"; // GravityタイプもRSParentを使用（必要に応じて変更可能）
+                break;
+            default:
+                parentName = "RSParent";
+                break;
+        }
+        
         var transforms = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None);
         foreach (var t in transforms)
         {

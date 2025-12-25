@@ -245,6 +245,10 @@ public class StageDatabaseEditor : Editor
             bool isPickaxe = EditorGUILayout.Toggle(newType == StageDatabase.RSItemType.Pickaxe, GUILayout.Width(20));
             EditorGUILayout.LabelField("Pickaxe", GUILayout.Width(60));
             
+            // Gravityラジオボタン
+            bool isGravity = EditorGUILayout.Toggle(newType == StageDatabase.RSItemType.Gravity, GUILayout.Width(20));
+            EditorGUILayout.LabelField("Gravity", GUILayout.Width(60));
+            
             // ラジオボタンの状態を更新
             if (isNormal && newType != StageDatabase.RSItemType.Normal)
             {
@@ -254,6 +258,11 @@ public class StageDatabaseEditor : Editor
             else if (isPickaxe && newType != StageDatabase.RSItemType.Pickaxe)
             {
                 newType = StageDatabase.RSItemType.Pickaxe;
+                typeChanged = true;
+            }
+            else if (isGravity && newType != StageDatabase.RSItemType.Gravity)
+            {
+                newType = StageDatabase.RSItemType.Gravity;
                 typeChanged = true;
             }
 

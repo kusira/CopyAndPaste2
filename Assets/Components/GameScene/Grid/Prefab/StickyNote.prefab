@@ -107,6 +107,37 @@ MonoBehaviour:
   moveMultiplier: 0.1
   duration: 0.5
   easeType: 4
+--- !u!1 &1751098630283738941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4850800105627196263}
+  m_Layer: 0
+  m_Name: RSGItemMasses
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4850800105627196263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751098630283738941}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 29965325976113890}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3389793726718830510
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +341,7 @@ Transform:
   m_Children:
   - {fileID: 8084780108897113345}
   - {fileID: 4010841215494986533}
+  - {fileID: 4850800105627196263}
   - {fileID: 3866464822658672465}
   - {fileID: 3671079436191520236}
   m_Father: {fileID: 0}
@@ -439,6 +471,11 @@ MonoBehaviour:
     RSPrefab: {fileID: 6544520345476898276, guid: 3c865ff41afd81441bebb25af34122df, type: 3}
     RSItemMassPrefab: {fileID: 246989973394450972, guid: 503aaa26a9ef0b34f8ea5f1b4fd89529, type: 3}
     RSItemMasses: {fileID: 6025783471593167213}
+    sprite: {fileID: 3626170018067094600, guid: 4b981c3fa84595f4fae9a45120a6e62d, type: 3}
+  gravitySettings:
+    RSPrefab: {fileID: 6544520345476898276, guid: 3f3394fb8ef2690468a1cb1faae7d53a, type: 3}
+    RSItemMassPrefab: {fileID: 246989973394450972, guid: abca5864229ca5f4eacb5c18b01b570a, type: 3}
+    RSItemMasses: {fileID: 1751098630283738941}
     sprite: {fileID: 3626170018067094600, guid: 4b981c3fa84595f4fae9a45120a6e62d, type: 3}
   selection: {fileID: 6150345130779730232}
   selectionBack: {fileID: 6166333267980462276}
