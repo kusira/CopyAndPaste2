@@ -290,6 +290,76 @@ public static class RSHelper
             rockStatus[gy].columns[gx] = data.value;
         }
     }
+
+    /// <summary>
+    /// 指定範囲内のRockを削除します（ステージデータとシーン上のオブジェクトの両方）
+    /// </summary>
+    /// <param name="stageData">ステージデータ</param>
+    /// <param name="minX">範囲の最小X座標（グリッドインデックス）</param>
+    /// <param name="minY">範囲の最小Y座標（グリッドインデックス）</param>
+    /// <param name="maxX">範囲の最大X座標（グリッドインデックス）</param>
+    /// <param name="maxY">範囲の最大Y座標（グリッドインデックス）</param>
+    /// <param name="gridParentPosition">グリッド親のワールド座標</param>
+    /// <param name="gridOffset">グリッドオフセット</param>
+    /// <returns>削除されたRockの数</returns>
+    public static int DestroyRocksInRange(
+        StageDatabase.StageData stageData,
+        int minX, int minY, int maxX, int maxY,
+        Vector3 gridParentPosition, Vector3 gridOffset)
+    {
+        int destroyedCount = 0;
+
+        if (stageData == null || stageData.rockStatus == null)
+        {
+            return destroyedCount;
+        }
+
+        List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
+
+        // 1. ステージデータからRockStatusを削除
+        for (int y = minY; y <= maxY; y++)
+        {
+            if (y >= rockStatus.Count) continue;
+            if (rockStatus[y] == null || rockStatus[y].columns == null) continue;
+
+            for (int x = minX; x <= maxX; x++)
+            {
+                if (x >= rockStatus[y].columns.Count) continue;
+
+                // Rockがある場合は削除（空セル"0"に設定）
+                string cellValue = rockStatus[y].columns[x];
+                char baseChar;
+                List<string> keys = new List<string>();
+                ParseCell(cellValue, out baseChar, keys);
+
+                if (baseChar == '#')
+                {
+                    rockStatus[y].columns[x] = "0";
+                    destroyedCount++;
+                }
+            }
+        }
+
+        // 2. シーン上のRockオブジェクトを破壊（TagがRockのもの）
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+            if (rock == null) continue;
+
+            // Rockの位置をグリッドインデックスに変換
+            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset);
+
+            // 範囲内にあるかチェック
+            if (rockGridIndex.x >= minX && rockGridIndex.x <= maxX &&
+                rockGridIndex.y >= minY && rockGridIndex.y <= maxY)
+            {
+                Object.Destroy(rock);
+            }
+        }
+
+        return destroyedCount;
+    }
 }
 
 

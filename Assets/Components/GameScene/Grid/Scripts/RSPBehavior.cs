@@ -309,12 +309,19 @@ public class RSPBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 入力処理（右クリックで選択キャンセル、ホイール回転）
+    /// 入力処理（左クリックでRock削除、右クリックで選択キャンセル、ホイール回転）
     /// </summary>
     private void HandleInput()
     {
         var mouse = Mouse.current;
         if (mouse == null) return;
+
+        // 左クリック (範囲内のRockを削除)
+        if (mouse.leftButton.wasPressedThisFrame)
+        {
+            Debug.Log("左クリック：範囲内のRockを削除します");
+            DestroyRocksInRange();
+        }
 
         // 右クリック (選択キャンセル)
         if (mouse.rightButton.wasPressedThisFrame)
@@ -393,55 +400,21 @@ public class RSPBehavior : MonoBehaviour
             UndoRedoManager.Instance.RecordSnapshot();
         }
 
-        // 2. ステージデータからRockStatusを削除
+        // 2. ステージデータを取得
         StageDatabase.StageData stageData = GetStageData();
-        if (stageData != null && stageData.rockStatus != null)
+        if (stageData == null)
         {
-            List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
-            
-            for (int y = minY; y <= maxY; y++)
-            {
-                if (y >= rockStatus.Count) continue;
-                if (rockStatus[y] == null || rockStatus[y].columns == null) continue;
-
-                for (int x = minX; x <= maxX; x++)
-                {
-                    if (x >= rockStatus[y].columns.Count) continue;
-
-                    // Rockがある場合は削除（空セル"0"に設定）
-                    string cellValue = rockStatus[y].columns[x];
-                    char baseChar;
-                    List<string> keys = new List<string>();
-                    RSHelper.ParseCell(cellValue, out baseChar, keys);
-
-                    if (baseChar == '#')
-                    {
-                        rockStatus[y].columns[x] = "0";
-                        Debug.Log($"Rock破壊: ({x}, {y})");
-                    }
-                }
-            }
+            Debug.LogWarning("ステージデータを取得できませんでした");
+            return;
         }
 
-        // 3. シーン上のRockオブジェクトを破壊（TagがRockのもの）
-        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-        int destroyedCount = 0;
+        // 3. ヘルパー関数でRockを削除
+        int destroyedCount = RSHelper.DestroyRocksInRange(
+            stageData,
+            minX, minY, maxX, maxY,
+            gridParentPosition, gridOffset);
 
-        foreach (GameObject rock in rocks)
-        {
-            // Rockの位置をグリッドインデックスに変換
-            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset);
-
-            // 範囲内にあるかチェック
-            if (rockGridIndex.x >= minX && rockGridIndex.x <= maxX &&
-                rockGridIndex.y >= minY && rockGridIndex.y <= maxY)
-            {
-                Destroy(rock);
-                destroyedCount++;
-            }
-        }
-
-        Debug.Log($"{destroyedCount}個のRockを破壊しました");
+        Debug.Log($"{destroyedCount}個のRockを削除しました");
 
         // 4. グリッドを再生成して見た目を更新
         if (gridGenerator != null)
@@ -450,7 +423,7 @@ public class RSPBehavior : MonoBehaviour
         }
 
         // 5. 使用したアイテムをデータから削除
-        if (sourceItem != null && stageData != null)
+        if (sourceItem != null)
         {
             int itemIndex = sourceItem.GetItemIndex();
             if (itemIndex >= 0 && itemIndex < stageData.RSItems.Count)

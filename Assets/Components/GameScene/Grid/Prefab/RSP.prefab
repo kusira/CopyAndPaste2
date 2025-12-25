@@ -404,9 +404,9 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 20
+  m_SortingOrder: 120
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 0.9831489, b: 0, a: 0.29803923}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -428,10 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94faa92f47e439a4d8ad7effc1e2299d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RSPBehavior
-  dashLinePrefab: {fileID: 2669778957739458681, guid: ce4b24a1bc8245c4c80309e758de92d6, type: 3}
-  invalidColor: {r: 1, g: 0, b: 0, a: 1}
   previewAlpha: 0.5
-  invalidAlpha: 0.3
   selectionLT: {fileID: 6510291865257567780}
   selectionRT: {fileID: 1671452532271192144}
   selectionLB: {fileID: 8096952087035709573}
