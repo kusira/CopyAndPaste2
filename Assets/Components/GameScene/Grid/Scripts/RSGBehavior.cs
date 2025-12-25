@@ -410,9 +410,9 @@ public class RSGBehavior : MonoBehaviour
             return;
         }
 
-        // 3. ヘルパー関数でRockを回転方向に応じて詰める（移動情報を取得）
+        // 3. 移動情報だけを計算（データは変更しない）
         List<RSHelper.RockMoveInfo> moveInfos = new List<RSHelper.RockMoveInfo>();
-        RSHelper.ApplyGravityToRocksInRange(
+        RSHelper.CalculateGravityMoves(
             stageData,
             minX, minY, maxX, maxY,
             gridParentPosition, gridOffset,
@@ -421,13 +421,17 @@ public class RSGBehavior : MonoBehaviour
 
         string[] directionNames = { "上", "右", "下", "左" };
         string directionName = directionNames[((rotationIndex % 4) + 4) % 4];
-        Debug.Log($"範囲内のRockを{directionName}に詰めました（移動数: {moveInfos.Count}）");
+        Debug.Log($"範囲内のRockを{directionName}に詰めます（移動数: {moveInfos.Count}）");
 
         // 4. 岩の移動をアニメーション化（範囲情報も渡す）
         AnimateRockMoves(moveInfos, minX, minY, maxX, maxY);
 
-        // 5. アニメーション完了後にグリッドを再生成して見た目を更新
-        StartCoroutine(RegenerateGridAfterAnimation(moveInfos.Count > 0 ? rockMoveDuration : 0f));
+        // 5. アニメーション完了後にデータを変更してグリッドを再生成
+        StartCoroutine(ApplyGravityAndRegenerateGridAfterAnimation(
+            stageData,
+            minX, minY, maxX, maxY,
+            moveInfos,
+            moveInfos.Count > 0 ? rockMoveDuration : 0f));
 
         // 6. 使用したアイテムをデータから削除（アニメーション完了後）
         StartCoroutine(RemoveItemAfterAnimation(moveInfos.Count > 0 ? rockMoveDuration : 0f));
@@ -535,9 +539,13 @@ public class RSGBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// アニメーション完了後にグリッドを再生成します
+    /// アニメーション完了後にデータを変更してグリッドを再生成します
     /// </summary>
-    private IEnumerator RegenerateGridAfterAnimation(float delay)
+    private IEnumerator ApplyGravityAndRegenerateGridAfterAnimation(
+        StageDatabase.StageData stageData,
+        int minX, int minY, int maxX, int maxY,
+        List<RSHelper.RockMoveInfo> moveInfos,
+        float delay)
     {
         // アニメーション完了まで待機
         yield return new WaitForSeconds(delay);
@@ -545,6 +553,13 @@ public class RSGBehavior : MonoBehaviour
         // アニメーション中のRockオブジェクトを全てクリア（アニメーション完了済み）
         animatingRocks.Clear();
 
+        // データを変更（移動情報に基づいてRockを移動）
+        if (stageData != null && moveInfos != null && moveInfos.Count > 0)
+        {
+            RSHelper.ApplyGravityMoves(stageData, moveInfos);
+        }
+
+        // グリッドを再生成
         if (gridGenerator != null)
         {
             gridGenerator.GenerateGrid();

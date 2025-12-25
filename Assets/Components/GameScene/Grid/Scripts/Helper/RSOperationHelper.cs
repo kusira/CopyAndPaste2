@@ -377,6 +377,293 @@ public static class RSHelper
     }
 
     /// <summary>
+    /// 指定範囲内のRockの移動情報を計算します（データは変更しない）
+    /// </summary>
+    /// <param name="stageData">ステージデータ</param>
+    /// <param name="minX">範囲の最小X座標（グリッドインデックス）</param>
+    /// <param name="minY">範囲の最小Y座標（グリッドインデックス）</param>
+    /// <param name="maxX">範囲の最大X座標（グリッドインデックス）</param>
+    /// <param name="maxY">範囲の最大Y座標（グリッドインデックス）</param>
+    /// <param name="gridParentPosition">グリッド親のワールド座標</param>
+    /// <param name="gridOffset">グリッドオフセット</param>
+    /// <param name="rotationIndex">回転インデックス（0=上, 1=右, 2=下, 3=左）</param>
+    /// <param name="moveInfos">移動情報のリスト（出力）</param>
+    public static void CalculateGravityMoves(
+        StageDatabase.StageData stageData,
+        int minX, int minY, int maxX, int maxY,
+        Vector3 gridParentPosition, Vector3 gridOffset,
+        int rotationIndex,
+        List<RockMoveInfo> moveInfos)
+    {
+        if (moveInfos == null)
+        {
+            moveInfos = new List<RockMoveInfo>();
+        }
+        moveInfos.Clear();
+
+        if (stageData == null || stageData.rockStatus == null || stageData.massStatus == null)
+        {
+            return;
+        }
+
+        List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
+        List<StageDatabase.RowData> massStatus = stageData.massStatus;
+
+        // 範囲内のすべてのRockを収集（位置情報も含む）
+        List<(int x, int y, string value)> allRocks = new List<(int x, int y, string value)>();
+        for (int y = minY; y <= maxY; y++)
+        {
+            if (y >= rockStatus.Count || rockStatus[y] == null || rockStatus[y].columns == null)
+            {
+                continue;
+            }
+
+            for (int x = minX; x <= maxX; x++)
+            {
+                if (x >= rockStatus[y].columns.Count)
+                {
+                    continue;
+                }
+
+                string cellValue = rockStatus[y].columns[x] ?? "";
+                char baseChar;
+                List<string> keys = new List<string>();
+                ParseCell(cellValue, out baseChar, keys);
+
+                if (baseChar == '#')
+                {
+                    allRocks.Add((x, y, cellValue)); // Rockの位置と値を保存
+                }
+            }
+        }
+
+        if (allRocks.Count == 0)
+        {
+            return; // Rockがない場合は終了
+        }
+
+        // 各Rockの現在位置を追跡（元の位置をキーとして、現在位置を値として保持）
+        Dictionary<Vector2Int, Vector2Int> rockPositions = new Dictionary<Vector2Int, Vector2Int>();
+        foreach (var rock in allRocks)
+        {
+            Vector2Int originalPos = new Vector2Int(rock.x, rock.y);
+            rockPositions[originalPos] = originalPos; // 初期位置は元の位置
+        }
+
+        // 回転方向に応じて重力の方向を決定
+        // 0=上, 1=右, 2=下, 3=左
+        int rot = ((rotationIndex % 4) + 4) % 4;
+        
+        // 複数回のパスで、各Rockが1セルずつ重力方向に移動できるかチェック
+        // 移動できるRockがなくなるまで繰り返す
+        bool moved = true;
+        int maxIterations = (maxY - minY + 1) * (maxX - minX + 1); // 無限ループ防止
+        int iteration = 0;
+
+        while (moved && iteration < maxIterations)
+        {
+            moved = false;
+            iteration++;
+
+            // 重力方向の反対側から走査（重力方向の先頭にあるRockから先に処理することで、自然な落下を実現）
+            List<Vector2Int> sortedRocks = new List<Vector2Int>(rockPositions.Keys);
+            sortedRocks.Sort((a, b) => 
+            {
+                Vector2Int posA = rockPositions[a];
+                Vector2Int posB = rockPositions[b];
+                
+                // 回転に応じてソート順を変更
+                switch (rot)
+                {
+                    case 0: // 上方向: 上から下に（Y座標が小さい順）
+                        if (posA.y != posB.y) return posA.y.CompareTo(posB.y);
+                        return posA.x.CompareTo(posB.x);
+                    case 1: // 右方向: 右から左に（X座標が大きい順）
+                        if (posA.x != posB.x) return posB.x.CompareTo(posA.x);
+                        return posA.y.CompareTo(posB.y);
+                    case 2: // 下方向: 下から上に（Y座標が大きい順）
+                        if (posA.y != posB.y) return posB.y.CompareTo(posA.y);
+                        return posA.x.CompareTo(posB.x);
+                    case 3: // 左方向: 左から右に（X座標が小さい順）
+                        if (posA.x != posB.x) return posA.x.CompareTo(posB.x);
+                        return posA.y.CompareTo(posB.y);
+                    default:
+                        return 0;
+                }
+            });
+
+            foreach (Vector2Int originalPos in sortedRocks)
+            {
+                Vector2Int currentPos = rockPositions[originalPos];
+                Vector2Int nextPos;
+                bool canCheckMove = false;
+
+                // 回転に応じて移動方向を決定
+                switch (rot)
+                {
+                    case 0: // 上方向（Y座標が減る）
+                        nextPos = new Vector2Int(currentPos.x, currentPos.y - 1);
+                        canCheckMove = (nextPos.y >= minY);
+                        break;
+                    case 1: // 右方向（X座標が増える）
+                        nextPos = new Vector2Int(currentPos.x + 1, currentPos.y);
+                        canCheckMove = (nextPos.x <= maxX);
+                        break;
+                    case 2: // 下方向（Y座標が増える）
+                        nextPos = new Vector2Int(currentPos.x, currentPos.y + 1);
+                        canCheckMove = (nextPos.y <= maxY);
+                        break;
+                    case 3: // 左方向（X座標が減る）
+                        nextPos = new Vector2Int(currentPos.x - 1, currentPos.y);
+                        canCheckMove = (nextPos.x >= minX);
+                        break;
+                    default:
+                        continue;
+                }
+
+                // 範囲外の場合はスキップ
+                if (!canCheckMove)
+                {
+                    continue;
+                }
+
+                // MassStatusをチェック（Massがない場所があったら止まる）
+                int checkY = nextPos.y;
+                int checkX = nextPos.x;
+                
+                if (checkY < 0 || checkY >= massStatus.Count || massStatus[checkY] == null || massStatus[checkY].columns == null)
+                {
+                    continue;
+                }
+                if (checkX < 0 || checkX >= massStatus[checkY].columns.Count)
+                {
+                    continue;
+                }
+
+                string massValue = massStatus[checkY].columns[checkX] ?? "";
+                char massBaseChar;
+                List<string> massKeys = new List<string>();
+                ParseCell(massValue, out massBaseChar, massKeys);
+
+                // Mass（'.'）がない場合は止まる
+                if (massBaseChar != '.')
+                {
+                    continue;
+                }
+
+                // 移動先の位置に既にRockがないかチェック（他のRockが既に移動している可能性がある）
+                bool canMove = true;
+                foreach (var pos in rockPositions.Values)
+                {
+                    if (pos.Equals(nextPos))
+                    {
+                        canMove = false;
+                        break;
+                    }
+                }
+
+                if (canMove)
+                {
+                    // 移動可能：位置を更新
+                    rockPositions[originalPos] = nextPos;
+                    moved = true;
+                }
+            }
+        }
+
+        // 移動情報を記録（位置が変わった場合のみ）
+        foreach (var rock in allRocks)
+        {
+            Vector2Int originalPos = new Vector2Int(rock.x, rock.y);
+            Vector2Int finalPos = rockPositions[originalPos];
+
+            if (!originalPos.Equals(finalPos))
+            {
+                moveInfos.Add(new RockMoveInfo(originalPos, finalPos));
+            }
+        }
+    }
+
+    /// <summary>
+    /// 移動情報に基づいてRockを移動します（データを変更）
+    /// </summary>
+    /// <param name="stageData">ステージデータ</param>
+    /// <param name="moveInfos">移動情報のリスト</param>
+    public static void ApplyGravityMoves(
+        StageDatabase.StageData stageData,
+        List<RockMoveInfo> moveInfos)
+    {
+        if (stageData == null || stageData.rockStatus == null || moveInfos == null || moveInfos.Count == 0)
+        {
+            return;
+        }
+
+        List<StageDatabase.RowData> rockStatus = stageData.rockStatus;
+
+        // 移動元のRockの値を保存
+        Dictionary<Vector2Int, string> rockValues = new Dictionary<Vector2Int, string>();
+        foreach (var moveInfo in moveInfos)
+        {
+            int fromY = moveInfo.fromPosition.y;
+            int fromX = moveInfo.fromPosition.x;
+
+            if (fromY >= 0 && fromY < rockStatus.Count && 
+                rockStatus[fromY] != null && 
+                rockStatus[fromY].columns != null &&
+                fromX >= 0 && fromX < rockStatus[fromY].columns.Count)
+            {
+                string value = rockStatus[fromY].columns[fromX] ?? "";
+                if (!string.IsNullOrEmpty(value))
+                {
+                    char baseChar;
+                    List<string> keys = new List<string>();
+                    ParseCell(value, out baseChar, keys);
+                    if (baseChar == '#')
+                    {
+                        rockValues[moveInfo.fromPosition] = value;
+                        // 移動元をクリア
+                        rockStatus[fromY].columns[fromX] = "0";
+                    }
+                }
+            }
+        }
+
+        // 移動先にRockを配置
+        foreach (var moveInfo in moveInfos)
+        {
+            if (rockValues.ContainsKey(moveInfo.fromPosition))
+            {
+                int toY = moveInfo.toPosition.y;
+                int toX = moveInfo.toPosition.x;
+
+                // 行と列が存在することを確認
+                if (toY >= rockStatus.Count)
+                {
+                    while (rockStatus.Count <= toY)
+                    {
+                        rockStatus.Add(new StageDatabase.RowData());
+                    }
+                }
+                if (rockStatus[toY] == null)
+                {
+                    rockStatus[toY] = new StageDatabase.RowData();
+                }
+                if (rockStatus[toY].columns == null)
+                {
+                    rockStatus[toY].columns = new List<string>();
+                }
+                while (rockStatus[toY].columns.Count <= toX)
+                {
+                    rockStatus[toY].columns.Add("0");
+                }
+
+                // Rockを配置
+                rockStatus[toY].columns[toX] = rockValues[moveInfo.fromPosition];
+            }
+        }
+    }
+
+    /// <summary>
     /// 指定範囲内のRockを回転方向に応じて詰めます（重力で落ちるように）
     /// すべてのRockを同時に処理し、互いに干渉しながら落ちます
     /// </summary>
