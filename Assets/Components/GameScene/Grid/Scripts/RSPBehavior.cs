@@ -422,6 +422,13 @@ public class RSPBehavior : MonoBehaviour
             gridGenerator.GenerateGrid();
         }
 
+        // 4.5. GridMonitorに通知してProgressを再計算
+        GridMonitor gridMonitor = FindFirstObjectByType<GridMonitor>();
+        if (gridMonitor != null)
+        {
+            gridMonitor.RecalculateProgress();
+        }
+
         // 5. 使用したアイテムをデータから削除
         if (sourceItem != null)
         {
@@ -785,6 +792,13 @@ public class RSPBehavior : MonoBehaviour
         if (gridGenerator != null)
         {
             gridGenerator.GenerateGrid();
+        }
+
+        // GridMonitorに通知してProgressを再計算
+        GridMonitor gridMonitor = FindFirstObjectByType<GridMonitor>();
+        if (gridMonitor != null)
+        {
+            gridMonitor.RecalculateProgress();
         }
 
         // アイテムリストを再生成（消費されたアイテムを消すため）

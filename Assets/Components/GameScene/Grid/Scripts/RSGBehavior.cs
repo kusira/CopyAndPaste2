@@ -549,6 +549,13 @@ public class RSGBehavior : MonoBehaviour
         {
             gridGenerator.GenerateGrid();
         }
+
+        // GridMonitorに通知してProgressを再計算
+        GridMonitor gridMonitor = FindFirstObjectByType<GridMonitor>();
+        if (gridMonitor != null)
+        {
+            gridMonitor.RecalculateProgress();
+        }
     }
 
     /// <summary>
