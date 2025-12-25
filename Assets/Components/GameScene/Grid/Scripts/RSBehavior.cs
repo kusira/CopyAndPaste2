@@ -70,6 +70,25 @@ public class RSBehavior : MonoBehaviour
     private Vector3 initialScaleLB = Vector3.one;
     private Vector3 initialScaleRB = Vector3.one;
 
+    // UIテキスト管理用ヘルパー
+    private RSInputUIHelper uiHelper = new RSInputUIHelper();
+
+    [Header("UI Text Settings")]
+    [Tooltip("左クリックテキスト（コピー前）")]
+    [SerializeField] private string leftClickTextBeforeCopy = "コピー";
+    
+    [Tooltip("左クリックテキスト（コピー後）")]
+    [SerializeField] private string leftClickTextAfterCopy = "貼り付け";
+    
+    [Tooltip("右クリックテキスト（コピー前）")]
+    [SerializeField] private string rightClickTextBeforeCopy = "キャンセル";
+    
+    [Tooltip("右クリックテキスト（コピー後）")]
+    [SerializeField] private string rightClickTextAfterCopy = "コピー解除";
+    
+    [Tooltip("マウスホイールテキスト")]
+    [SerializeField] private string mouseWheelText = "回転";
+
     private void Start()
     {
         // メインカメラを取得
@@ -130,6 +149,12 @@ public class RSBehavior : MonoBehaviour
 
         // RSをグリッドの中央に配置（SetupSelectionCorners()も内部で呼ばれる）
         PositionToGridCenter();
+
+        // UIテキスト要素を取得
+        uiHelper.FindUIElements();
+        
+        // 初期テキストを設定
+        UpdateUITexts();
     }
 
     /// <summary>
@@ -353,6 +378,7 @@ public class RSBehavior : MonoBehaviour
                 Debug.Log("左クリック：現在の範囲内のRockをコピーします");
                 CopyCurrentRegion();
             }
+            UpdateUITexts();
         }
 
         // 右クリック (Cancel: Clear Copy or Delete Object)
@@ -370,6 +396,7 @@ public class RSBehavior : MonoBehaviour
                 Debug.Log("右クリック：RSを削除します");
                 CancelSelection();
             }
+            UpdateUITexts();
         }
 
         // ホイールで回転（90度単位）
@@ -403,7 +430,30 @@ public class RSBehavior : MonoBehaviour
 
             previewDirty = true;
             UpdatePreviewAndValidity();
+            UpdateUITexts();
         }
+    }
+
+    /// <summary>
+    /// UIテキストを更新します
+    /// </summary>
+    private void UpdateUITexts()
+    {
+        if (hasCopy)
+        {
+            // コピー済みの状態
+            uiHelper.UpdateLeftClickText(leftClickTextAfterCopy);
+            uiHelper.UpdateRightClickText(rightClickTextAfterCopy);
+        }
+        else
+        {
+            // コピー前の状態
+            uiHelper.UpdateLeftClickText(leftClickTextBeforeCopy);
+            uiHelper.UpdateRightClickText(rightClickTextBeforeCopy);
+        }
+        
+        // ホイールテキスト
+        uiHelper.UpdateMouseWheelText(mouseWheelText);
     }
 
     /// <summary>
@@ -420,6 +470,7 @@ public class RSBehavior : MonoBehaviour
         // 点線を削除
         ClearDashLine();
         SetValidColor(true); // 通常色に戻す
+        UpdateUITexts();
     }
 
     /// <summary>
@@ -541,6 +592,7 @@ public class RSBehavior : MonoBehaviour
 
         previewDirty = true;
         UpdatePreviewAndValidity();
+        UpdateUITexts();
     }
 
     /// <summary>

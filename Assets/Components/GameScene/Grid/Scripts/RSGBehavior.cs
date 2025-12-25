@@ -53,6 +53,28 @@ public class RSGBehavior : MonoBehaviour
     private Vector3 initialScaleRB = Vector3.one;
     private Vector3 initialScaleGravityArrow = Vector3.one;
 
+    // UIテキスト管理用ヘルパー
+    private RSInputUIHelper uiHelper = new RSInputUIHelper();
+
+    [Header("UI Text Settings")]
+    [Tooltip("左クリックテキスト（上方向）")]
+    [SerializeField] private string leftClickTextUp = "上に詰める";
+    
+    [Tooltip("左クリックテキスト（右方向）")]
+    [SerializeField] private string leftClickTextRight = "右に詰める";
+    
+    [Tooltip("左クリックテキスト（下方向）")]
+    [SerializeField] private string leftClickTextDown = "下に詰める";
+    
+    [Tooltip("左クリックテキスト（左方向）")]
+    [SerializeField] private string leftClickTextLeft = "左に詰める";
+    
+    [Tooltip("右クリックテキスト")]
+    [SerializeField] private string rightClickText = "キャンセル";
+    
+    [Tooltip("マウスホイールテキスト")]
+    [SerializeField] private string mouseWheelText = "回転";
+
     private void Start()
     {
         // メインカメラを取得
@@ -96,6 +118,12 @@ public class RSGBehavior : MonoBehaviour
 
         // RSGをグリッドの中央に配置（SetupSelectionCorners()も内部で呼ばれる）
         PositionToGridCenter();
+
+        // UIテキスト要素を取得
+        uiHelper.FindUIElements();
+        
+        // 初期テキストを設定
+        UpdateUITexts();
     }
 
     /// <summary>
@@ -363,7 +391,37 @@ public class RSGBehavior : MonoBehaviour
             Debug.Log($"マウスホイール：現在の回転インデックス={rotationIndex}");
             // RSG本体の見た目の向きも変更
             UpdateSelectorRotation();
+            UpdateUITexts();
         }
+    }
+
+    /// <summary>
+    /// UIテキストを更新します
+    /// </summary>
+    private void UpdateUITexts()
+    {
+        // 回転方向に応じてテキストを選択
+        string leftText = "";
+        int rot = ((rotationIndex % 4) + 4) % 4;
+        switch (rot)
+        {
+            case 0: // 上
+                leftText = leftClickTextUp;
+                break;
+            case 1: // 右
+                leftText = leftClickTextRight;
+                break;
+            case 2: // 下
+                leftText = leftClickTextDown;
+                break;
+            case 3: // 左
+                leftText = leftClickTextLeft;
+                break;
+        }
+        
+        uiHelper.UpdateLeftClickText(leftText);
+        uiHelper.UpdateRightClickText(rightClickText);
+        uiHelper.UpdateMouseWheelText(mouseWheelText);
     }
 
     /// <summary>

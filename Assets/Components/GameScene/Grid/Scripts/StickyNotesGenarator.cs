@@ -45,6 +45,13 @@ public class StickyNotesGenerator : MonoBehaviour
     // 1行あたりの列数（固定値）
     private const int columns = 2;
 
+    // 最初の生成時に決定したパラメータ（ゲーム途中で変更しない）
+    private bool parametersInitialized = false;
+    private Vector2 savedStartPosition;
+    private float savedItemSpaceX;
+    private float savedItemSpaceY;
+    private float savedStickyNoteScale;
+
     private void Start()
     {
         if (currentGameStatus == null)
@@ -84,18 +91,42 @@ public class StickyNotesGenerator : MonoBehaviour
 
         int count = stageData.RSItems.Count;
 
-        // アイテム数に応じてパラメータを設定
-        Vector2 actualStartPosition = startPosition;
-        float actualItemSpaceX = itemSpaceX;
-        float actualItemSpaceY = itemSpaceY;
-        float actualStickyNoteScale = stickyNoteScale;
+        // パラメータを設定（最初の生成時のみ決定し、以降は変更しない）
+        Vector2 actualStartPosition;
+        float actualItemSpaceX;
+        float actualItemSpaceY;
+        float actualStickyNoteScale;
 
-        if (count == 5 || count == 6)
+        if (!parametersInitialized)
         {
-            actualStartPosition = startPositionFor5Or6;
-            actualItemSpaceX = itemSpaceXFor5Or6;
-            actualItemSpaceY = itemSpaceYFor5Or6;
-            actualStickyNoteScale = stickyNoteScaleFor5Or6;
+            // 最初の生成時：アイテム数に応じてパラメータを決定
+            actualStartPosition = startPosition;
+            actualItemSpaceX = itemSpaceX;
+            actualItemSpaceY = itemSpaceY;
+            actualStickyNoteScale = stickyNoteScale;
+
+            if (count == 5 || count == 6)
+            {
+                actualStartPosition = startPositionFor5Or6;
+                actualItemSpaceX = itemSpaceXFor5Or6;
+                actualItemSpaceY = itemSpaceYFor5Or6;
+                actualStickyNoteScale = stickyNoteScaleFor5Or6;
+            }
+
+            // パラメータを保存
+            savedStartPosition = actualStartPosition;
+            savedItemSpaceX = actualItemSpaceX;
+            savedItemSpaceY = actualItemSpaceY;
+            savedStickyNoteScale = actualStickyNoteScale;
+            parametersInitialized = true;
+        }
+        else
+        {
+            // 2回目以降：保存されたパラメータを使用
+            actualStartPosition = savedStartPosition;
+            actualItemSpaceX = savedItemSpaceX;
+            actualItemSpaceY = savedItemSpaceY;
+            actualStickyNoteScale = savedStickyNoteScale;
         }
 
         // 親Transformを決定

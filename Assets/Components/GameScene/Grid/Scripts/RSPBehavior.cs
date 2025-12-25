@@ -62,6 +62,19 @@ public class RSPBehavior : MonoBehaviour
     private Vector3 initialScaleLB = Vector3.one;
     private Vector3 initialScaleRB = Vector3.one;
 
+    // UIテキスト管理用ヘルパー
+    private RSInputUIHelper uiHelper = new RSInputUIHelper();
+
+    [Header("UI Text Settings")]
+    [Tooltip("左クリックテキスト")]
+    [SerializeField] private string leftClickText = "削除";
+    
+    [Tooltip("右クリックテキスト")]
+    [SerializeField] private string rightClickText = "キャンセル";
+    
+    [Tooltip("マウスホイールテキスト")]
+    [SerializeField] private string mouseWheelText = "回転";
+
     private void Start()
     {
         // メインカメラを取得
@@ -111,6 +124,12 @@ public class RSPBehavior : MonoBehaviour
 
         // RSPをグリッドの中央に配置（SetupSelectionCorners()も内部で呼ばれる）
         PositionToGridCenter();
+
+        // UIテキスト要素を取得
+        uiHelper.FindUIElements();
+        
+        // 初期テキストを設定
+        UpdateUITexts();
     }
 
     /// <summary>
@@ -361,7 +380,18 @@ public class RSPBehavior : MonoBehaviour
 
             previewDirty = true;
             UpdatePreviewAndValidity();
+            UpdateUITexts();
         }
+    }
+
+    /// <summary>
+    /// UIテキストを更新します
+    /// </summary>
+    private void UpdateUITexts()
+    {
+        uiHelper.UpdateLeftClickText(leftClickText);
+        uiHelper.UpdateRightClickText(rightClickText);
+        uiHelper.UpdateMouseWheelText(mouseWheelText);
     }
 
     /// <summary>

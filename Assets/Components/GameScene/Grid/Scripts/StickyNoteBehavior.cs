@@ -76,6 +76,10 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
     
     [Tooltip("マウスホイールテキスト（自動検索でアサインされます）")]
     private TextMeshProUGUI mouseWheelText;
+
+    [Header("UI Text Settings")]
+    [Tooltip("何も選択していない状態の左クリックテキスト")]
+    [SerializeField] private string noSelectionLeftClickText = "アイテム選択";
     
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
@@ -334,7 +338,7 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
         
         if (leftClickText != null)
         {
-            leftClickText.text = "付箋選択";
+            leftClickText.text = noSelectionLeftClickText;
             leftClickText.gameObject.SetActive(true);
         }
     }
