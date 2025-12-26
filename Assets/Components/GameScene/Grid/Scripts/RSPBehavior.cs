@@ -40,6 +40,9 @@ public class RSPBehavior : MonoBehaviour
     private int lastPreviewRotationIndex = -1;
     private bool lastCanPaste = true;
 
+    // アニメーション中のRock破壊アニメーターを追跡
+    private readonly List<RockDestroyAnimator> animatingDestroyAnimators = new List<RockDestroyAnimator>();
+
     // プレビュー用の透明度
     [Tooltip("コピーしたもの（プレビュー）の透明度を指定します（0.0～1.0）")]
     [SerializeField] [Range(0f, 1f)] private float previewAlpha = 0.5f;
@@ -372,8 +375,6 @@ public class RSPBehavior : MonoBehaviour
         {
             Debug.Log("左クリック：範囲内のRockを削除します");
             DestroyRocksInRange();
-            // 任意秒待ってIdleに遷移
-            StartCoroutine(TransitionToIdleAfterDelay(idleTransitionDelay));
         }
 
         // 右クリック (選択キャンセル)
@@ -479,6 +480,7 @@ public class RSPBehavior : MonoBehaviour
 
         // --- アニメーション開始処理 ---
         // Scene上のRockを取得して、範囲内のものをアニメーションさせる
+        animatingDestroyAnimators.Clear();
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
         foreach (GameObject rock in rocks)
         {
@@ -498,10 +500,20 @@ public class RSPBehavior : MonoBehaviour
                     // グリッド再生成で消されないように親から切り離す
                     rock.transform.SetParent(null);
                     
+                    // アニメーション完了時のコールバックを設定
+                    animator.OnDestroyAnimationComplete += () => OnRockDestroyAnimationComplete(animator);
+                    animatingDestroyAnimators.Add(animator);
+                    
                     // アニメーション開始（アニメーション完了後に自身をDestroyする）
                     animator.StartDestroyAnimation();
                 }
             }
+        }
+        
+        // アニメーション中のRockがない場合は即座にCharacterAnimationを呼び出す
+        if (animatingDestroyAnimators.Count == 0)
+        {
+            CheckAndTransitionCharacterAnimation();
         }
         // ---------------------------
 
@@ -1096,14 +1108,39 @@ public class RSPBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 指定秒待ってからIdle状態に遷移します
+    /// 岩破壊アニメーション完了時のコールバック
     /// </summary>
-    private IEnumerator TransitionToIdleAfterDelay(float delay)
+    private void OnRockDestroyAnimationComplete(RockDestroyAnimator animator)
     {
-        yield return new WaitForSeconds(delay);
+        if (animatingDestroyAnimators != null && animatingDestroyAnimators.Contains(animator))
+        {
+            animatingDestroyAnimators.Remove(animator);
+        }
+        
+        // すべてのアニメーションが完了したらCharacterAnimationを呼び出す
+        if (animatingDestroyAnimators == null || animatingDestroyAnimators.Count == 0)
+        {
+            CheckAndTransitionCharacterAnimation();
+        }
+    }
+
+    /// <summary>
+    /// クリア条件を確認してCharacterAnimationを適切な状態に遷移します
+    /// </summary>
+    private void CheckAndTransitionCharacterAnimation()
+    {
         if (characterAnimator != null)
         {
-            characterAnimator.SetIdle();
+            // GridMonitorでクリア条件を確認
+            GridMonitor gridMonitor = Object.FindFirstObjectByType<GridMonitor>();
+            if (gridMonitor != null && gridMonitor.IsClearConditionMet())
+            {
+                characterAnimator.SetClear();
+            }
+            else
+            {
+                characterAnimator.SetIdle();
+            }
         }
     }
 }

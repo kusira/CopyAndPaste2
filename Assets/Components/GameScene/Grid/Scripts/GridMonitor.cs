@@ -139,6 +139,24 @@ public class GridMonitor : MonoBehaviour
     }
 
     /// <summary>
+    /// クリア条件が満たされているか（すべてのProgressアイテムがAcquiredになっているか）を判定します
+    /// </summary>
+    public bool IsClearConditionMet()
+    {
+        if (ProgressManager == null)
+        {
+            ProgressManager = FindFirstObjectByType<ProgressManager>();
+        }
+        
+        if (ProgressManager != null)
+        {
+            return ProgressManager.IsClearConditionMet();
+        }
+        
+        return false;
+    }
+
+    /// <summary>
     /// 現在のグリッド状態に基づいてProgressの状態を再計算します
     /// </summary>
     public void RecalculateProgress()

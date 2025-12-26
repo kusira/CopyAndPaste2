@@ -41,6 +41,9 @@ public class RockDestroyAnimator : MonoBehaviour
     private RockPatternAssigner patternAssigner;
     private bool isDestroying = false;
 
+    // アニメーション完了時のコールバック
+    public System.Action OnDestroyAnimationComplete;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -135,6 +138,12 @@ public class RockDestroyAnimator : MonoBehaviour
 
         // 0.5秒待機
         yield return new WaitForSeconds(waitDuration);
+
+        // コールバックを呼び出す（Destroy前に実行）
+        if (OnDestroyAnimationComplete != null)
+        {
+            OnDestroyAnimationComplete.Invoke();
+        }
 
         // Destroy
         Destroy(gameObject);

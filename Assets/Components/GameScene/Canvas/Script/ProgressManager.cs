@@ -337,6 +337,14 @@ public class ProgressManager : MonoBehaviour
     }
 
     /// <summary>
+    /// クリア条件が満たされているか（すべてのProgressアイテムがAcquiredになっているか）を判定します
+    /// </summary>
+    public bool IsClearConditionMet()
+    {
+        return IsAllAcquired();
+    }
+
+    /// <summary>
     /// すべてのProgressアイテムの状態を取得します
     /// </summary>
     public List<ProgressItemData> GetProgressItems()

@@ -885,11 +885,14 @@ public class RSBehavior : MonoBehaviour
         // RSParentの中身をクリア（完全に消すため）
         ClearRSParentChildren();
 
-        // 任意秒待ってIdleに遷移
-        StartCoroutine(TransitionToIdleAfterDelay(idleTransitionDelay));
-
         // 貼り付け成功したら削除（アイテムごと）
         DestroySelectorAndItem();
+        
+        // 貼り付け完了時に即座にIdleに遷移（アニメーションがないため）
+        if (characterAnimator != null)
+        {
+            characterAnimator.SetIdle();
+        }
     }
 
     /// <summary>
@@ -1239,16 +1242,5 @@ public class RSBehavior : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 指定秒待ってからIdle状態に遷移します
-    /// </summary>
-    private IEnumerator TransitionToIdleAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (characterAnimator != null)
-        {
-            characterAnimator.SetIdle();
-        }
-    }
 }
 

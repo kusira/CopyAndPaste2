@@ -385,8 +385,6 @@ public class RSGBehavior : MonoBehaviour
             string directionName = directionNames[((rotationIndex % 4) + 4) % 4];
             Debug.Log($"左クリック：範囲内のRockを{directionName}に詰めます");
             ApplyGravityToRocks();
-            // 任意秒待ってIdleに遷移
-            StartCoroutine(TransitionToIdleAfterDelay(idleTransitionDelay));
         }
 
         // 右クリック (選択キャンセル)
@@ -668,6 +666,9 @@ public class RSGBehavior : MonoBehaviour
         {
             gridMonitor.RecalculateProgress();
         }
+
+        // 重力アニメーション完了後にCharacterAnimationを呼び出す
+        CheckAndTransitionCharacterAnimation();
     }
 
     /// <summary>
@@ -887,14 +888,22 @@ public class RSGBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 指定秒待ってからIdle状態に遷移します
+    /// クリア条件を確認してCharacterAnimationを適切な状態に遷移します
     /// </summary>
-    private IEnumerator TransitionToIdleAfterDelay(float delay)
+    private void CheckAndTransitionCharacterAnimation()
     {
-        yield return new WaitForSeconds(delay);
         if (characterAnimator != null)
         {
-            characterAnimator.SetIdle();
+            // GridMonitorでクリア条件を確認
+            GridMonitor gridMonitor = Object.FindFirstObjectByType<GridMonitor>();
+            if (gridMonitor != null && gridMonitor.IsClearConditionMet())
+            {
+                characterAnimator.SetClear();
+            }
+            else
+            {
+                characterAnimator.SetIdle();
+            }
         }
     }
 }
