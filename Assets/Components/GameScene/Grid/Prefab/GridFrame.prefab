@@ -107,7 +107,7 @@ MonoBehaviour:
   - worldLabel: Glassland
     sprite: {fileID: -6141087073291638259, guid: 695db4c644319294b8be2b49e3aae27d, type: 3}
   - worldLabel: Cave
-    sprite: {fileID: 1481221183279771648, guid: da0244d6579bd2b4d9b6fa3133fa3883, type: 3}
+    sprite: {fileID: 8057662555139228680, guid: 7eef2f52656c2634f861a9dd52eeef74, type: 3}
   - worldLabel: Magma
     sprite: {fileID: -3346791572218499583, guid: de8d5acaa46bcff4aba79ebddb824360, type: 3}
   currentGameStatus: {fileID: 0}

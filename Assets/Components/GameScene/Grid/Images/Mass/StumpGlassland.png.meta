@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7eef2f52656c2634f861a9dd52eeef74
+guid: 45600b9e7354f5245a2cabe0ee3262bc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8057662555139228680
-    second: GridFrameCava_0
+      213: -4215009705532590412
+    second: StumpGlassland_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 200
+  spritePixelsToUnits: 500
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GridFrameCave_0
+      name: StumpGlassland_0
       rect:
         serializedVersion: 2
-        x: 615
-        y: 109
-        width: 859
-        height: 859
+        x: 4
+        y: 2
+        width: 491
+        height: 495
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 60, y: 60, z: 60, w: 60}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8044a0f076192df60800000000000000
-      internalID: 8057662555139228680
+      spriteID: 4b6f7e041074185c0800000000000000
+      internalID: -4215009705532590412
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 41a97cc0056887347bf5d375f3639a66
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      GridFrameCave_0: 8057662555139228680
+      StumpGlassland_0: -4215009705532590412
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

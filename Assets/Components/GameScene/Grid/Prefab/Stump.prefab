@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5090334109017997059}
   - component: {fileID: 2447830648859415049}
-  - component: {fileID: -6222468281697820592}
+  - component: {fileID: 7623283983575279611}
   m_Layer: 0
   m_Name: Stump
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -4215009705532590412, guid: 45600b9e7354f5245a2cabe0ee3262bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-6222468281697820592
+--- !u!114 &7623283983575279611
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,13 +100,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 830290989597081050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16291497e585c34428012b72081f49a0, type: 3}
+  m_Script: {fileID: 11500000, guid: d86935ba026b15644a8e5a3de83804ba, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MassPatternAssigner
-  patternTable:
-  - key: S
-    sprite: {fileID: 21300000, guid: b8bfe3aa8e9aa91409704b2296c44b96, type: 3}
-  - key: H
-    sprite: {fileID: 21300000, guid: 88f8c23377ef93d4c81aa1a0c84cf3dc, type: 3}
-  - key: C
-    sprite: {fileID: 21300000, guid: 883674e71ecc2e24da5e1db44c42ba84, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSwitcher
+  worldSpriteTable:
+  - worldLabel: Glassland
+    sprite: {fileID: -4215009705532590412, guid: 45600b9e7354f5245a2cabe0ee3262bc, type: 3}
+  - worldLabel: Cave
+    sprite: {fileID: 1666411782422646960, guid: b6b22bd26fc213f44911c0bc99ca562a, type: 3}
+  - worldLabel: Magma
+    sprite: {fileID: 6030715576814587683, guid: 510772adcec525c429cf7d6569e7c136, type: 3}
+  currentGameStatus: {fileID: 0}
+  spriteRenderer: {fileID: 2447830648859415049}
+  image: {fileID: 0}
+  defaultSprite: {fileID: -4215009705532590412, guid: 45600b9e7354f5245a2cabe0ee3262bc, type: 3}

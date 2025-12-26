@@ -127,6 +127,9 @@ public class StageDatabase : ScriptableObject
         }
     }
 
+    [Tooltip("ワールドラベルのリスト（各ステージで選択可能なワールドラベル）")]
+    public List<string> worldLabels = new List<string>();
+
     [Tooltip("ステージデータのリスト")]
     public List<StageData> stages = new List<StageData>();
 

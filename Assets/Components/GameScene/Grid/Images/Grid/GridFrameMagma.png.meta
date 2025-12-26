@@ -116,10 +116,10 @@ TextureImporter:
       name: GridFrameMagma_0
       rect:
         serializedVersion: 2
-        x: 591
-        y: 71
-        width: 907
-        height: 923
+        x: 615
+        y: 109
+        width: 859
+        height: 859
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 60, y: 60, z: 60, w: 60}
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 6cc803f491c710143b9ae60f04123d4b
+    spriteID: 02b4a3eb834640b42ae06950624194c7
     internalID: 0
     vertices: []
     indices: 

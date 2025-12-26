@@ -28,10 +28,6 @@ public class ProgressManager : MonoBehaviour
     [Tooltip("行間の間隔")]
     [SerializeField] private float rowSpacing = 80;
 
-    [Header("Animation Settings")]
-    [Tooltip("Acquired時のアニメーション秒数")]
-    [SerializeField] private float acquiredAnimationDuration = 0.3f;
-
     [Header("Result")]
     [Tooltip("すべてAcquiredになったときにリザルトを表示するコンポーネント")]
     [SerializeField] private ResultShower resultShower;

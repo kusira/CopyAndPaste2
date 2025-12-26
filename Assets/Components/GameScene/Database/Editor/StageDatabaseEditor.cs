@@ -120,14 +120,74 @@ public class StageDatabaseEditor : Editor
             EditorUtility.SetDirty(database);
         }
 
-        // ワールドラベルの編集
-        string newWorldLabel = EditorGUILayout.TextField("ワールドラベル", stageData.worldLabel);
-        if (newWorldLabel != stageData.worldLabel)
+        EditorGUILayout.Space();
+        
+        // ワールドラベルのリスト編集
+        EditorGUILayout.LabelField("ワールドラベル一覧", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox("ワールドラベルのリストを編集してください。各ステージではこのリストから選択します。", MessageType.Info);
+        
+        // ワールドラベルリストの編集
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        for (int i = 0; i < database.worldLabels.Count; i++)
         {
-            Undo.RecordObject(database, "ワールドラベルを変更");
-            stageData.worldLabel = newWorldLabel;
+            EditorGUILayout.BeginHorizontal();
+            string label = EditorGUILayout.TextField($"ラベル {i + 1}", database.worldLabels[i]);
+            if (label != database.worldLabels[i])
+            {
+                Undo.RecordObject(database, "ワールドラベルを変更");
+                database.worldLabels[i] = label;
+                EditorUtility.SetDirty(database);
+            }
+            
+            if (GUILayout.Button("削除", GUILayout.Width(60)))
+            {
+                Undo.RecordObject(database, "ワールドラベルを削除");
+                database.worldLabels.RemoveAt(i);
+                EditorUtility.SetDirty(database);
+                break; // ループを抜ける
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        
+        if (GUILayout.Button("ワールドラベルを追加"))
+        {
+            Undo.RecordObject(database, "ワールドラベルを追加");
+            database.worldLabels.Add($"World{database.worldLabels.Count + 1}");
             EditorUtility.SetDirty(database);
-            RefreshGrid();
+        }
+        EditorGUILayout.EndVertical();
+        
+        EditorGUILayout.Space();
+
+        // ワールドラベルの選択（セレクトボックス）
+        if (database.worldLabels.Count == 0)
+        {
+            EditorGUILayout.HelpBox("ワールドラベルがありません。上記のリストに追加してください。", MessageType.Warning);
+        }
+        else
+        {
+            // 現在のワールドラベルのインデックスを取得
+            int currentIndex = database.worldLabels.IndexOf(stageData.worldLabel);
+            if (currentIndex < 0)
+            {
+                // リストに存在しない場合は、最初の要素を選択
+                currentIndex = 0;
+            }
+            
+            // セレクトボックス（Popup）で選択
+            string[] worldLabelArray = new string[database.worldLabels.Count];
+            for (int i = 0; i < database.worldLabels.Count; i++)
+            {
+                worldLabelArray[i] = database.worldLabels[i];
+            }
+            int selectedIndex = EditorGUILayout.Popup("ワールドラベル", currentIndex, worldLabelArray);
+            if (selectedIndex != currentIndex && selectedIndex >= 0 && selectedIndex < database.worldLabels.Count)
+            {
+                Undo.RecordObject(database, "ワールドラベルを選択");
+                stageData.worldLabel = database.worldLabels[selectedIndex];
+                EditorUtility.SetDirty(database);
+                RefreshGrid();
+            }
         }
 
         EditorGUILayout.Space();
