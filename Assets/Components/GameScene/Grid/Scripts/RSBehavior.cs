@@ -865,6 +865,13 @@ public class RSBehavior : MonoBehaviour
             gridGenerator.GenerateGrid();
         }
 
+        // GridMonitorに通知してProgressを再計算
+        GridMonitor gridMonitor = Object.FindFirstObjectByType<GridMonitor>();
+        if (gridMonitor != null)
+        {
+            gridMonitor.RecalculateProgress();
+        }
+
         // アイテムリストを再生成（消費されたアイテムを消すため）
         var itemGen = Object.FindFirstObjectByType<StickyNotesGenerator>();
         if (itemGen != null)
@@ -884,10 +891,18 @@ public class RSBehavior : MonoBehaviour
         // 貼り付け成功したら削除（アイテムごと）
         DestroySelectorAndItem();
         
-        // 貼り付け完了時に即座にIdleに遷移（アニメーションがないため）
+        // 貼り付け完了時に即座に遷移
         if (characterAnimator != null)
         {
-            characterAnimator.SetIdle();
+            // クリア条件が満たされているか確認
+            if (gridMonitor != null && gridMonitor.IsClearConditionMet())
+            {
+                characterAnimator.SetClear();
+            }
+            else
+            {
+                characterAnimator.SetIdle();
+            }
         }
     }
 

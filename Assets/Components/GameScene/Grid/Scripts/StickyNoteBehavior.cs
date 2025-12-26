@@ -578,7 +578,17 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             // 選択解除時にアニメーションをIdleに戻す
             if (item != null && item.characterAnimator != null)
             {
-                item.characterAnimator.SetIdle();
+                // クリア条件が満たされている場合はIdleに戻さない
+                GridMonitor gridMonitor = Object.FindFirstObjectByType<GridMonitor>();
+                if (gridMonitor != null && gridMonitor.IsClearConditionMet())
+                {
+                     // Do nothing or ensure Clear is set
+                     // item.characterAnimator.SetClear(); // GridMonitor calls this, so checking is enough to prevent overwrite
+                }
+                else
+                {
+                    item.characterAnimator.SetIdle();
+                }
             }
         }
     }
