@@ -9,9 +9,12 @@ public class GridMonitor : MonoBehaviour
     [Header("References")]
     [Tooltip("現在のゲームステータスを参照します")]
     [SerializeField] private CurrentGameStatus currentGameStatus;
-    
+
     [Tooltip("ProgressManagerへの参照")]
     [SerializeField] private ProgressManager ProgressManager;
+
+    [Tooltip("キャラクターアニメーション制御用のCharacterAnimator")]
+    [SerializeField] private CharacterAnimator characterAnimator;
 
     [Header("Monitor Settings")]
     [Tooltip("監視の更新間隔（秒）")]
@@ -41,6 +44,12 @@ public class GridMonitor : MonoBehaviour
         if (currentGameStatus == null)
         {
             Debug.LogWarning("GridMonitor: CurrentGameStatusが見つかりません");
+        }
+
+        // CharacterAnimatorが見つからない場合は自動検索
+        if (characterAnimator == null)
+        {
+            characterAnimator = CharacterAnimator.Instance;
         }
     }
 
@@ -128,6 +137,9 @@ public class GridMonitor : MonoBehaviour
                 }
             }
         }
+
+        // チェック後にクリア判定を行い、クリア時はCharacterAnimatorにClearを投げる
+        NotifyClearIfNeeded();
     }
 
     /// <summary>
@@ -272,6 +284,33 @@ public class GridMonitor : MonoBehaviour
                     acquiredProgressKeys.Add(progressKey);
                     ProgressManager.SetProgressAcquired(gridPos, key);
                 }
+            }
+        }
+
+        // 再計算後にクリア判定を行い、クリア時はCharacterAnimatorにClearを投げる
+        NotifyClearIfNeeded();
+    }
+
+    /// <summary>
+    /// ProgressManager経由でクリア判定を行い、クリア時はCharacterAnimatorにClearを送ります
+    /// </summary>
+    private void NotifyClearIfNeeded()
+    {
+        if (ProgressManager == null)
+        {
+            ProgressManager = FindFirstObjectByType<ProgressManager>();
+        }
+
+        if (ProgressManager != null && ProgressManager.IsClearConditionMet())
+        {
+            if (characterAnimator == null)
+            {
+                characterAnimator = CharacterAnimator.Instance;
+            }
+
+            if (characterAnimator != null)
+            {
+                characterAnimator.SetClear();
             }
         }
     }
