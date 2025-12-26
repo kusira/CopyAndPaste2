@@ -53,6 +53,8 @@ public class StageDatabaseEditor : Editor
             selectedStageIndex = list.index;
             // 選択変更時に保存
             SessionState.SetInt(GetSessionStateKey(), selectedStageIndex);
+            // CurrentGameStatusも更新
+            RefreshCurrentGameStatus();
         };
     }
 
@@ -83,9 +85,21 @@ public class StageDatabaseEditor : Editor
         }
         
         // ReorderableListの選択状態と同期（選択されていなければ、リスト側を選択状態にする）
+        int previousSelectedIndex = selectedStageIndex;
         if (reorderableList.index != selectedStageIndex)
         {
-            reorderableList.index = selectedStageIndex;
+            selectedStageIndex = reorderableList.index;
+            // 選択が変更された場合、CurrentGameStatusも更新
+            if (previousSelectedIndex != selectedStageIndex)
+            {
+                RefreshCurrentGameStatus();
+            }
+        }
+        else if (reorderableList.index != previousSelectedIndex)
+        {
+            // ReorderableListのインデックスが変更された場合も更新
+            selectedStageIndex = reorderableList.index;
+            RefreshCurrentGameStatus();
         }
 
         EditorGUILayout.Space();
@@ -462,6 +476,29 @@ public class StageDatabaseEditor : Editor
         if (generator != null)
         {
             generator.GenerateItems();
+        }
+    }
+
+    private void RefreshCurrentGameStatus()
+    {
+        CurrentGameStatus currentGameStatus = FindFirstObjectByType<CurrentGameStatus>();
+        if (currentGameStatus != null)
+        {
+            var stageDatabase = currentGameStatus.GetStageDatabase();
+            if (stageDatabase != null)
+            {
+                // 範囲チェック
+                if (selectedStageIndex >= 0 && selectedStageIndex < stageDatabase.GetStageCount())
+                {
+                    // SetCurrentStageIndexを使用してステージを更新
+                    currentGameStatus.SetCurrentStageIndex(selectedStageIndex);
+                    Debug.Log($"CurrentGameStatusのステージを{selectedStageIndex}に更新しました");
+                    
+                    // グリッドとアイテムを再生成
+                    RefreshGrid();
+                    RefreshItemGenerator();
+                }
+            }
         }
     }
 }
