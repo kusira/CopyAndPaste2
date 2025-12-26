@@ -354,7 +354,16 @@ public static class RSHelper
             if (rockGridIndex.x >= minX && rockGridIndex.x <= maxX &&
                 rockGridIndex.y >= minY && rockGridIndex.y <= maxY)
             {
-                Object.Destroy(rock);
+                // RockDestroyAnimatorがあればアニメーション付きで破壊、なければ即座に破壊
+                RockDestroyAnimator animator = rock.GetComponent<RockDestroyAnimator>();
+                if (animator != null)
+                {
+                    animator.StartDestroyAnimation();
+                }
+                else
+                {
+                    Object.Destroy(rock);
+                }
             }
         }
 

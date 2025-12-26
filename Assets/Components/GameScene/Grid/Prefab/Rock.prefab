@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7363495217619441934}
   - component: {fileID: 434503229154474578}
   - component: {fileID: -554948552270179625}
+  - component: {fileID: 3373942446053949539}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Untagged
@@ -111,6 +112,32 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: d3a801aa20fd36c468fe9b694d7bef2e, type: 3}
   - key: C
     sprite: {fileID: 21300000, guid: d0fb84910d512934e81c22d090fe5b06, type: 3}
+--- !u!114 &3373942446053949539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4262176293661612385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64850bbd300eb27449ee33bbb3218754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RockDestroyAnimator
+  noneSprites:
+    destroy_1: {fileID: 21300000, guid: 79dbb196bf4d9344c9ebb5469bb83460, type: 3}
+    destroy_2: {fileID: 21300000, guid: 29349ba61dfb25b44bc2ab5cb62cb11f, type: 3}
+  starSprites:
+    destroy_1: {fileID: 21300000, guid: 39f93cde641866847ace3b8406789d10, type: 3}
+    destroy_2: {fileID: 21300000, guid: 57a10915263548642981dfb857d5f149, type: 3}
+  heartSprites:
+    destroy_1: {fileID: 21300000, guid: 3285281c7c47f3f46a0238724e48dca0, type: 3}
+    destroy_2: {fileID: 21300000, guid: e9e5be6e8dcfa0442baf26f90d30c4c2, type: 3}
+  cloverSprites:
+    destroy_1: {fileID: 21300000, guid: 3ab3f2967d268b44b8c866ae1ed2e0ed, type: 3}
+    destroy_2: {fileID: 21300000, guid: 74795f8f3509e9145b96883bba2608f0, type: 3}
+  pattern: {fileID: 7370561605131840916}
+  waitDuration: 0.1
 --- !u!1 &7370561605131840916
 GameObject:
   m_ObjectHideFlags: 0

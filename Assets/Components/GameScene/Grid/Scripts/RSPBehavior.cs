@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -455,7 +456,35 @@ public class RSPBehavior : MonoBehaviour
             return;
         }
 
-        // 3. ヘルパー関数でRockを削除
+        // --- アニメーション開始処理 ---
+        // Scene上のRockを取得して、範囲内のものをアニメーションさせる
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+        foreach (GameObject rock in rocks)
+        {
+            if (rock == null) continue;
+
+            // Rockの位置をグリッドインデックスに変換
+            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset, gridScale);
+
+            // 範囲内にあるかチェック
+            if (rockGridIndex.x >= minX && rockGridIndex.x <= maxX &&
+                rockGridIndex.y >= minY && rockGridIndex.y <= maxY)
+            {
+                // アニメーションコンポーネントを取得
+                var animator = rock.GetComponent<RockDestroyAnimator>();
+                if (animator != null)
+                {
+                    // グリッド再生成で消されないように親から切り離す
+                    rock.transform.SetParent(null);
+                    
+                    // アニメーション開始（アニメーション完了後に自身をDestroyする）
+                    animator.StartDestroyAnimation();
+                }
+            }
+        }
+        // ---------------------------
+
+        // 3. ヘルパー関数でRockをデータから削除
         int destroyedCount = RSHelper.DestroyRocksInRange(
             stageData,
             minX, minY, maxX, maxY,
@@ -463,7 +492,7 @@ public class RSPBehavior : MonoBehaviour
 
         Debug.Log($"{destroyedCount}個のRockを削除しました");
 
-        // 4. グリッドを再生成して見た目を更新
+        // 4. グリッドを再生成して見た目を更新（アニメーション中のRockは切り離されているので残る）
         if (gridGenerator != null)
         {
             gridGenerator.GenerateGrid();

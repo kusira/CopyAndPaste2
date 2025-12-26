@@ -1,0 +1,1326 @@
+fileFormatVersion: 2
+guid: 29349ba61dfb25b44bc2ab5cb62cb11f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2186977874479180483
+    second: RockDestroy_2_0
+  - first:
+      213: 5903261790770707250
+    second: RockDestroy_2_1
+  - first:
+      213: 1777422194960456059
+    second: RockDestroy_2_2
+  - first:
+      213: -1005899769326956708
+    second: RockDestroy_2_3
+  - first:
+      213: -1509391611060682304
+    second: RockDestroy_2_4
+  - first:
+      213: -2373820236007087025
+    second: RockDestroy_2_5
+  - first:
+      213: -2890023727436600291
+    second: RockDestroy_2_6
+  - first:
+      213: -224813277006935034
+    second: RockDestroy_2_7
+  - first:
+      213: -3347134391478426598
+    second: RockDestroy_2_8
+  - first:
+      213: 1363700809477138741
+    second: RockDestroy_2_9
+  - first:
+      213: 4607428436064732231
+    second: RockDestroy_2_10
+  - first:
+      213: 2147433899116061750
+    second: RockDestroy_2_11
+  - first:
+      213: -7936587099457035611
+    second: RockDestroy_2_12
+  - first:
+      213: -8640262147085621501
+    second: RockDestroy_2_13
+  - first:
+      213: -5594552075621068378
+    second: RockDestroy_2_14
+  - first:
+      213: -8491902648362351297
+    second: RockDestroy_2_15
+  - first:
+      213: -4599417786175571036
+    second: RockDestroy_2_16
+  - first:
+      213: -1390058465108244554
+    second: RockDestroy_2_17
+  - first:
+      213: -7774560069120424996
+    second: RockDestroy_2_18
+  - first:
+      213: -4632968014345537559
+    second: RockDestroy_2_19
+  - first:
+      213: -1824442981528040936
+    second: RockDestroy_2_20
+  - first:
+      213: -4982334104447837785
+    second: RockDestroy_2_21
+  - first:
+      213: -819519753096669874
+    second: RockDestroy_2_22
+  - first:
+      213: 6145305790391568359
+    second: RockDestroy_2_23
+  - first:
+      213: -6650114552079821929
+    second: RockDestroy_2_24
+  - first:
+      213: 2686771156079749959
+    second: RockDestroy_2_25
+  - first:
+      213: 1382318737407107481
+    second: RockDestroy_2_26
+  - first:
+      213: 9102895350152687658
+    second: RockDestroy_2_27
+  - first:
+      213: 5128248393283904023
+    second: RockDestroy_2_28
+  - first:
+      213: 8837782031697825231
+    second: RockDestroy_2_29
+  - first:
+      213: -4150819770846104884
+    second: RockDestroy_2_30
+  - first:
+      213: -3402719839397188274
+    second: RockDestroy_2_31
+  - first:
+      213: -3006846862453694471
+    second: RockDestroy_2_32
+  - first:
+      213: -822940661984093692
+    second: RockDestroy_2_33
+  - first:
+      213: 1451506339406702146
+    second: RockDestroy_2_34
+  - first:
+      213: -8163515484346615032
+    second: RockDestroy_2_35
+  - first:
+      213: 4561831937892196968
+    second: RockDestroy_2_36
+  - first:
+      213: 8878343698470609132
+    second: RockDestroy_2_37
+  - first:
+      213: 801808719156102363
+    second: RockDestroy_2_38
+  - first:
+      213: -625305842705072188
+    second: RockDestroy_2_39
+  - first:
+      213: -4541636477988683440
+    second: RockDestroy_2_40
+  - first:
+      213: 4665420693754202391
+    second: RockDestroy_2_41
+  - first:
+      213: 8969564549777342266
+    second: RockDestroy_2_42
+  - first:
+      213: 8491149137548944623
+    second: RockDestroy_2_43
+  - first:
+      213: -5231081471057785450
+    second: RockDestroy_2_44
+  - first:
+      213: -8452604672928886153
+    second: RockDestroy_2_45
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 500
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RockDestroy_2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 331
+        width: 295
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ca68fb2ac4b95e10800000000000000
+      internalID: 2186977874479180483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_1
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 319
+        width: 58
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23b360762599ce150800000000000000
+      internalID: 5903261790770707250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_2
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 381
+        width: 78
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b795382b11caaa810800000000000000
+      internalID: 1777422194960456059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_3
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 362
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5f8e914d735a02f0800000000000000
+      internalID: -1005899769326956708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_4
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 395
+        width: 122
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c106cba3509d0be0800000000000000
+      internalID: -1509391611060682304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_5
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 266
+        width: 121
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f44e928821f7e0fd0800000000000000
+      internalID: -2373820236007087025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_6
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 283
+        width: 52
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1ce0bd5bb294e7d0800000000000000
+      internalID: -2890023727436600291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_7
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 301
+        width: 123
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60cc533048d41ecf0800000000000000
+      internalID: -224813277006935034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_8
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 337
+        width: 37
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a146f6c31079c81d0800000000000000
+      internalID: -3347134391478426598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_9
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 378
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5392cc839a6dce210800000000000000
+      internalID: 1363700809477138741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 235
+        width: 98
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7440cab50cfd0ff30800000000000000
+      internalID: 4607428436064732231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_11
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 264
+        width: 57
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 634e17fe0c73dcd10800000000000000
+      internalID: 2147433899116061750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_12
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 290
+        width: 36
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a26ae735149bd190800000000000000
+      internalID: -7936587099457035611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_13
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 281
+        width: 23
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30725b4fa5f971880800000000000000
+      internalID: -8640262147085621501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_14
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 290
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a19e2747882c52b0800000000000000
+      internalID: -5594552075621068378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_15
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 260
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f35c9298883b62a80800000000000000
+      internalID: -8491902648362351297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_16
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 240
+        width: 33
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ab346964e59b20c0800000000000000
+      internalID: -4599417786175571036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_17
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 259
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b7c23ad03585bce0800000000000000
+      internalID: -1390058465108244554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_18
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 289
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd3042bfec63b1490800000000000000
+      internalID: -7774560069120424996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_19
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 230
+        width: 53
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e7ff21332464bfb0800000000000000
+      internalID: -4632968014345537559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_20
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 199
+        width: 66
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81a011d46c64ea6e0800000000000000
+      internalID: -1824442981528040936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_21
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 223
+        width: 34
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a9921097813bdab0800000000000000
+      internalID: -4982334104447837785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_22
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 242
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e45d146602b70a4f0800000000000000
+      internalID: -819519753096669874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_23
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 261
+        width: 29
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e7c070ae03884550800000000000000
+      internalID: 6145305790391568359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_24
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 221
+        width: 35
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79350a77c0c06b3a0800000000000000
+      internalID: -6650114552079821929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_25
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 175
+        width: 96
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74b26ee9124594520800000000000000
+      internalID: 2686771156079749959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_26
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 204
+        width: 26
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 991648d519bfe2310800000000000000
+      internalID: 1382318737407107481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_27
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 238
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a20f76d771bf35e70800000000000000
+      internalID: 9102895350152687658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_28
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 217
+        width: 13
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 712a7a93eb23b2740800000000000000
+      internalID: 5128248393283904023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_29
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 171
+        width: 60
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcdcda9eeeb16aa70800000000000000
+      internalID: 8837782031697825231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 103
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc2bc0019635566c0800000000000000
+      internalID: -4150819770846104884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_31
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 138
+        width: 68
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4d6e8e955c17c0d0800000000000000
+      internalID: -3402719839397188274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_32
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 186
+        width: 32
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ff1375a5b88546d0800000000000000
+      internalID: -3006846862453694471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_33
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 197
+        width: 27
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40a963bf3d35494f0800000000000000
+      internalID: -822940661984093692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_34
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 203
+        width: 19
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24660954359c42410800000000000000
+      internalID: 1451506339406702146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_35
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 139
+        width: 79
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80b7e1d4bed55be80800000000000000
+      internalID: -8163515484346615032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_36
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 192
+        width: 24
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 862a8175af1ee4f30800000000000000
+      internalID: 4561831937892196968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_37
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 137
+        width: 52
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce02b25ed86363b70800000000000000
+      internalID: 8878343698470609132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_38
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 170
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd44c1b28c8902b00800000000000000
+      internalID: 801808719156102363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_39
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 154
+        width: 42
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cf769926a77257f0800000000000000
+      internalID: -625305842705072188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_40
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 0
+        width: 144
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05147869fadd8f0c0800000000000000
+      internalID: -4541636477988683440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_41
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 0
+        width: 137
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 719c9fa0767eeb040800000000000000
+      internalID: 4665420693754202391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_42
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 70
+        width: 115
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3f3a6b6f6b4a7c70800000000000000
+      internalID: 8969564549777342266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_43
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 120
+        width: 25
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe4287e072f96d570800000000000000
+      internalID: 8491149137548944623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_44
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 0
+        width: 136
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69d09761e177767b0800000000000000
+      internalID: -5231081471057785450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockDestroy_2_45
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 84
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 772544375d052ba80800000000000000
+      internalID: -8452604672928886153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      RockDestroy_2_0: 2186977874479180483
+      RockDestroy_2_1: 5903261790770707250
+      RockDestroy_2_10: 4607428436064732231
+      RockDestroy_2_11: 2147433899116061750
+      RockDestroy_2_12: -7936587099457035611
+      RockDestroy_2_13: -8640262147085621501
+      RockDestroy_2_14: -5594552075621068378
+      RockDestroy_2_15: -8491902648362351297
+      RockDestroy_2_16: -4599417786175571036
+      RockDestroy_2_17: -1390058465108244554
+      RockDestroy_2_18: -7774560069120424996
+      RockDestroy_2_19: -4632968014345537559
+      RockDestroy_2_2: 1777422194960456059
+      RockDestroy_2_20: -1824442981528040936
+      RockDestroy_2_21: -4982334104447837785
+      RockDestroy_2_22: -819519753096669874
+      RockDestroy_2_23: 6145305790391568359
+      RockDestroy_2_24: -6650114552079821929
+      RockDestroy_2_25: 2686771156079749959
+      RockDestroy_2_26: 1382318737407107481
+      RockDestroy_2_27: 9102895350152687658
+      RockDestroy_2_28: 5128248393283904023
+      RockDestroy_2_29: 8837782031697825231
+      RockDestroy_2_3: -1005899769326956708
+      RockDestroy_2_30: -4150819770846104884
+      RockDestroy_2_31: -3402719839397188274
+      RockDestroy_2_32: -3006846862453694471
+      RockDestroy_2_33: -822940661984093692
+      RockDestroy_2_34: 1451506339406702146
+      RockDestroy_2_35: -8163515484346615032
+      RockDestroy_2_36: 4561831937892196968
+      RockDestroy_2_37: 8878343698470609132
+      RockDestroy_2_38: 801808719156102363
+      RockDestroy_2_39: -625305842705072188
+      RockDestroy_2_4: -1509391611060682304
+      RockDestroy_2_40: -4541636477988683440
+      RockDestroy_2_41: 4665420693754202391
+      RockDestroy_2_42: 8969564549777342266
+      RockDestroy_2_43: 8491149137548944623
+      RockDestroy_2_44: -5231081471057785450
+      RockDestroy_2_45: -8452604672928886153
+      RockDestroy_2_5: -2373820236007087025
+      RockDestroy_2_6: -2890023727436600291
+      RockDestroy_2_7: -224813277006935034
+      RockDestroy_2_8: -3347134391478426598
+      RockDestroy_2_9: 1363700809477138741
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

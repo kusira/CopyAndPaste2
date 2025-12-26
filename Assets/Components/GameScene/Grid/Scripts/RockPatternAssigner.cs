@@ -21,6 +21,7 @@ public class RockPatternAssigner : MonoBehaviour
     private readonly Dictionary<string, Sprite> patternDict = new Dictionary<string, Sprite>();
     private Transform patternTransform;
     private SpriteRenderer patternRenderer;
+    private string currentPatternKey = null; // 現在適用されているパターンキー
 
     private void Awake()
     {
@@ -79,6 +80,7 @@ public class RockPatternAssigner : MonoBehaviour
         if (keys.Count == 0)
         {
             patternRenderer.sprite = null;
+            currentPatternKey = null;
             return;
         }
 
@@ -88,12 +90,22 @@ public class RockPatternAssigner : MonoBehaviour
             if (patternDict.TryGetValue(k, out var sp))
             {
                 patternRenderer.sprite = sp;
+                currentPatternKey = k; // 現在のパターンキーを保存
                 return;
             }
         }
 
         // 見つからなければ外す
         patternRenderer.sprite = null;
+        currentPatternKey = null;
+    }
+
+    /// <summary>
+    /// 現在適用されているパターンキーを取得します
+    /// </summary>
+    public string GetCurrentPatternKey()
+    {
+        return currentPatternKey;
     }
 }
 

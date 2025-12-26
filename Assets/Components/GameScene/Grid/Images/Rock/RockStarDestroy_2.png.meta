@@ -1,0 +1,1326 @@
+fileFormatVersion: 2
+guid: 57a10915263548642981dfb857d5f149
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 106453531705971820
+    second: RockStarDestroy_2_0
+  - first:
+      213: 8304674484945684511
+    second: RockStarDestroy_2_1
+  - first:
+      213: -469540167163344645
+    second: RockStarDestroy_2_2
+  - first:
+      213: -8396096026799616489
+    second: RockStarDestroy_2_3
+  - first:
+      213: 1584976946445111748
+    second: RockStarDestroy_2_4
+  - first:
+      213: -6404591206818964825
+    second: RockStarDestroy_2_5
+  - first:
+      213: 4136969422406605204
+    second: RockStarDestroy_2_6
+  - first:
+      213: -4493913250404342810
+    second: RockStarDestroy_2_7
+  - first:
+      213: 3057330311571586713
+    second: RockStarDestroy_2_8
+  - first:
+      213: 60373314309046967
+    second: RockStarDestroy_2_9
+  - first:
+      213: 6959070703190448705
+    second: RockStarDestroy_2_10
+  - first:
+      213: -6554627259000474584
+    second: RockStarDestroy_2_11
+  - first:
+      213: 3279635017474563139
+    second: RockStarDestroy_2_12
+  - first:
+      213: 7285768581968688241
+    second: RockStarDestroy_2_13
+  - first:
+      213: 2293127760443921017
+    second: RockStarDestroy_2_14
+  - first:
+      213: 6010037491152063974
+    second: RockStarDestroy_2_15
+  - first:
+      213: 5525867243948884652
+    second: RockStarDestroy_2_16
+  - first:
+      213: 1411777137366639541
+    second: RockStarDestroy_2_17
+  - first:
+      213: 1403413815612780873
+    second: RockStarDestroy_2_18
+  - first:
+      213: -1617278942783293018
+    second: RockStarDestroy_2_19
+  - first:
+      213: 8734965732881873826
+    second: RockStarDestroy_2_20
+  - first:
+      213: -4587227520275418468
+    second: RockStarDestroy_2_21
+  - first:
+      213: 2774157276008903176
+    second: RockStarDestroy_2_22
+  - first:
+      213: 2741310144997768181
+    second: RockStarDestroy_2_23
+  - first:
+      213: -4445020726373797572
+    second: RockStarDestroy_2_24
+  - first:
+      213: 5492786892370640762
+    second: RockStarDestroy_2_25
+  - first:
+      213: -7830962794373863409
+    second: RockStarDestroy_2_26
+  - first:
+      213: -3555349318340054201
+    second: RockStarDestroy_2_27
+  - first:
+      213: -4205065072778761722
+    second: RockStarDestroy_2_28
+  - first:
+      213: 783201983683146221
+    second: RockStarDestroy_2_29
+  - first:
+      213: 6223244862551789583
+    second: RockStarDestroy_2_30
+  - first:
+      213: 6371431742810619004
+    second: RockStarDestroy_2_31
+  - first:
+      213: -7756716417136645437
+    second: RockStarDestroy_2_32
+  - first:
+      213: -2193927935347775549
+    second: RockStarDestroy_2_33
+  - first:
+      213: 4498701802898153185
+    second: RockStarDestroy_2_34
+  - first:
+      213: 1679590632054573069
+    second: RockStarDestroy_2_35
+  - first:
+      213: 5413779672377441855
+    second: RockStarDestroy_2_36
+  - first:
+      213: -2573015181649875011
+    second: RockStarDestroy_2_37
+  - first:
+      213: -8319653294559331929
+    second: RockStarDestroy_2_38
+  - first:
+      213: -6660805594089218528
+    second: RockStarDestroy_2_39
+  - first:
+      213: -4837130041645180472
+    second: RockStarDestroy_2_40
+  - first:
+      213: 6145385031612723111
+    second: RockStarDestroy_2_41
+  - first:
+      213: -6249433636177292542
+    second: RockStarDestroy_2_42
+  - first:
+      213: 8226187897300719003
+    second: RockStarDestroy_2_43
+  - first:
+      213: 5192051739427162306
+    second: RockStarDestroy_2_44
+  - first:
+      213: 7299987720064872177
+    second: RockStarDestroy_2_45
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 500
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RockStarDestroy_2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 331
+        width: 295
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c649b6e4ce23a7100800000000000000
+      internalID: 106453531705971820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_1
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 319
+        width: 58
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f18007aa171204370800000000000000
+      internalID: 8304674484945684511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_2
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 381
+        width: 78
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf88378a4bbdb79f0800000000000000
+      internalID: -469540167163344645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_3
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 362
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71e4a86e5231b7b80800000000000000
+      internalID: -8396096026799616489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_4
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 395
+        width: 122
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c15b0e9228fef510800000000000000
+      internalID: 1584976946445111748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_5
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 266
+        width: 121
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7aa17f9fa325e17a0800000000000000
+      internalID: -6404591206818964825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_6
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 283
+        width: 52
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 499d23565c7796930800000000000000
+      internalID: 4136969422406605204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_7
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 301
+        width: 123
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e36a3265b962a1c0800000000000000
+      internalID: -4493913250404342810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_8
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 337
+        width: 37
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99e324e48b1dd6a20800000000000000
+      internalID: 3057330311571586713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_9
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 378
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b2cd41a53d76d000800000000000000
+      internalID: 60373314309046967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 235
+        width: 98
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14a9e7e0fe5939060800000000000000
+      internalID: 6959070703190448705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_11
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 264
+        width: 57
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8243f206c394905a0800000000000000
+      internalID: -6554627259000474584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_12
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 290
+        width: 36
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34cd0811caa938d20800000000000000
+      internalID: 3279635017474563139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_13
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 281
+        width: 23
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 174f1f37cef3c1560800000000000000
+      internalID: 7285768581968688241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_14
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 290
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 972d8d17c83d2df10800000000000000
+      internalID: 2293127760443921017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_15
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 260
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ed06e27141f76350800000000000000
+      internalID: 6010037491152063974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_16
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 240
+        width: 33
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca24a872bf2dfac40800000000000000
+      internalID: 5525867243948884652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_17
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 259
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b3a1c693d3a79310800000000000000
+      internalID: 1411777137366639541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_18
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 289
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 941b9700e6de97310800000000000000
+      internalID: 1403413815612780873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_19
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 230
+        width: 53
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a9bea8ce554e89e0800000000000000
+      internalID: -1617278942783293018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_20
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 199
+        width: 66
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ab32a1ed05d83970800000000000000
+      internalID: 8734965732881873826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_21
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 223
+        width: 34
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c92761edfd4e650c0800000000000000
+      internalID: -4587227520275418468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_22
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 242
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 802739b2859cf7620800000000000000
+      internalID: 2774157276008903176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_23
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 261
+        width: 29
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fb34c38d071b0620800000000000000
+      internalID: 2741310144997768181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_24
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 221
+        width: 35
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c31bd39333d1052c0800000000000000
+      internalID: -4445020726373797572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_25
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 175
+        width: 96
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7f7caa939c4a3c40800000000000000
+      internalID: 5492786892370640762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_26
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 204
+        width: 26
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f08ab0824d4d25390800000000000000
+      internalID: -7830962794373863409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_27
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 238
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 743f9ebc1acd8aec0800000000000000
+      internalID: -3555349318340054201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_28
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 217
+        width: 13
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60aae9f789b94a5c0800000000000000
+      internalID: -4205065072778761722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_29
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 171
+        width: 60
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de1b0d8fd0e7eda00800000000000000
+      internalID: 783201983683146221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 103
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f009ca6fa386d5650800000000000000
+      internalID: 6223244862551789583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_31
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 138
+        width: 68
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7cffdca96fdb6850800000000000000
+      internalID: 6371431742810619004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_32
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 186
+        width: 32
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ca2125f38b9a5490800000000000000
+      internalID: -7756716417136645437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_33
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 197
+        width: 27
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c72aceaa2a9d81e0800000000000000
+      internalID: -2193927935347775549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_34
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 203
+        width: 19
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ee572064799e6e30800000000000000
+      internalID: 4498701802898153185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_35
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 139
+        width: 79
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d08cfafe7ca1f4710800000000000000
+      internalID: 1679590632054573069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_36
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 192
+        width: 24
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3eb948bdeb912b40800000000000000
+      internalID: 5413779672377441855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_37
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 137
+        width: 52
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbf62102350da4cd0800000000000000
+      internalID: -2573015181649875011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_38
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 170
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a9f1637867aa8c80800000000000000
+      internalID: -8319653294559331929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_39
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 154
+        width: 42
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02e90664a901093a0800000000000000
+      internalID: -6660805594089218528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_40
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 0
+        width: 144
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c95e57fadf0fdcb0800000000000000
+      internalID: -4837130041645180472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_41
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 0
+        width: 137
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7af6749602bc84550800000000000000
+      internalID: 6145385031612723111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_42
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 70
+        width: 115
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2035644083d8549a0800000000000000
+      internalID: -6249433636177292542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_43
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 120
+        width: 25
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b951a32fe4a492270800000000000000
+      internalID: 8226187897300719003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_44
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 0
+        width: 136
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c841006c8fdd0840800000000000000
+      internalID: 5192051739427162306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockStarDestroy_2_45
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 84
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fe2e278724ce4560800000000000000
+      internalID: 7299987720064872177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      RockStarDestroy_2_0: 106453531705971820
+      RockStarDestroy_2_1: 8304674484945684511
+      RockStarDestroy_2_10: 6959070703190448705
+      RockStarDestroy_2_11: -6554627259000474584
+      RockStarDestroy_2_12: 3279635017474563139
+      RockStarDestroy_2_13: 7285768581968688241
+      RockStarDestroy_2_14: 2293127760443921017
+      RockStarDestroy_2_15: 6010037491152063974
+      RockStarDestroy_2_16: 5525867243948884652
+      RockStarDestroy_2_17: 1411777137366639541
+      RockStarDestroy_2_18: 1403413815612780873
+      RockStarDestroy_2_19: -1617278942783293018
+      RockStarDestroy_2_2: -469540167163344645
+      RockStarDestroy_2_20: 8734965732881873826
+      RockStarDestroy_2_21: -4587227520275418468
+      RockStarDestroy_2_22: 2774157276008903176
+      RockStarDestroy_2_23: 2741310144997768181
+      RockStarDestroy_2_24: -4445020726373797572
+      RockStarDestroy_2_25: 5492786892370640762
+      RockStarDestroy_2_26: -7830962794373863409
+      RockStarDestroy_2_27: -3555349318340054201
+      RockStarDestroy_2_28: -4205065072778761722
+      RockStarDestroy_2_29: 783201983683146221
+      RockStarDestroy_2_3: -8396096026799616489
+      RockStarDestroy_2_30: 6223244862551789583
+      RockStarDestroy_2_31: 6371431742810619004
+      RockStarDestroy_2_32: -7756716417136645437
+      RockStarDestroy_2_33: -2193927935347775549
+      RockStarDestroy_2_34: 4498701802898153185
+      RockStarDestroy_2_35: 1679590632054573069
+      RockStarDestroy_2_36: 5413779672377441855
+      RockStarDestroy_2_37: -2573015181649875011
+      RockStarDestroy_2_38: -8319653294559331929
+      RockStarDestroy_2_39: -6660805594089218528
+      RockStarDestroy_2_4: 1584976946445111748
+      RockStarDestroy_2_40: -4837130041645180472
+      RockStarDestroy_2_41: 6145385031612723111
+      RockStarDestroy_2_42: -6249433636177292542
+      RockStarDestroy_2_43: 8226187897300719003
+      RockStarDestroy_2_44: 5192051739427162306
+      RockStarDestroy_2_45: 7299987720064872177
+      RockStarDestroy_2_5: -6404591206818964825
+      RockStarDestroy_2_6: 4136969422406605204
+      RockStarDestroy_2_7: -4493913250404342810
+      RockStarDestroy_2_8: 3057330311571586713
+      RockStarDestroy_2_9: 60373314309046967
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
