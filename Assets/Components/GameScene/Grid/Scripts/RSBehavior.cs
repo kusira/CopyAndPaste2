@@ -801,8 +801,8 @@ public class RSBehavior : MonoBehaviour
             return;
         }
 
-        // 現在の中心セル
-        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset);
+        // 現在の中心セル（gridScaleを考慮）
+        Vector2Int centerIndex = RSGridHelper.WorldToGridIndex(transform.position, gridParentPosition, gridOffset, gridScale);
         int centerX = centerIndex.x;
         int centerY = centerIndex.y;
 
