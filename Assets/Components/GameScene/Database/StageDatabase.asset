@@ -35,7 +35,7 @@ MonoBehaviour:
       - .
       - .
       - .
-      - .
+      - .S
       - .
       - .
       - .
@@ -81,9 +81,9 @@ MonoBehaviour:
       - 
       - 
     - columns:
-      - 
-      - 
-      - 
+      - '#'
+      - '#C'
+      - '#C'
       - 
       - 
       - 

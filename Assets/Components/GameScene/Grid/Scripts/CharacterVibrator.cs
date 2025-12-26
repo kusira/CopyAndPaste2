@@ -33,6 +33,7 @@ public class CharacterVibrator : MonoBehaviour
 
     private Vector3 initialPosition;
     private float timeElapsed = 0f;
+    private bool isInitialized = false;
 
     private void Awake()
     {
@@ -45,18 +46,40 @@ public class CharacterVibrator : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        // Awakeで初期位置を保存（Startより前に実行される）
+        initialPosition = transform.localPosition;
+        isInitialized = true;
     }
 
     private void Start()
     {
-        // 初期位置を保存
-        initialPosition = transform.localPosition;
+        // Startでも初期位置を確認・更新（Awakeで保存できなかった場合のフォールバック）
+        if (!isInitialized || initialPosition == Vector3.zero)
+        {
+            // 初期位置が(0,0,0)の場合は、現在の位置を初期位置として使用
+            if (transform.localPosition != Vector3.zero)
+            {
+                initialPosition = transform.localPosition;
+            }
+        }
     }
 
     private void Update()
     {
+        // 初期化されていない場合は処理をスキップ
+        if (!isInitialized)
+        {
+            return;
+        }
+
         if (!enableVibration)
         {
+            // 振動が無効な場合は初期位置に戻す
+            if (transform.localPosition != initialPosition)
+            {
+                transform.localPosition = initialPosition;
+            }
             return;
         }
 
