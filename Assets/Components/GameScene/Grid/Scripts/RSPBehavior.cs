@@ -84,9 +84,6 @@ public class RSPBehavior : MonoBehaviour
     [Tooltip("CharacterAnimatorコンポーネントをアサインします（自動検索も可能）")]
     [SerializeField] private CharacterAnimator characterAnimator;
 
-    [Header("Animation Settings")]
-    [Tooltip("左クリック後のIdle遷移までの待機時間（秒）")]
-    [SerializeField] private float idleTransitionDelay = 0.3f;
 
     private void Start()
     {

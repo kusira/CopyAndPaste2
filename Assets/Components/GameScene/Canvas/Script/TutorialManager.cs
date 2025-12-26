@@ -34,7 +34,7 @@ public class TutorialManager : MonoBehaviour
     private CurrentGameStatus currentGameStatus;
     private bool isAnimating = false;
     private bool initialized = false;
-    
+
     private RectTransform tutorialPanelRect;
     private Vector2 openedPos;
     private Vector2 closedPos;
@@ -181,6 +181,12 @@ public class TutorialManager : MonoBehaviour
         backdrop.SetActive(true);
         tutorialPanel.SetActive(true);
         tutorialPanelRect.anchoredPosition = openedPos;
+
+        // パネル表示中は振動を停止
+        if (CharacterVibrator.Instance != null)
+        {
+            CharacterVibrator.Instance.SetVibrationEnabled(false);
+        }
     }
 
     /// <summary>
@@ -227,6 +233,12 @@ public class TutorialManager : MonoBehaviour
                     tutorial_3.SetActive(false);
                 }
                 isAnimating = false;
+                
+                // パネルが閉じられたら振動を再開
+                if (CharacterVibrator.Instance != null)
+                {
+                    CharacterVibrator.Instance.SetVibrationEnabled(true);
+                }
             });
     }
 

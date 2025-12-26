@@ -106,6 +106,12 @@ public class MenuButton : MonoBehaviour
         menuPanel.anchoredPosition = closedPos;
         panelTween = menuPanel.DOAnchorPos(openedPos, animationDuration)
             .SetEase(Ease.OutQuad);
+
+        // パネル表示中は振動を停止
+        if (CharacterVibrator.Instance != null)
+        {
+            CharacterVibrator.Instance.SetVibrationEnabled(false);
+        }
     }
 
     private void CloseMenu()
@@ -125,6 +131,12 @@ public class MenuButton : MonoBehaviour
                 if (backdrop != null)
                 {
                 backdrop.SetActive(false);
+                }
+                
+                // パネルが閉じられたら振動を再開
+                if (CharacterVibrator.Instance != null)
+                {
+                    CharacterVibrator.Instance.SetVibrationEnabled(true);
                 }
             });
     }
