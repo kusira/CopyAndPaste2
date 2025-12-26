@@ -187,13 +187,6 @@ public class GridMonitor : MonoBehaviour
                                         // 現在条件を満たしている座標として記録
                                         newSatisfiedPositions.Add(gridPos);
 
-                                        // 条件を満たしている間は常に発光させる
-                                        RockPatternAssigner rockAssigner = GetRockPatternAssignerAtPosition(gridPos);
-                                        if (rockAssigner != null)
-                                        {
-                                            rockAssigner.SetEmissionEnabled(true);
-                                        }
-
                                         if (!acquiredProgressKeys.Contains(progressKey))
                                         {
                                             acquiredProgressKeys.Add(progressKey);
@@ -382,13 +375,6 @@ public class GridMonitor : MonoBehaviour
             {
                 Vector2Int gridPos = positions[i];
                 string progressKey = $"{key}_{gridPos.x}_{gridPos.y}";
-                
-                // 条件を満たしている間は常に発光させる
-                RockPatternAssigner rockAssigner = GetRockPatternAssignerAtPosition(gridPos);
-                if (rockAssigner != null)
-                {
-                    rockAssigner.SetEmissionEnabled(true);
-                }
                 
                 if (!acquiredProgressKeys.Contains(progressKey))
                 {

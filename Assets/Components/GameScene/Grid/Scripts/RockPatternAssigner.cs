@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -20,9 +21,6 @@ public class RockPatternAssigner : MonoBehaviour
     [SerializeField] private List<PatternEntry> patternTable = new List<PatternEntry>();
 
     [Header("Emission Settings")]
-    [Tooltip("Patternに適用するEmissionマテリアルをアサインします")]
-    [SerializeField] private Material emissionMaterial;
-
     [Tooltip("EmissionColorのHDR値アニメーション時間（秒）")]
     [SerializeField] private float emissionAnimationDuration = 0.5f;
 
@@ -38,7 +36,6 @@ public class RockPatternAssigner : MonoBehaviour
     private string emissionPropertyName;
     private bool isEmissionInitialized = false;
     private bool isEmissionEnabled = false; // 現在光っているかどうか
-    private Material instanceMaterial; // インスタンス化されたマテリアル
 
     private void Awake()
     {
@@ -114,8 +111,8 @@ public class RockPatternAssigner : MonoBehaviour
                 // MaterialPropertyBlockをクリアしてマテリアルのデフォルト値に戻す
                 ClearMaterialPropertyBlock();
                 
-                // Emissionマテリアルを適用（マテリアルがアサインされている場合）
-                ApplyEmissionMaterial();
+                // Emission初期化を再実行（スプライト変更後）
+                InitializeEmission();
                 
                 return;
             }
@@ -125,40 +122,10 @@ public class RockPatternAssigner : MonoBehaviour
         patternRenderer.sprite = null;
         currentPatternKey = null;
         
-        // Emissionマテリアルを適用（スプライトがない場合でもマテリアルは適用）
-        ApplyEmissionMaterial();
-    }
-
-    /// <summary>
-    /// EmissionマテリアルをPatternに適用します（各Rockで独立したマテリアルインスタンスを作成）
-    /// </summary>
-    private void ApplyEmissionMaterial()
-    {
-        if (patternRenderer == null)
-        {
-            CachePatternRenderer();
-        }
-        if (patternRenderer == null)
-        {
-            return;
-        }
-
-        if (emissionMaterial == null)
-        {
-            return;
-        }
-
-        // マテリアルをインスタンス化して、各Rockで独立したマテリアルにする
-        if (instanceMaterial == null)
-        {
-            instanceMaterial = new Material(emissionMaterial);
-        }
-
-        patternRenderer.material = instanceMaterial;
+        // MaterialPropertyBlockをクリアしてマテリアルのデフォルト値に戻す
+        ClearMaterialPropertyBlock();
         
-        // Emission初期化を再実行（新しいマテリアルでプロパティ名を取得）
-        propertyBlock = null; // プロパティブロックをリセット
-        isEmissionInitialized = false;
+        // Emission初期化を再実行
         InitializeEmission();
     }
 
@@ -181,25 +148,29 @@ public class RockPatternAssigner : MonoBehaviour
         }
         if (patternRenderer == null)
         {
+            Debug.LogWarning($"{name}: PatternRendererが見つかりません");
             return;
         }
 
-        // インスタンス化されたマテリアルを使用（なければsharedMaterial）
-        Material material = patternRenderer.material;
+        // 元のマテリアルを使用（MaterialPropertyBlockで個別に制御するため、マテリアルを変更する必要はない）
+        Material material = patternRenderer.sharedMaterial;
         if (material == null)
         {
+            Debug.LogWarning($"{name}: PatternRendererにマテリアルが設定されていません");
             return;
         }
 
         emissionPropertyName = GetEmissionPropertyName(material);
         if (emissionPropertyName == null)
         {
+            Debug.LogWarning($"{name}: Emissionプロパティが見つかりません。マテリアル: {material.name}, シェーダー: {material.shader.name}");
             return;
         }
 
         propertyBlock = new MaterialPropertyBlock();
         patternRenderer.GetPropertyBlock(propertyBlock);
         isEmissionInitialized = true;
+        Debug.Log($"{name}: Emission初期化完了。プロパティ名: {emissionPropertyName}");
     }
 
     /// <summary>
@@ -213,8 +184,11 @@ public class RockPatternAssigner : MonoBehaviour
         }
         if (!isEmissionInitialized || patternRenderer == null || emissionPropertyName == null)
         {
+            Debug.LogWarning($"{name}: SetEmissionEnabledが失敗しました。初期化: {isEmissionInitialized}, Renderer: {patternRenderer != null}, プロパティ名: {emissionPropertyName}");
             return;
         }
+
+        Debug.Log($"{name}: SetEmissionEnabled呼び出し。enabled={enabled}, animate={animate}");
 
         // 既存のTweenがあれば停止
         if (emissionTween != null && emissionTween.IsActive())
@@ -230,7 +204,7 @@ public class RockPatternAssigner : MonoBehaviour
             Color currentEmission = propertyBlock.GetColor(emissionPropertyName);
             
             // マテリアルから初期値を取得（MaterialPropertyBlockに値がない場合）
-            Material material = patternRenderer.material;
+            Material material = patternRenderer.sharedMaterial;
             if (material != null && material.HasProperty(emissionPropertyName))
             {
                 Color materialEmission = material.GetColor(emissionPropertyName);
@@ -275,6 +249,7 @@ public class RockPatternAssigner : MonoBehaviour
             if (animate)
             {
                 // HDR値を0→最大値とアニメーション
+                Debug.Log($"{name}: Emissionアニメーション開始。現在HDR: {currentHDR}, 目標HDR: {emissionMaxHDR}, ベースカラー: {baseColor}");
                 emissionTween = DOTween.To(
                     () => currentHDR,
                     hdr => {
@@ -290,6 +265,7 @@ public class RockPatternAssigner : MonoBehaviour
             {
                 // 即座に最大値に設定
                 Color emissionColor = baseColor * emissionMaxHDR;
+                Debug.Log($"{name}: Emission即座に設定。HDR: {emissionMaxHDR}, カラー: {emissionColor}");
                 propertyBlock.SetColor(emissionPropertyName, emissionColor);
                 patternRenderer.SetPropertyBlock(propertyBlock);
             }
@@ -345,9 +321,9 @@ public class RockPatternAssigner : MonoBehaviour
             emissionTween.Kill();
         }
         
-        // 状態をリセット
-        isEmissionEnabled = false;
+        // 発光状態と初期化状態をリセット（パターンが変わるため、以前の状態は引き継がない）
         isEmissionInitialized = false;
+        isEmissionEnabled = false;
         propertyBlock = null;
     }
 
@@ -358,36 +334,56 @@ public class RockPatternAssigner : MonoBehaviour
     {
         if (material == null) return null;
 
-        // 優先すべきプロパティ名の候補 - "Color"や"_BaseColor"などの汎用名は意図的な黒化を招くため除外
-        string[] priorityPropertyNames = { "_EmissionColor", "_Emission", "EmissionColor", "Emission" };
-        
-        // シェーダーのプロパティを走査
+        // シェーダーのプロパティを走査して、マテリアルに実際に存在するプロパティを確認
         Shader shader = material.shader;
         int propertyCount = shader.GetPropertyCount();
         
-        // 1. "Emission" を含むプロパティを最優先で探す
+        // デバッグ用：すべてのプロパティを列挙
+        List<string> allProperties = new List<string>();
+        List<string> colorProperties = new List<string>();
+        
+        // 1. シェーダーのすべてのプロパティを走査
         for (int i = 0; i < propertyCount; i++)
         {
             string propName = shader.GetPropertyName(i);
-            string lowerName = propName.ToLower();
             UnityEngine.Rendering.ShaderPropertyType propType = shader.GetPropertyType(i);
             
-            // ColorまたはVector型のみ対象
-            if ((propType == UnityEngine.Rendering.ShaderPropertyType.Color || 
-                 propType == UnityEngine.Rendering.ShaderPropertyType.Vector) && 
-                lowerName.Contains("emission"))
+            // マテリアルに実際にこのプロパティが存在するか確認
+            if (material.HasProperty(propName))
             {
-                return propName; // "Emission"を含むプロパティが見つかればそれを採用
+                allProperties.Add($"{propName} ({propType})");
+                
+                // ColorまたはVector型のみ対象
+                if (propType == UnityEngine.Rendering.ShaderPropertyType.Color || 
+                    propType == UnityEngine.Rendering.ShaderPropertyType.Vector)
+                {
+                    colorProperties.Add(propName);
+                    
+                    // "Emission"を含むプロパティを最優先で探す
+                    string lowerName = propName.ToLower();
+                    if (lowerName.Contains("emission"))
+                    {
+                        Debug.Log($"{name}: Emissionプロパティを発見: {propName}");
+                        return propName;
+                    }
+                }
             }
         }
         
-        // 2. 候補リストを確認
-        foreach (string propName in priorityPropertyNames)
+        // 2. 見つからなかった場合、すべてのプロパティをログ出力
+        Debug.LogWarning($"{name}: Emissionプロパティが見つかりませんでした。");
+        Debug.LogWarning($"{name}: マテリアル '{material.name}' のシェーダー '{shader.name}' のすべてのプロパティ:");
+        foreach (var prop in allProperties)
         {
-            if (material.HasProperty(propName))
-            {
-                return propName;
-            }
+            Debug.LogWarning($"{name}:   - {prop}");
+        }
+        
+        if (colorProperties.Count > 0)
+        {
+            Debug.LogWarning($"{name}: 利用可能なColor型プロパティ: {string.Join(", ", colorProperties)}");
+            // 最初のColor型プロパティを試す（フォールバック）
+            Debug.LogWarning($"{name}: フォールバックとして最初のColor型プロパティ '{colorProperties[0]}' を使用します");
+            return colorProperties[0];
         }
 
         // 汎用カラープロパティへのフォールバックは廃止 (意図せず真っ黒になるのを防ぐため)
@@ -400,12 +396,6 @@ public class RockPatternAssigner : MonoBehaviour
         if (emissionTween != null && emissionTween.IsActive())
         {
             emissionTween.Kill();
-        }
-
-        // インスタンス化されたマテリアルを破棄
-        if (instanceMaterial != null)
-        {
-            Destroy(instanceMaterial);
         }
     }
 }
