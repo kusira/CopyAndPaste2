@@ -10,6 +10,9 @@ public class GridGenerator : MonoBehaviour
     [Tooltip("RockのPrefabをアサインします")]
     [SerializeField] private GameObject rockPrefab;
 
+    [Tooltip("StumpのPrefabをアサインします。MassStatusが空白のマスに生成されます")]
+    [SerializeField] private GameObject stumpPrefab;
+
     [Tooltip("GridFrameのPrefabをアサインします。GridParentの直下に生成されます")]
     [SerializeField] private GameObject gridFramePrefab;
     
@@ -19,6 +22,9 @@ public class GridGenerator : MonoBehaviour
     
     [Tooltip("Rockを生成する際の親GameObjectをアサインします。未設定の場合はこのGameObjectが親になります")]
     [SerializeField] private Transform rockParent;
+
+    [Tooltip("Stumpを生成する際の親GameObjectをアサインします。未設定の場合はこのGameObjectが親になります")]
+    [SerializeField] private Transform stumpParent;
 
     [Header("References")]
     [Tooltip("現在のゲームステータスを参照します。設定されている場合、ここからステージデータを取得します")]
@@ -167,6 +173,25 @@ public class GridGenerator : MonoBehaviour
                                 Debug.LogWarning("MassPrefabがアサインされていません");
                             }
                         }
+                        else
+                        {
+                            // MassStatusが空白の場合、Stumpを生成
+                            if (stumpPrefab != null)
+                            {
+                                Transform parent = stumpParent != null ? stumpParent : transform;
+                                if (parent != null)
+                                {
+                                    // 親を指定してlocalPositionで配置（Scaleの影響を正しく受ける）
+                                    GameObject instance = Instantiate(stumpPrefab, parent);
+                                    if (instance != null)
+                                    {
+                                        instance.transform.localPosition = localPosition;
+                                        instance.transform.localRotation = Quaternion.identity;
+                                        generatedCount++;
+                                    }
+                                }
+                            }
+                        }
 
                         // RockStatusをチェック
                         if (rockStatus != null && h < rockStatus.Count && rockStatus[h] != null && 
@@ -286,6 +311,34 @@ public class GridGenerator : MonoBehaviour
                     }
                     
                     Transform child = rockParentTransform.GetChild(i);
+                    if (child != null)
+                    {
+                        if (Application.isPlaying)
+                        {
+                            Destroy(child.gameObject);
+                        }
+                        else
+                        {
+                            DestroyImmediate(child.gameObject);
+                        }
+                    }
+                }
+            }
+
+            // StumpParentの子オブジェクトをクリア（MassParentと異なる場合のみ）
+            Transform stumpParentTransform = stumpParent != null ? stumpParent : transform;
+            if (stumpParentTransform != null && stumpParentTransform != massParentTransform && stumpParentTransform != rockParentTransform)
+            {
+                // 無限ループを防ぐため、子オブジェクトの数を事前に取得
+                int stumpChildCount = stumpParentTransform.childCount;
+                for (int i = stumpChildCount - 1; i >= 0; i--)
+                {
+                    if (stumpParentTransform.childCount <= i)
+                    {
+                        break; // 安全策：インデックスが範囲外になったら終了
+                    }
+                    
+                    Transform child = stumpParentTransform.GetChild(i);
                     if (child != null)
                     {
                         if (Application.isPlaying)

@@ -435,6 +435,13 @@ MonoBehaviour:
   selectionLB: {fileID: 8096952087035709573}
   selectionRB: {fileID: 6240161179255765007}
   gravityArrow: {fileID: 6958314460248222237}
+  leftClickTextUp: "\u4E0A\u306B\u8A70\u3081\u308B"
+  leftClickTextRight: "\u53F3\u306B\u8A70\u3081\u308B"
+  leftClickTextDown: "\u4E0B\u306B\u8A70\u3081\u308B"
+  leftClickTextLeft: "\u5DE6\u306B\u8A70\u3081\u308B"
+  rightClickText: "\u30AD\u30E3\u30F3\u30BB\u30EB"
+  mouseWheelText: "\u56DE\u8EE2"
+  characterAnimator: {fileID: 0}
 --- !u!1 &6958314460248222237
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,12 +521,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 122
-  m_Sprite: {fileID: 1727269174216515978, guid: bcac13bb4d8203542b70b8eadc6dd105, type: 3}
+  m_Sprite: {fileID: 1727269174216515978, guid: eb841e71af3dbba49b6ae2a8ed5dbd83, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.82, y: 1.82}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
