@@ -168,8 +168,6 @@ public class StickyNotesGenerator : MonoBehaviour
                 behavior.GenerateItemMasses();
             }
         }
-
-        Debug.Log($"StickyNotesGenerator: StickyNoteを {count} 個生成しました");
     }
 
     /// <summary>

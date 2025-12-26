@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StageDatabase
   stages:
   - stageName: Stage 1-1
-    worldLabel: Cave
+    worldLabel: Glassland
     massStatus:
     - columns:
       - .
@@ -37,7 +37,7 @@ MonoBehaviour:
       - .
       - .
       - .S
-      - .
+      - .S
       - .
       - .
     - columns:
@@ -45,7 +45,7 @@ MonoBehaviour:
       - .
       - .
       - .
-      - .
+      - .C
       - .
       - .
     - columns:
