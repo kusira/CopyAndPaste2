@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d6f919cce7c8447abdc63f08374f50, type: 3}
   m_Name: StageDatabase
   m_EditorClassIdentifier: Assembly-CSharp::StageDatabase
+  worldLabels:
+  - Glassland
+  - Cave
+  - Magma
   stages:
   - stageName: Stage 1-1
-    worldLabel: Cave
+    worldLabel: Magma
     massStatus:
     - columns:
       - .
@@ -37,7 +41,7 @@ MonoBehaviour:
       - .
       - .
       - .S
-      - .
+      - .S
       - .
       - .
     - columns:
@@ -45,7 +49,7 @@ MonoBehaviour:
       - .
       - .
       - .
-      - .
+      - .C
       - .
       - .
     - columns:

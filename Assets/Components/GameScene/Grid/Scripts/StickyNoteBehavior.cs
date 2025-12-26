@@ -710,8 +710,6 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
                     behavior.SetSourceItem(this);
                 }
             }
-            
-            Debug.Log($"RSをグリッドに追加しました: サイズ({width}, {height})");
         }
     }
 
@@ -797,7 +795,6 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
         }
 
         string massTypeName = itemType == StageDatabase.RSItemType.Pickaxe ? "RSPItemMass" : "RSItemMass";
-        Debug.Log($"{massTypeName}を {totalCount} 個生成しました (H={height}, W={width})");
     }
 
     /// <summary>

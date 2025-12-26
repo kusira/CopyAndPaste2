@@ -176,6 +176,9 @@ public class UndoRedoManager : MonoBehaviour
     /// <summary>
     /// ステートを適用し、画面を更新します
     /// </summary>
+    /// <summary>
+    /// ステートを適用し、画面を更新します
+    /// </summary>
     private void ApplyState(StageDatabase.StageData data)
     {
         if (data == null) return;
@@ -212,7 +215,20 @@ public class UndoRedoManager : MonoBehaviour
             itemGen.GenerateItems();
         }
 
-        // 4. Progressの状態を更新
+        // 4. Progressの状態を更新（1フレーム待ってから実行）
+        StartCoroutine(UpdateProgressDelayed());
+
+        UpdateButtons();
+    }
+
+    /// <summary>
+    /// 1フレーム待ってからProgressの状態を更新します
+    /// </summary>
+    private System.Collections.IEnumerator UpdateProgressDelayed()
+    {
+        // GridGeneratorなどの破壊・生成処理が反映されるのを待つ
+        yield return null;
+
         // Progressアイテムを再生成（初期状態に戻す）
         var ProgressManager = Object.FindFirstObjectByType<ProgressManager>();
         if (ProgressManager != null)
@@ -227,8 +243,6 @@ public class UndoRedoManager : MonoBehaviour
             gridMonitor.ResetMonitor();
             gridMonitor.RecalculateProgress();
         }
-
-        UpdateButtons();
     }
 
     /// <summary>

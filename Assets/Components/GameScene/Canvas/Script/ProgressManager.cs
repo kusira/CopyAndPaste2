@@ -28,10 +28,6 @@ public class ProgressManager : MonoBehaviour
     [Tooltip("行間の間隔")]
     [SerializeField] private float rowSpacing = 80;
 
-    [Header("Animation Settings")]
-    [Tooltip("Acquired時のアニメーション秒数")]
-    [SerializeField] private float acquiredAnimationDuration = 0.3f;
-
     [Header("Result")]
     [Tooltip("すべてAcquiredになったときにリザルトを表示するコンポーネント")]
     [SerializeField] private ResultShower resultShower;
@@ -48,6 +44,7 @@ public class ProgressManager : MonoBehaviour
         public string patternKey; // "S", "H", "C"
         public Vector2Int gridPosition; // グリッド座標 (w, h)
         public bool isAcquired;
+        public bool isGlowing; // 現在光っているかどうか
 
         public ProgressItemData(GameObject obj, string key, Vector2Int pos)
         {
@@ -55,6 +52,7 @@ public class ProgressManager : MonoBehaviour
             patternKey = key;
             gridPosition = pos;
             isAcquired = false;
+            isGlowing = false;
         }
     }
 
@@ -227,9 +225,9 @@ public class ProgressManager : MonoBehaviour
                 // アニメーション付きでAcquiredにする場合
                 if (withAnimation)
                 {
-                    // スケールを0に設定してからアニメーション
+                    // スケールを0に設定してからアニメーション（緩やかに増大）
                     acquiredTransform.localScale = Vector3.zero;
-                    acquiredTransform.DOScale(Vector3.one, acquiredAnimationDuration).SetEase(Ease.OutQuad);
+                    acquiredTransform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutQuad);
                 }
                 else
                 {
@@ -287,11 +285,24 @@ public class ProgressManager : MonoBehaviour
         if (targetIndex < filteredItems.Count)
         {
             var targetItem = filteredItems[targetIndex];
-            if (targetItem != null && targetItem.gameObject != null && !targetItem.isAcquired)
+            
+            // 岩（HUD）が既に光っているかどうかをチェック
+            if (targetItem != null && targetItem.gameObject != null)
             {
+                // すでに光っているならばアニメーションは不要
+                if (targetItem.isGlowing)
+                {
+                    return;
+                }
+
+                // 光っていないなら、光らせるフラグを立ててアニメーションを実行
+                targetItem.isGlowing = true;
                 targetItem.isAcquired = true;
-                SetProgressItemState(targetItem.gameObject, true, true); // アニメーション付きで設定
-                Debug.Log($"ProgressManager: {targetItem.patternKey}行の{targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をAcquiredにしました（{patternKey}行の{acquiredCount + 1}個目）");
+                
+                // 緩やかに増大させるアニメーション（SetProgressItemState内で実装）
+                SetProgressItemState(targetItem.gameObject, true, true); 
+                
+                Debug.Log($"ProgressManager: {targetItem.patternKey}行の{targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をGlow(Acquired)にしました");
 
                 // すべてのProgressがAcquiredになったかチェック
                 if (IsAllAcquired())
