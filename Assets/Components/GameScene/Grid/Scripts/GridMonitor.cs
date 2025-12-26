@@ -187,6 +187,13 @@ public class GridMonitor : MonoBehaviour
                                         // 現在条件を満たしている座標として記録
                                         newSatisfiedPositions.Add(gridPos);
 
+                                        // 条件を満たしている間は常に発光させる
+                                        RockPatternAssigner rockAssigner = GetRockPatternAssignerAtPosition(gridPos);
+                                        if (rockAssigner != null)
+                                        {
+                                            rockAssigner.SetEmissionEnabled(true);
+                                        }
+
                                         if (!acquiredProgressKeys.Contains(progressKey))
                                         {
                                             acquiredProgressKeys.Add(progressKey);
@@ -376,6 +383,13 @@ public class GridMonitor : MonoBehaviour
                 Vector2Int gridPos = positions[i];
                 string progressKey = $"{key}_{gridPos.x}_{gridPos.y}";
                 
+                // 条件を満たしている間は常に発光させる
+                RockPatternAssigner rockAssigner = GetRockPatternAssignerAtPosition(gridPos);
+                if (rockAssigner != null)
+                {
+                    rockAssigner.SetEmissionEnabled(true);
+                }
+                
                 if (!acquiredProgressKeys.Contains(progressKey))
                 {
                     acquiredProgressKeys.Add(progressKey);
@@ -454,6 +468,62 @@ public class GridMonitor : MonoBehaviour
         ).SetEase(Ease.InQuad));
 
         bloomTween = sequence;
+    }
+
+    /// <summary>
+    /// 指定されたグリッド座標にあるRockPatternAssignerを取得します
+    /// </summary>
+    /// <param name="gridPos">グリッド座標（Vector2Int）</param>
+    /// <returns>見つかったRockPatternAssigner、見つからない場合はnull</returns>
+    private RockPatternAssigner GetRockPatternAssignerAtPosition(Vector2Int gridPos)
+    {
+        if (rockParent == null)
+        {
+            return null;
+        }
+
+        // GridGeneratorと同じ方法でlocalPositionを計算
+        StageDatabase.StageData stageData = currentGameStatus?.GetCurrentStageData();
+        if (stageData == null || stageData.massStatus == null || stageData.massStatus.Count == 0)
+        {
+            return null;
+        }
+
+        int width = stageData.massStatus[0]?.columns?.Count ?? 0;
+        int height = stageData.massStatus.Count;
+
+        if (width == 0 || height == 0)
+        {
+            return null;
+        }
+
+        // GridGeneratorと同じオフセット計算
+        float offsetX = -(width - 1) * 0.5f;
+        float offsetY = -(height - 1) * 0.5f;
+        Vector3 targetLocalPos = new Vector3(offsetX + gridPos.x, offsetY + gridPos.y, 0f);
+
+        // rockParentの子オブジェクトを走査
+        for (int i = 0; i < rockParent.childCount; i++)
+        {
+            Transform child = rockParent.GetChild(i);
+            if (child == null) continue;
+
+            // localPositionが一致するかチェック（誤差を許容）
+            Vector3 childLocalPos = child.localPosition;
+            if (Mathf.Abs(childLocalPos.x - targetLocalPos.x) < 0.01f &&
+                Mathf.Abs(childLocalPos.y - targetLocalPos.y) < 0.01f &&
+                Mathf.Abs(childLocalPos.z - targetLocalPos.z) < 0.01f)
+            {
+                // RockPatternAssignerコンポーネントを取得
+                RockPatternAssigner assigner = child.GetComponent<RockPatternAssigner>();
+                if (assigner != null)
+                {
+                    return assigner;
+                }
+            }
+        }
+
+        return null;
     }
 
     /// <summary>

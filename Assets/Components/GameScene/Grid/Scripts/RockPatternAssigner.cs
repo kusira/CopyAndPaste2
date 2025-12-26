@@ -24,7 +24,7 @@ public class RockPatternAssigner : MonoBehaviour
     [SerializeField] private float emissionAnimationDuration = 0.5f;
 
     [Tooltip("EmissionColorのHDR最大値")]
-    [SerializeField] private float emissionMaxHDR = 3f;
+    [SerializeField] private float emissionMaxHDR = 2f;
 
     private readonly Dictionary<string, Sprite> patternDict = new Dictionary<string, Sprite>();
     private Transform patternTransform;
