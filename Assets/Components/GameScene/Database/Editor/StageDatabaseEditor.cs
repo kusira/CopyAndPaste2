@@ -120,6 +120,19 @@ public class StageDatabaseEditor : Editor
         }
         EditorGUILayout.Space();
 
+        // チュートリアル表示タイプの編集
+        EditorGUILayout.LabelField("チュートリアル表示設定", EditorStyles.boldLabel);
+        StageDatabase.TutorialDisplayType newTutorialType = (StageDatabase.TutorialDisplayType)EditorGUILayout.EnumPopup(
+            "チュートリアル表示タイプ", 
+            stageData.tutorialDisplayType);
+        if (newTutorialType != stageData.tutorialDisplayType)
+        {
+            Undo.RecordObject(database, "チュートリアル表示タイプを変更");
+            stageData.tutorialDisplayType = newTutorialType;
+            EditorUtility.SetDirty(database);
+        }
+        EditorGUILayout.Space();
+
         // グリッドサイズの設定
         EditorGUILayout.LabelField("グリッドサイズ", EditorStyles.boldLabel);
         

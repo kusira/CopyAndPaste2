@@ -38,6 +38,17 @@ public class StageDatabase : ScriptableObject
         Gravity
     }
 
+    /// <summary>
+    /// チュートリアル表示タイプ
+    /// </summary>
+    public enum TutorialDisplayType
+    {
+        None,        // チュートリアル表示なし
+        Tutorial_1,  // Tutorial_1だけ表示
+        Tutorial_2,  // Tutorial_2だけ表示
+        Tutorial_3   // Tutorial_3だけ表示
+    }
+
     [System.Serializable]
     public class RSItemData
     {
@@ -82,12 +93,16 @@ public class StageDatabase : ScriptableObject
         [Tooltip("GridParentのScale（XとYは等しく、Zは1固定）。子オブジェクト（Mass、Rock、GridFrame）もこの影響を受けます")]
         public float gridParentScaleXY = 1f;
 
+        [Tooltip("チュートリアルパネルの表示設定")]
+        public TutorialDisplayType tutorialDisplayType = TutorialDisplayType.None;
+
         // ▼ 追加: ディープコピー用メソッド
         public StageData DeepCopy()
         {
             StageData copy = new StageData();
             copy.stageName = this.stageName;
             copy.gridParentScaleXY = this.gridParentScaleXY;
+            copy.tutorialDisplayType = this.tutorialDisplayType;
 
             foreach (var mass in this.massStatus)
             {
