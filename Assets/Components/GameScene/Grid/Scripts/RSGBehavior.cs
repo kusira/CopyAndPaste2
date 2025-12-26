@@ -76,6 +76,14 @@ public class RSGBehavior : MonoBehaviour
     [Tooltip("マウスホイールテキスト")]
     [SerializeField] private string mouseWheelText = "回転";
 
+    [Header("Character Animator")]
+    [Tooltip("CharacterAnimatorコンポーネントをアサインします（自動検索も可能）")]
+    [SerializeField] private CharacterAnimator characterAnimator;
+
+    [Header("Animation Settings")]
+    [Tooltip("左クリック後のIdle遷移までの待機時間（秒）")]
+    [SerializeField] private float idleTransitionDelay = 0.3f;
+
     private void Start()
     {
         // メインカメラを取得
@@ -125,6 +133,12 @@ public class RSGBehavior : MonoBehaviour
         
         // 初期テキストを設定
         UpdateUITexts();
+
+        // CharacterAnimatorを自動検索（アサインされていない場合）
+        if (characterAnimator == null)
+        {
+            characterAnimator = CharacterAnimator.Instance;
+        }
     }
 
     /// <summary>
@@ -371,12 +385,19 @@ public class RSGBehavior : MonoBehaviour
             string directionName = directionNames[((rotationIndex % 4) + 4) % 4];
             Debug.Log($"左クリック：範囲内のRockを{directionName}に詰めます");
             ApplyGravityToRocks();
+            // 任意秒待ってIdleに遷移
+            StartCoroutine(TransitionToIdleAfterDelay(idleTransitionDelay));
         }
 
         // 右クリック (選択キャンセル)
         if (mouse.rightButton.wasPressedThisFrame)
         {
             Debug.Log("右クリック：選択をキャンセルします");
+            // アニメーションをIdleに設定
+            if (characterAnimator != null)
+            {
+                characterAnimator.SetIdle();
+            }
             CancelSelection();
         }
 
@@ -863,6 +884,18 @@ public class RSGBehavior : MonoBehaviour
         StickyNoteBehavior.UpdateAllStickyNotesUI();
         
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// 指定秒待ってからIdle状態に遷移します
+    /// </summary>
+    private IEnumerator TransitionToIdleAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (characterAnimator != null)
+        {
+            characterAnimator.SetIdle();
+        }
     }
 }
 

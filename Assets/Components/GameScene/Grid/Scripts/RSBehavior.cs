@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -90,6 +91,14 @@ public class RSBehavior : MonoBehaviour
     [Tooltip("マウスホイールテキスト")]
     [SerializeField] private string mouseWheelText = "回転";
 
+    [Header("Character Animator")]
+    [Tooltip("CharacterAnimatorコンポーネントをアサインします（自動検索も可能）")]
+    [SerializeField] private CharacterAnimator characterAnimator;
+
+    [Header("Animation Settings")]
+    [Tooltip("貼り付け後のIdle遷移までの待機時間（秒）")]
+    [SerializeField] private float idleTransitionDelay = 0.3f;
+
     private void Start()
     {
         // メインカメラを取得
@@ -156,6 +165,12 @@ public class RSBehavior : MonoBehaviour
         
         // 初期テキストを設定
         UpdateUITexts();
+
+        // CharacterAnimatorを自動検索（アサインされていない場合）
+        if (characterAnimator == null)
+        {
+            characterAnimator = CharacterAnimator.Instance;
+        }
     }
 
     /// <summary>
@@ -411,6 +426,11 @@ public class RSBehavior : MonoBehaviour
             {
                 // RS削除（アイテムを表示に戻す）
                 Debug.Log("右クリック：RSを削除します");
+                // アニメーションをIdleに設定
+                if (characterAnimator != null)
+                {
+                    characterAnimator.SetIdle();
+                }
                 CancelSelection();
             }
             UpdateUITexts();
@@ -488,6 +508,12 @@ public class RSBehavior : MonoBehaviour
         ClearDashLine();
         SetValidColor(true); // 通常色に戻す
         UpdateUITexts();
+        
+        // アニメーションをNSelectに設定
+        if (characterAnimator != null)
+        {
+            characterAnimator.SetNSelect();
+        }
     }
 
     /// <summary>
@@ -571,6 +597,12 @@ public class RSBehavior : MonoBehaviour
             copiedOffsets);
 
         hasCopy = copiedOffsets.Count > 0;
+
+        // コピーしたときにCopyアニメーションを設定
+        if (hasCopy && characterAnimator != null)
+        {
+            characterAnimator.SetCopy();
+        }
 
         if (hasCopy && rotationIndex != 0)
         {
@@ -852,6 +884,9 @@ public class RSBehavior : MonoBehaviour
 
         // RSParentの中身をクリア（完全に消すため）
         ClearRSParentChildren();
+
+        // 任意秒待ってIdleに遷移
+        StartCoroutine(TransitionToIdleAfterDelay(idleTransitionDelay));
 
         // 貼り付け成功したら削除（アイテムごと）
         DestroySelectorAndItem();
@@ -1201,6 +1236,18 @@ public class RSBehavior : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// 指定秒待ってからIdle状態に遷移します
+    /// </summary>
+    private IEnumerator TransitionToIdleAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (characterAnimator != null)
+        {
+            characterAnimator.SetIdle();
         }
     }
 }

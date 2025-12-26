@@ -86,6 +86,10 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
     
     [Tooltip("何も選択していない状態のマウスホイールテキスト")]
     [SerializeField] private string noSelectionMouseWheelText = "ー";
+
+    [Header("Character Animator")]
+    [Tooltip("CharacterAnimatorコンポーネントをアサインします（自動検索も可能）")]
+    [SerializeField] private CharacterAnimator characterAnimator;
     
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
@@ -114,6 +118,12 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
 
         // UIの初期状態を設定（何も選択していない状態）
         UpdateUIForNoSelection();
+
+        // CharacterAnimatorを自動検索（アサインされていない場合）
+        if (characterAnimator == null)
+        {
+            characterAnimator = CharacterAnimator.Instance;
+        }
 
         // タイプに応じてスプライトを設定
         ApplyTypeSettings();
@@ -499,6 +509,23 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
         // 選択時のUIを更新
         UpdateUIForSelection();
 
+        // タイプに応じてアニメーションを設定
+        if (characterAnimator != null)
+        {
+            switch (itemType)
+            {
+                case StageDatabase.RSItemType.Normal:
+                    characterAnimator.SetNSelect();
+                    break;
+                case StageDatabase.RSItemType.Pickaxe:
+                    characterAnimator.SetPSelect();
+                    break;
+                case StageDatabase.RSItemType.Gravity:
+                    characterAnimator.SetGSelect();
+                    break;
+            }
+        }
+
         // 既存の生成待ちを止め、即時生成
         if (generateRoutine != null)
         {
@@ -547,6 +574,11 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             if (item != null)
             {
                 item.UpdateUIForNoSelection();
+            }
+            // 選択解除時にアニメーションをIdleに戻す
+            if (item != null && item.characterAnimator != null)
+            {
+                item.characterAnimator.SetIdle();
             }
         }
     }

@@ -2,6 +2,8 @@ using UnityEngine;
 
 /// <summary>
 /// キャラクターのアニメーションを管理するスクリプト
+/// 状態: Idling, NSelection, Copying, GSelecting, Clearing, PSelection
+/// パラメーター(Bool): Idle, NSelect, Copy, Gselect, Clear, Pselect
 /// </summary>
 public class CharacterAnimator : MonoBehaviour
 {
@@ -31,9 +33,9 @@ public class CharacterAnimator : MonoBehaviour
     private const string PARAM_IDLE = "Idle";
     private const string PARAM_NSELECT = "NSelect";
     private const string PARAM_COPY = "Copy";
-    private const string PARAM_GSELECT = "Gselect";
+    private const string PARAM_GSELECT = "GSelect";
     private const string PARAM_CLEAR = "Clear";
-    private const string PARAM_PSELECT = "Pselect";
+    private const string PARAM_PSELECT = "PSelect";
 
     private void Awake()
     {
@@ -74,7 +76,7 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     /// <summary>
-    /// Idle状態に設定します
+    /// Idling状態に設定します
     /// </summary>
     public void SetIdle()
     {
@@ -86,11 +88,11 @@ public class CharacterAnimator : MonoBehaviour
 
         ResetAllBools();
         animator.SetBool(PARAM_IDLE, true);
-        Debug.Log("アニメーション: Idleに設定しました");
+        Debug.Log("アニメーション: Idlingに設定しました");
     }
 
     /// <summary>
-    /// NSelect状態に設定します
+    /// NSelection状態に設定します
     /// </summary>
     public void SetNSelect()
     {
@@ -102,11 +104,11 @@ public class CharacterAnimator : MonoBehaviour
 
         ResetAllBools();
         animator.SetBool(PARAM_NSELECT, true);
-        Debug.Log("アニメーション: NSelectに設定しました");
+        Debug.Log("アニメーション: NSelectionに設定しました");
     }
 
     /// <summary>
-    /// Copy状態に設定します
+    /// Copying状態に設定します
     /// </summary>
     public void SetCopy()
     {
@@ -118,11 +120,11 @@ public class CharacterAnimator : MonoBehaviour
 
         ResetAllBools();
         animator.SetBool(PARAM_COPY, true);
-        Debug.Log("アニメーション: Copyに設定しました");
+        Debug.Log("アニメーション: Copyingに設定しました");
     }
 
     /// <summary>
-    /// GSelect状態に設定します
+    /// GSelecting状態に設定します
     /// </summary>
     public void SetGSelect()
     {
@@ -134,11 +136,11 @@ public class CharacterAnimator : MonoBehaviour
 
         ResetAllBools();
         animator.SetBool(PARAM_GSELECT, true);
-        Debug.Log("アニメーション: GSelectに設定しました");
+        Debug.Log("アニメーション: GSelectingに設定しました");
     }
 
     /// <summary>
-    /// Clear状態に設定します
+    /// Clearing状態に設定します
     /// </summary>
     public void SetClear()
     {
@@ -150,11 +152,11 @@ public class CharacterAnimator : MonoBehaviour
 
         ResetAllBools();
         animator.SetBool(PARAM_CLEAR, true);
-        Debug.Log("アニメーション: Clearに設定しました");
+        Debug.Log("アニメーション: Clearingに設定しました");
     }
 
     /// <summary>
-    /// PSelect状態に設定します
+    /// PSelection状態に設定します
     /// </summary>
     public void SetPSelect()
     {
@@ -166,6 +168,6 @@ public class CharacterAnimator : MonoBehaviour
 
         ResetAllBools();
         animator.SetBool(PARAM_PSELECT, true);
-        Debug.Log("アニメーション: PSelectに設定しました");
+        Debug.Log("アニメーション: PSelectionに設定しました");
     }
 }
