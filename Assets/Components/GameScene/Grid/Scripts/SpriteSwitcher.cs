@@ -167,6 +167,8 @@ public class SpriteSwitcher : MonoBehaviour
     {
         BuildDict();
         CacheComponents();
+        // 強制的に再適用するためにcurrentWorldLabelをリセット
+        currentWorldLabel = null;
         ApplyWorldSprite();
     }
 }

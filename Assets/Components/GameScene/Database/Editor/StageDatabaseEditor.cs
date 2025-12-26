@@ -479,6 +479,19 @@ public class StageDatabaseEditor : Editor
         }
     }
 
+    private void RefreshSpriteSwitchers()
+    {
+        SpriteSwitcher[] switchers = FindObjectsByType<SpriteSwitcher>(FindObjectsSortMode.None);
+        foreach (var switcher in switchers)
+        {
+            if (switcher != null)
+            {
+                // RefreshSprite()を使用して強制的にスプライトを再適用
+                switcher.RefreshSprite();
+            }
+        }
+    }
+
     private void RefreshCurrentGameStatus()
     {
         CurrentGameStatus currentGameStatus = FindFirstObjectByType<CurrentGameStatus>();
@@ -494,9 +507,10 @@ public class StageDatabaseEditor : Editor
                     currentGameStatus.SetCurrentStageIndex(selectedStageIndex);
                     Debug.Log($"CurrentGameStatusのステージを{selectedStageIndex}に更新しました");
                     
-                    // グリッドとアイテムを再生成
+                    // グリッドとアイテムを再生成、スプライトを更新
                     RefreshGrid();
                     RefreshItemGenerator();
+                    RefreshSpriteSwitchers();
                 }
             }
         }
