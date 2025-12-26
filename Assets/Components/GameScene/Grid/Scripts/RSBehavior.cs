@@ -850,6 +850,9 @@ public class RSBehavior : MonoBehaviour
         // 点線を削除
         ClearDashLine();
 
+        // RSParentの中身をクリア（完全に消すため）
+        ClearRSParentChildren();
+
         // 貼り付け成功したら削除（アイテムごと）
         DestroySelectorAndItem();
     }
@@ -1148,6 +1151,56 @@ public class RSBehavior : MonoBehaviour
                 DestroyImmediate(dashLineInstance);
             }
             dashLineInstance = null;
+        }
+    }
+
+    /// <summary>
+    /// RSParentまたはRSPParent配下の子を全破棄します（自分自身は除外）
+    /// </summary>
+    private void ClearRSParentChildren()
+    {
+        // RSParentを探してクリア
+        GameObject rsParentObj = GameObject.Find("RSParent");
+        if (rsParentObj != null)
+        {
+            Transform rsParent = rsParentObj.transform;
+            for (int i = rsParent.childCount - 1; i >= 0; i--)
+            {
+                var child = rsParent.GetChild(i);
+                if (child != null && child.gameObject != this.gameObject)
+                {
+                    if (Application.isPlaying)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                    else
+                    {
+                        DestroyImmediate(child.gameObject);
+                    }
+                }
+            }
+        }
+
+        // RSPParentも探してクリア（念のため）
+        GameObject rspParentObj = GameObject.Find("RSPParent");
+        if (rspParentObj != null)
+        {
+            Transform rspParent = rspParentObj.transform;
+            for (int i = rspParent.childCount - 1; i >= 0; i--)
+            {
+                var child = rspParent.GetChild(i);
+                if (child != null && child.gameObject != this.gameObject)
+                {
+                    if (Application.isPlaying)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                    else
+                    {
+                        DestroyImmediate(child.gameObject);
+                    }
+                }
+            }
         }
     }
 }
