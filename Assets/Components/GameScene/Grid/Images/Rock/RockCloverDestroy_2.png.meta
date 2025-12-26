@@ -5,6 +5,141 @@ TextureImporter:
   - first:
       213: -9137060731106363710
     second: RockCloverDestroy_2_0
+  - first:
+      213: 6761941844324776733
+    second: RockCloverDestroy_2_1
+  - first:
+      213: -8826985958941805209
+    second: RockCloverDestroy_2_2
+  - first:
+      213: 8053171496329549420
+    second: RockCloverDestroy_2_3
+  - first:
+      213: 571991810538277707
+    second: RockCloverDestroy_2_4
+  - first:
+      213: -3946044411831945509
+    second: RockCloverDestroy_2_5
+  - first:
+      213: -2719532238534577371
+    second: RockCloverDestroy_2_6
+  - first:
+      213: 2457530713351420247
+    second: RockCloverDestroy_2_7
+  - first:
+      213: -5300436727815679756
+    second: RockCloverDestroy_2_8
+  - first:
+      213: -4965061400362807251
+    second: RockCloverDestroy_2_9
+  - first:
+      213: -678400538431362614
+    second: RockCloverDestroy_2_10
+  - first:
+      213: 3627221482298857106
+    second: RockCloverDestroy_2_11
+  - first:
+      213: -1400862634003199540
+    second: RockCloverDestroy_2_12
+  - first:
+      213: 5695887767964685907
+    second: RockCloverDestroy_2_13
+  - first:
+      213: -8601097052619645735
+    second: RockCloverDestroy_2_14
+  - first:
+      213: -4199714401297318651
+    second: RockCloverDestroy_2_15
+  - first:
+      213: -8512937098746446780
+    second: RockCloverDestroy_2_16
+  - first:
+      213: 5771346303494191704
+    second: RockCloverDestroy_2_17
+  - first:
+      213: -1025751193137689442
+    second: RockCloverDestroy_2_18
+  - first:
+      213: -3876554149917153285
+    second: RockCloverDestroy_2_19
+  - first:
+      213: 6064867650526694270
+    second: RockCloverDestroy_2_20
+  - first:
+      213: 1023749426774427009
+    second: RockCloverDestroy_2_21
+  - first:
+      213: -6009808330266755539
+    second: RockCloverDestroy_2_22
+  - first:
+      213: 8560404054512840012
+    second: RockCloverDestroy_2_23
+  - first:
+      213: 3630042203603712424
+    second: RockCloverDestroy_2_24
+  - first:
+      213: 6326530654211941964
+    second: RockCloverDestroy_2_25
+  - first:
+      213: 3642843552050533739
+    second: RockCloverDestroy_2_26
+  - first:
+      213: 2721016813793509665
+    second: RockCloverDestroy_2_27
+  - first:
+      213: -822901206901845685
+    second: RockCloverDestroy_2_28
+  - first:
+      213: 3402972241246674390
+    second: RockCloverDestroy_2_29
+  - first:
+      213: 4103104042569496935
+    second: RockCloverDestroy_2_30
+  - first:
+      213: -4791679378247687596
+    second: RockCloverDestroy_2_31
+  - first:
+      213: 4723836416080876170
+    second: RockCloverDestroy_2_32
+  - first:
+      213: -647472277111716615
+    second: RockCloverDestroy_2_33
+  - first:
+      213: 5281938552968201078
+    second: RockCloverDestroy_2_34
+  - first:
+      213: 4476059034684005450
+    second: RockCloverDestroy_2_35
+  - first:
+      213: 2002908421236998227
+    second: RockCloverDestroy_2_36
+  - first:
+      213: -649073686971499135
+    second: RockCloverDestroy_2_37
+  - first:
+      213: 4076943392786245397
+    second: RockCloverDestroy_2_38
+  - first:
+      213: -5169030478297201757
+    second: RockCloverDestroy_2_39
+  - first:
+      213: -7717742524751001031
+    second: RockCloverDestroy_2_40
+  - first:
+      213: 9097994737938712965
+    second: RockCloverDestroy_2_41
+  - first:
+      213: 832773133541898682
+    second: RockCloverDestroy_2_42
+  - first:
+      213: 8066397752829023287
+    second: RockCloverDestroy_2_43
+  - first:
+      213: -884969811008452680
+    second: RockCloverDestroy_2_44
+  - first:
+      213: 625453477452344178
+    second: RockCloverDestroy_2_45
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -117,9 +252,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 500
-        height: 500
+        y: 331
+        width: 295
+        height: 169
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,6 +265,996 @@ TextureImporter:
       bones: []
       spriteID: 2c6fb3fdca3a23180800000000000000
       internalID: -9137060731106363710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_1
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 319
+        width: 58
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1bf3d6f74e37dd50800000000000000
+      internalID: 6761941844324776733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_2
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 381
+        width: 78
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 765b9e7a90f308580800000000000000
+      internalID: -8826985958941805209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_3
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 362
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c661602fecc92cf60800000000000000
+      internalID: 8053171496329549420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_4
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 395
+        width: 122
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4b0199658f10f700800000000000000
+      internalID: 571991810538277707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_5
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 266
+        width: 121
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd677d4b385dc39c0800000000000000
+      internalID: -3946044411831945509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_6
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 283
+        width: 52
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5237ce676d7424ad0800000000000000
+      internalID: -2719532238534577371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_7
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 301
+        width: 123
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7597ce9c927ea1220800000000000000
+      internalID: 2457530713351420247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_8
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 337
+        width: 37
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f0dc1401e01176b0800000000000000
+      internalID: -5300436727815679756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_9
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 378
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d201f5f56fe881bb0800000000000000
+      internalID: -4965061400362807251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 235
+        width: 98
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac96d5bfd46d596f0800000000000000
+      internalID: -678400538431362614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_11
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 264
+        width: 57
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 296d61668ba765230800000000000000
+      internalID: 3627221482298857106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_12
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 290
+        width: 36
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc90f114bd22f8ce0800000000000000
+      internalID: -1400862634003199540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_13
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 281
+        width: 23
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35617023fbbdb0f40800000000000000
+      internalID: 5695887767964685907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_14
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 290
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dc52fb1dc3c2a880800000000000000
+      internalID: -8601097052619645735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_15
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 260
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50db498c00e97b5c0800000000000000
+      internalID: -4199714401297318651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_16
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 240
+        width: 33
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44c39f9efc8fbd980800000000000000
+      internalID: -8512937098746446780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_17
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 259
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85af88792e0f71050800000000000000
+      internalID: 5771346303494191704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_18
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 289
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9c481979bcc3c1f0800000000000000
+      internalID: -1025751193137689442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_19
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 230
+        width: 53
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf72f9d1a86b33ac0800000000000000
+      internalID: -3876554149917153285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_20
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 199
+        width: 66
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7bc66fbefcba2450800000000000000
+      internalID: 6064867650526694270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_21
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 223
+        width: 34
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18546e9fda6153e00800000000000000
+      internalID: 1023749426774427009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_22
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 242
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2e344a3a2fd89ca0800000000000000
+      internalID: -6009808330266755539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_23
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 261
+        width: 29
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4d2d03f12aacc670800000000000000
+      internalID: 8560404054512840012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_24
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 221
+        width: 35
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a9b971c620806230800000000000000
+      internalID: 3630042203603712424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_25
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 175
+        width: 96
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c462ce05c1a5cc750800000000000000
+      internalID: 6326530654211941964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_26
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 204
+        width: 26
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b655b44f8eafd8230800000000000000
+      internalID: 3642843552050533739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_27
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 238
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1210706206ef2c520800000000000000
+      internalID: 2721016813793509665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_28
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 217
+        width: 13
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b41106556b77494f0800000000000000
+      internalID: -822901206901845685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_29
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 171
+        width: 60
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ddd5044939c93f20800000000000000
+      internalID: 3402972241246674390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 103
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 769f2d5336721f830800000000000000
+      internalID: 4103104042569496935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_31
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 138
+        width: 68
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4526bfd2ef8808db0800000000000000
+      internalID: -4791679378247687596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_32
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 186
+        width: 32
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a821e8541307e8140800000000000000
+      internalID: 4723836416080876170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_33
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 197
+        width: 27
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f4c7d8f467b307f0800000000000000
+      internalID: -647472277111716615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_34
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 203
+        width: 19
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6734c1701273d4940800000000000000
+      internalID: 5281938552968201078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_35
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 139
+        width: 79
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4c94041af72e1e30800000000000000
+      internalID: 4476059034684005450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_36
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 192
+        width: 24
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3504875e892cbcb10800000000000000
+      internalID: 2002908421236998227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_37
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 137
+        width: 52
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18db20fabe60ef6f0800000000000000
+      internalID: -649073686971499135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_38
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 170
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51766684a66349830800000000000000
+      internalID: 4076943392786245397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_39
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 154
+        width: 42
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a38debaa2ae348b0800000000000000
+      internalID: -5169030478297201757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_40
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 0
+        width: 144
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93a4a48601215e490800000000000000
+      internalID: -7717742524751001031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_41
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 0
+        width: 137
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 589c53bc202924e70800000000000000
+      internalID: 9097994737938712965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_42
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 70
+        width: 115
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab9f043b0ca9e8b00800000000000000
+      internalID: 832773133541898682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_43
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 120
+        width: 25
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7341262c40a91ff60800000000000000
+      internalID: 8066397752829023287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_44
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 0
+        width: 136
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b785e945a4f7b3f0800000000000000
+      internalID: -884969811008452680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockCloverDestroy_2_45
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 84
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27b641bbf9e0ea800800000000000000
+      internalID: 625453477452344178
       vertices: []
       indices: 
       edges: []
@@ -149,6 +1274,51 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       RockCloverDestroy_2_0: -9137060731106363710
+      RockCloverDestroy_2_1: 6761941844324776733
+      RockCloverDestroy_2_10: -678400538431362614
+      RockCloverDestroy_2_11: 3627221482298857106
+      RockCloverDestroy_2_12: -1400862634003199540
+      RockCloverDestroy_2_13: 5695887767964685907
+      RockCloverDestroy_2_14: -8601097052619645735
+      RockCloverDestroy_2_15: -4199714401297318651
+      RockCloverDestroy_2_16: -8512937098746446780
+      RockCloverDestroy_2_17: 5771346303494191704
+      RockCloverDestroy_2_18: -1025751193137689442
+      RockCloverDestroy_2_19: -3876554149917153285
+      RockCloverDestroy_2_2: -8826985958941805209
+      RockCloverDestroy_2_20: 6064867650526694270
+      RockCloverDestroy_2_21: 1023749426774427009
+      RockCloverDestroy_2_22: -6009808330266755539
+      RockCloverDestroy_2_23: 8560404054512840012
+      RockCloverDestroy_2_24: 3630042203603712424
+      RockCloverDestroy_2_25: 6326530654211941964
+      RockCloverDestroy_2_26: 3642843552050533739
+      RockCloverDestroy_2_27: 2721016813793509665
+      RockCloverDestroy_2_28: -822901206901845685
+      RockCloverDestroy_2_29: 3402972241246674390
+      RockCloverDestroy_2_3: 8053171496329549420
+      RockCloverDestroy_2_30: 4103104042569496935
+      RockCloverDestroy_2_31: -4791679378247687596
+      RockCloverDestroy_2_32: 4723836416080876170
+      RockCloverDestroy_2_33: -647472277111716615
+      RockCloverDestroy_2_34: 5281938552968201078
+      RockCloverDestroy_2_35: 4476059034684005450
+      RockCloverDestroy_2_36: 2002908421236998227
+      RockCloverDestroy_2_37: -649073686971499135
+      RockCloverDestroy_2_38: 4076943392786245397
+      RockCloverDestroy_2_39: -5169030478297201757
+      RockCloverDestroy_2_4: 571991810538277707
+      RockCloverDestroy_2_40: -7717742524751001031
+      RockCloverDestroy_2_41: 9097994737938712965
+      RockCloverDestroy_2_42: 832773133541898682
+      RockCloverDestroy_2_43: 8066397752829023287
+      RockCloverDestroy_2_44: -884969811008452680
+      RockCloverDestroy_2_45: 625453477452344178
+      RockCloverDestroy_2_5: -3946044411831945509
+      RockCloverDestroy_2_6: -2719532238534577371
+      RockCloverDestroy_2_7: 2457530713351420247
+      RockCloverDestroy_2_8: -5300436727815679756
+      RockCloverDestroy_2_9: -4965061400362807251
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

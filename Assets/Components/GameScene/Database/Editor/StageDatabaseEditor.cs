@@ -106,6 +106,16 @@ public class StageDatabaseEditor : Editor
             EditorUtility.SetDirty(database);
         }
 
+        // ワールドラベルの編集
+        string newWorldLabel = EditorGUILayout.TextField("ワールドラベル", stageData.worldLabel);
+        if (newWorldLabel != stageData.worldLabel)
+        {
+            Undo.RecordObject(database, "ワールドラベルを変更");
+            stageData.worldLabel = newWorldLabel;
+            EditorUtility.SetDirty(database);
+            RefreshGrid();
+        }
+
         EditorGUILayout.Space();
 
         // GridParentのScaleの編集

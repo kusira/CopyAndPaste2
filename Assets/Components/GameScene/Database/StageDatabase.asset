@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StageDatabase
   stages:
   - stageName: Stage 1-1
+    worldLabel: Cave
     massStatus:
     - columns:
       - .
@@ -28,8 +29,8 @@ MonoBehaviour:
       - .
       - .
       - .
-      - .
-      - .
+      - 
+      - 
       - .
     - columns:
       - .
@@ -144,6 +145,7 @@ MonoBehaviour:
     gridParentScaleXY: 0.71428573
     tutorialDisplayType: 1
   - stageName: Stage 1-2
+    worldLabel: World1
     massStatus:
     - columns:
       - .
@@ -204,6 +206,7 @@ MonoBehaviour:
     gridParentScaleXY: 1
     tutorialDisplayType: 0
   - stageName: Stage 1-3
+    worldLabel: World1
     massStatus:
     - columns:
       - .
@@ -264,6 +267,7 @@ MonoBehaviour:
     gridParentScaleXY: 1
     tutorialDisplayType: 0
   - stageName: Stage 1-4
+    worldLabel: World1
     massStatus:
     - columns:
       - .
@@ -349,6 +353,7 @@ MonoBehaviour:
     gridParentScaleXY: 1
     tutorialDisplayType: 0
   - stageName: Stage 1-5
+    worldLabel: World1
     massStatus:
     - columns:
       - .

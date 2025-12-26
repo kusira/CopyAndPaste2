@@ -79,6 +79,9 @@ public class StageDatabase : ScriptableObject
         [Tooltip("ステージ名")]
         public string stageName = "Stage 1";
         
+        [Tooltip("ワールドラベル（ワールドごとのスプライト切り替えに使用されます）")]
+        public string worldLabel = "World1";
+        
         [Tooltip("Massの配置情報を表す二次元リストです。\".\"の位置にMassが生成されます")]
         // ▼ 変更: List<List<string>> から List<RowData> に変更
         public List<RowData> massStatus = new List<RowData>();
@@ -101,6 +104,7 @@ public class StageDatabase : ScriptableObject
         {
             StageData copy = new StageData();
             copy.stageName = this.stageName;
+            copy.worldLabel = this.worldLabel;
             copy.gridParentScaleXY = this.gridParentScaleXY;
             copy.tutorialDisplayType = this.tutorialDisplayType;
 

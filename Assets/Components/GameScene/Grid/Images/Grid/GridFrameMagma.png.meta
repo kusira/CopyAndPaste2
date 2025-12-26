@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 695db4c644319294b8be2b49e3aae27d
+guid: de8d5acaa46bcff4aba79ebddb824360
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6141087073291638259
-    second: GridFrame_0
+      213: -3346791572218499583
+    second: GridFrameMagma_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GridFrame_0
+      name: GridFrameMagma_0
       rect:
         serializedVersion: 2
-        x: 615
-        y: 109
-        width: 859
-        height: 859
+        x: 591
+        y: 71
+        width: 907
+        height: 923
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 60, y: 60, z: 60, w: 60}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d0a65bdf7d976caa0800000000000000
-      internalID: -6141087073291638259
+      spriteID: 10e25a01ccecd81d0800000000000000
+      internalID: -3346791572218499583
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b058bf91d813a9e4da64a84ff729a741
+    spriteID: 6cc803f491c710143b9ae60f04123d4b
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      GridFrame_0: -6141087073291638259
+      GridFrameMagma_0: -3346791572218499583
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
