@@ -177,15 +177,10 @@ public class TutorialManager : MonoBehaviour
             tutorial_3.SetActive(tutorialNumber == 3);
         }
 
-        // BackdropとTutorialPanelを表示
+        // BackdropとTutorialPanelを表示（アニメーションなし）
         backdrop.SetActive(true);
         tutorialPanel.SetActive(true);
-
-        // アニメーションを開始
-        panelTween?.Kill();
-        tutorialPanelRect.anchoredPosition = closedPos;
-        panelTween = tutorialPanelRect.DOAnchorPos(openedPos, animationDuration)
-            .SetEase(Ease.OutQuad);
+        tutorialPanelRect.anchoredPosition = openedPos;
     }
 
     /// <summary>

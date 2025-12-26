@@ -9399,8 +9399,8 @@ RectTransform:
   - {fileID: 999359891}
   - {fileID: 494737647}
   - {fileID: 1198741814}
-  - {fileID: 1964505594}
   - {fileID: 902757119}
+  - {fileID: 1964505594}
   - {fileID: 3471638828717122207}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9454,6 +9454,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 902757119}
+  - component: {fileID: 902757120}
   m_Layer: 5
   m_Name: TutorialManager
   m_TagString: Untagged
@@ -9480,6 +9481,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &902757120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902757118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ee0b2c99d22f794e812d7d694ed6abc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialManager
+  backdrop: {fileID: 999359890}
+  tutorialPanel: {fileID: 1964505593}
+  closeButton: {fileID: 1063250327}
+  tutorial_1: {fileID: 2105861585}
+  tutorial_2: {fileID: 1047949622}
+  tutorial_3: {fileID: 1043236242}
+  animationDuration: 0.3
 --- !u!1 &921352939
 GameObject:
   m_ObjectHideFlags: 0
