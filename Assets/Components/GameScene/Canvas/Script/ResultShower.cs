@@ -87,6 +87,13 @@ public class ResultShower : MonoBehaviour
     [Tooltip("各UI要素のアニメーション設定")]
     [SerializeField] private List<AnimationItemData> animationItems = new List<AnimationItemData>();
 
+    [Header("Button References")]
+    [Tooltip("メニューボタンをアサインします（クリア時に無効化されます）")]
+    [SerializeField] private MenuButton menuButton;
+
+    [Tooltip("リスタートボタンをアサインします（クリア時に無効化されます）")]
+    [SerializeField] private MoveSceneButton restartButton;
+
     private bool isShown = false;
     private bool isResultShowing = false;
     private DepthOfField dofEffect;
@@ -120,6 +127,17 @@ public class ResultShower : MonoBehaviour
     {
         if (isShown) return;
         isShown = true;
+
+        // クリアした瞬間にメニューボタンとリスタートボタンを無効化
+        if (menuButton != null)
+        {
+            menuButton.SetButtonEnabled(false);
+        }
+        if (restartButton != null)
+        {
+            restartButton.SetButtonEnabled(false);
+        }
+
         StartCoroutine(ShowResultRoutine());
     }
 
