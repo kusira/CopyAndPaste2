@@ -52,9 +52,6 @@ public class ResultShower : MonoBehaviour
     [Tooltip("背景用のBackdropオブジェクトをアサインします")]
     [SerializeField] private GameObject backdropObject;
 
-    [Tooltip("リザルト表示用のResultオブジェクトをアサインします")]
-    [SerializeField] private GameObject resultObject;
-
     [Header("Global Volume")]
     [Tooltip("GlobalVolumeをアサインします")]
     [SerializeField] private Volume globalVolume;
@@ -81,6 +78,7 @@ public class ResultShower : MonoBehaviour
     private bool isResultShowing = false;
     private DepthOfField dofEffect;
     private Dictionary<GameObject, Vector2> originalPositions = new Dictionary<GameObject, Vector2>();
+    private bool isBackdropFadedIn = false;
 
     private void Start()
     {
@@ -124,11 +122,18 @@ public class ResultShower : MonoBehaviour
             }
         }
 
-        // step0.5: Resultオブジェクトを有効化
-        if (resultObject != null)
+        // Backdropを非活性化してリセット
+        if (backdropObject != null)
         {
-            resultObject.SetActive(true);
+            backdropObject.SetActive(false);
+            CanvasGroup backdropCanvasGroup = backdropObject.GetComponent<CanvasGroup>();
+            if (backdropCanvasGroup == null)
+            {
+                backdropCanvasGroup = backdropObject.AddComponent<CanvasGroup>();
+            }
+            backdropCanvasGroup.alpha = 0f;
         }
+        isBackdropFadedIn = false;
 
         // step1: 任意秒待機
         if (initialWaitSeconds > 0f)
@@ -136,17 +141,36 @@ public class ResultShower : MonoBehaviour
             yield return new WaitForSeconds(initialWaitSeconds);
         }
 
-        // step2: DOFのFocal Lengthを0から最大値にアニメーション
+        // step2: DOFのFocal LengthとBackdropを同時にアニメーション
+        Sequence dofAndBackdropSequence = DOTween.Sequence();
+
+        // DOFのFocal Lengthを0から最大値にアニメーション
         if (dofEffect != null)
         {
             dofEffect.focalLength.value = 0f;
-            yield return DOTween.To(
+            dofAndBackdropSequence.Join(DOTween.To(
                 () => dofEffect.focalLength.value,
                 x => dofEffect.focalLength.value = x,
                 dofMaxFocalLength,
                 dofAnimationDuration
-            ).SetEase(Ease.OutQuad).WaitForCompletion();
+            ).SetEase(Ease.OutQuad));
         }
+
+        // Backdropをフェードイン（DOFと同時に実行）
+        if (backdropObject != null)
+        {
+            backdropObject.SetActive(true);
+            CanvasGroup backdropCanvasGroup = backdropObject.GetComponent<CanvasGroup>();
+            if (backdropCanvasGroup == null)
+            {
+                backdropCanvasGroup = backdropObject.AddComponent<CanvasGroup>();
+            }
+            backdropCanvasGroup.alpha = 0f;
+            dofAndBackdropSequence.Join(backdropCanvasGroup.DOFade(1f, dofAnimationDuration).SetEase(Ease.OutQuad));
+            isBackdropFadedIn = true;
+        }
+
+        yield return dofAndBackdropSequence.WaitForCompletion();
 
         // step2.5: アニメーション前に有効化するオブジェクトを有効化
         foreach (var obj in preAnimationObjects)
@@ -174,11 +198,6 @@ public class ResultShower : MonoBehaviour
 
         isResultShowing = true;
 
-        if (backdropObject != null)
-        {
-            backdropObject.SetActive(true);
-        }
-
         // リザルト表示中は振動を停止
         if (CharacterVibrator.Instance != null)
         {
@@ -187,6 +206,7 @@ public class ResultShower : MonoBehaviour
 
         Debug.Log("リザルトを表示しました");
     }
+
 
     /// <summary>
     /// 個別のUI要素をアニメーションします
@@ -297,11 +317,6 @@ public class ResultShower : MonoBehaviour
         if (backdropObject != null)
         {
             backdropObject.SetActive(false);
-        }
-
-        if (resultObject != null)
-        {
-            resultObject.SetActive(false);
         }
 
         // リザルトが閉じられたら振動を再開

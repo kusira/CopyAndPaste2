@@ -147,7 +147,7 @@ MonoBehaviour:
       width: 1
       type: 0
     gridParentScaleXY: 0.71428573
-    tutorialDisplayType: 1
+    tutorialDisplayType: 0
   - stageName: Stage 1-2
     worldLabel: World1
     massStatus:
