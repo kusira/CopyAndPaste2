@@ -25,6 +25,7 @@ public class MenuButton : MonoBehaviour
     private Vector2 openedPos;
     private Vector2 closedPos;
     private bool initialized;
+    private bool isMenuOpen = false;
 
     private void Awake()
     {
@@ -119,6 +120,10 @@ public class MenuButton : MonoBehaviour
     {
         if (!initialized) return;
         if (backdrop == null || menuPanel == null) return;
+        if (isMenuOpen) return; // 既に開いている場合は何もしない
+
+        // アニメーション中はボタンを無効化
+        SetButtonsEnabled(false);
 
         // Backdropを表示してフェードイン
         backdrop.SetActive(true);
@@ -136,7 +141,16 @@ public class MenuButton : MonoBehaviour
         panelTween?.Kill();
         menuPanel.anchoredPosition = closedPos;
         panelTween = menuPanel.DOAnchorPos(openedPos, animationDuration)
-            .SetEase(Ease.OutQuad);
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                // アニメーション完了後、クローズボタンを有効化（メニューボタンは無効のまま）
+                if (closeButton != null)
+                {
+                    closeButton.interactable = true;
+                }
+                isMenuOpen = true;
+            });
 
         // パネル表示中は振動を停止
         if (CharacterVibrator.Instance != null)
@@ -149,6 +163,10 @@ public class MenuButton : MonoBehaviour
     {
         if (!initialized) return;
         if (menuPanel == null || backdrop == null) return;
+        if (!isMenuOpen) return; // 既に閉じている場合は何もしない
+
+        // アニメーション中はボタンを無効化
+        SetButtonsEnabled(false);
 
         // Backdropをフェードアウト
         backdropTween?.Kill();
@@ -180,12 +198,34 @@ public class MenuButton : MonoBehaviour
                     menuPanel.gameObject.SetActive(false);
                 }
                 
+                // アニメーション完了後、メニューボタンを有効化
+                if (menuButton != null)
+                {
+                    menuButton.interactable = true;
+                }
+                isMenuOpen = false;
+                
                 // パネルが閉じられたら振動を再開
                 if (CharacterVibrator.Instance != null)
                 {
                     CharacterVibrator.Instance.SetVibrationEnabled(true);
                 }
             });
+    }
+
+    /// <summary>
+    /// メニューボタンとクローズボタンの有効/無効を設定します
+    /// </summary>
+    private void SetButtonsEnabled(bool enabled)
+    {
+        if (menuButton != null)
+        {
+            menuButton.interactable = enabled;
+        }
+        if (closeButton != null)
+        {
+            closeButton.interactable = enabled;
+        }
     }
 }
 

@@ -3136,14 +3136,14 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 4864258900216087961, guid: f2cb07db815b0314e9525603f209331d, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 4864258900216087961, guid: f2cb07db815b0314e9525603f209331d, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -4582,6 +4582,7 @@ GameObject:
   - component: {fileID: 439388280}
   - component: {fileID: 439388283}
   - component: {fileID: 439388282}
+  - component: {fileID: 439388285}
   m_Layer: 6
   m_Name: ResultMascot
   m_TagString: Untagged
@@ -4646,6 +4647,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439388279}
   m_CullTransparentMesh: 1
+--- !u!114 &439388285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439388279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19eeccb2dcefd344d9ab544b04547ca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenVibrator
+  amplitude: 10
+  period: 1
+  direction: {x: 0, y: 1, z: 0}
+  enableVibration: 1
+  rectTransform: {fileID: 0}
+  initialPosition: {x: 0, y: 0, z: 0}
+  timeElapsed: 0
+  isInitialized: 0
 --- !u!1 &446204136
 GameObject:
   m_ObjectHideFlags: 0
@@ -4747,14 +4768,14 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 2532292096837546414, guid: 59a43c268e4e29b4aadbe8ef08378dc3, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 2532292096837546414, guid: 59a43c268e4e29b4aadbe8ef08378dc3, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -7030,12 +7051,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResultShower
   backdropObject: {fileID: 999359890}
+  transparentPanel: {fileID: 1247738693}
   globalVolume: {fileID: 1102005503}
   initialWaitSeconds: 0.5
   dofAnimationDuration: 0.3
   dofMaxFocalLength: 300
-  preAnimationObjects:
-  - {fileID: 1247738693}
   animationItems:
   - gameObject: {fileID: 1446134532}
     direction: 0
@@ -7044,6 +7064,10 @@ MonoBehaviour:
     animationDuration: 0.4
     moveOffset: 500
     waitAfterPrevious: 0
+    enableVibration: 0
+    vibrationAmplitude: 0.1
+    vibrationPeriod: 1
+    vibrationDirection: {x: 0, y: 1, z: 0}
   - gameObject: {fileID: 439388279}
     direction: 1
     enableFade: 0
@@ -7051,6 +7075,10 @@ MonoBehaviour:
     animationDuration: 0.5
     moveOffset: 500
     waitAfterPrevious: 0.2
+    enableVibration: 1
+    vibrationAmplitude: 10
+    vibrationPeriod: 4
+    vibrationDirection: {x: 0, y: 1, z: 0}
   - gameObject: {fileID: 1910474228}
     direction: 1
     enableFade: 0
@@ -7058,6 +7086,10 @@ MonoBehaviour:
     animationDuration: 0.5
     moveOffset: 500
     waitAfterPrevious: 0.1
+    enableVibration: 1
+    vibrationAmplitude: 10
+    vibrationPeriod: 4
+    vibrationDirection: {x: 0, y: 1, z: 0}
   - gameObject: {fileID: 295298638}
     direction: 1
     enableFade: 0
@@ -7065,6 +7097,10 @@ MonoBehaviour:
     animationDuration: 0.3
     moveOffset: 200
     waitAfterPrevious: 0.3
+    enableVibration: 0
+    vibrationAmplitude: 0.1
+    vibrationPeriod: 1
+    vibrationDirection: {x: 0, y: 1, z: 0}
 --- !u!114 &691284513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7255,14 +7291,14 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 2532292096837546414, guid: 59a43c268e4e29b4aadbe8ef08378dc3, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 2532292096837546414, guid: 59a43c268e4e29b4aadbe8ef08378dc3, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -10645,7 +10681,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 99
   m_Sprite: {fileID: 1493154383252488461, guid: 4cc68e85ea1bdd44e93a5fdf0ea4960d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -11268,10 +11304,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -12378,7 +12414,7 @@ GameObject:
   - component: {fileID: 1150356205}
   - component: {fileID: 1150356207}
   m_Layer: 0
-  m_Name: UndoRedoButton
+  m_Name: UndoRedoManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13641,14 +13677,14 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 719477509416659441, guid: d7ad18092a8ff0241b60b63126fb99a0, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 719477509416659441, guid: d7ad18092a8ff0241b60b63126fb99a0, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -15019,7 +15055,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 99
   m_Sprite: {fileID: -4481260868544500355, guid: a91d1fce7df243740a5e0efbcdf45ba3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -15381,14 +15417,14 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 9158018408070527164, guid: 50c021bf89224d14cbb5458455198cdc, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 9158018408070527164, guid: 50c021bf89224d14cbb5458455198cdc, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -15796,7 +15832,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: -7981758355072841784, guid: 278057c85a1524843add656f988f0e23, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -15873,6 +15909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca27012a80c2b5541aa4228f7dcb59da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterVibrator
+  targetType: 0
   amplitude: 0.1
   period: 4
   direction: {x: 0, y: 1, z: 0}
@@ -19340,14 +19377,14 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 8602986469057692228, guid: a0863495f7eec4e4e9a4bb45e5e48bb9, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 8602986469057692228, guid: a0863495f7eec4e4e9a4bb45e5e48bb9, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -19521,6 +19558,7 @@ GameObject:
   - component: {fileID: 1910474229}
   - component: {fileID: 1910474232}
   - component: {fileID: 1910474231}
+  - component: {fileID: 1910474233}
   m_Layer: 6
   m_Name: ResultCharacter
   m_TagString: Untagged
@@ -19585,6 +19623,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910474228}
   m_CullTransparentMesh: 1
+--- !u!114 &1910474233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910474228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19eeccb2dcefd344d9ab544b04547ca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResultCharacterVibrator
+  amplitude: 10
+  period: 1
+  direction: {x: 0, y: 1, z: 0}
+  enableVibration: 1
+  rectTransform: {fileID: 0}
+  initialPosition: {x: 0, y: 0, z: 0}
+  timeElapsed: 0
+  isInitialized: 0
 --- !u!1 &1924932510
 GameObject:
   m_ObjectHideFlags: 0
@@ -21213,14 +21271,14 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 4864258900216087961, guid: f2cb07db815b0314e9525603f209331d, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 4864258900216087961, guid: f2cb07db815b0314e9525603f209331d, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -21360,7 +21418,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 99
   m_Sprite: {fileID: -7816762936476190851, guid: 259670d81568c97489872fc349285b66, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
