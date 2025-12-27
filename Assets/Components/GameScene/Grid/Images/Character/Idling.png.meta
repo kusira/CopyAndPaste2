@@ -116,10 +116,10 @@ TextureImporter:
       name: Idling_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2720
-        height: 3401
+        x: 696
+        y: 199
+        width: 2263
+        height: 3302
       alignment: 3
       pivot: {x: 1, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e3f6b7d2a00e10c4f9e5602a07943a91
+    spriteID: a2a9961d8420ba54f95737a762dc7ab6
     internalID: 0
     vertices: []
     indices: 

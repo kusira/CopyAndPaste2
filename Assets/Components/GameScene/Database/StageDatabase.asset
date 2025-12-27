@@ -18,79 +18,37 @@ MonoBehaviour:
   - Magma
   stages:
   - stageName: Stage 1-1
-    worldLabel: Magma
+    worldLabel: Glassland
     massStatus:
     - columns:
       - .
       - .
       - .
       - .
-      - .
-      - .
-      - .
     - columns:
       - .
       - .
-      - .
-      - .
-      - 
-      - 
+      - .S
       - .
     - columns:
-      - .
       - .
       - .
       - .S
       - .S
-      - .H
-      - .
     - columns:
-      - .
-      - .
-      - .
-      - .
-      - .C
-      - .
-      - .
-    - columns:
-      - .
-      - .
-      - .
-      - .
-      - .
-      - .
-      - .
-    - columns:
-      - .
-      - .
-      - .
-      - .
-      - .
-      - .
-      - .
-    - columns:
-      - .
-      - .
-      - .
       - .
       - .
       - .
       - .
     rockStatus:
     - columns:
-      - '#S'
-      - 
-      - '#H'
       - 
       - 
       - 
       - 
     - columns:
       - '#'
-      - '#C'
-      - '#C'
-      - 
-      - 
+      - '#S'
       - 
       - 
     - columns:
@@ -98,55 +56,19 @@ MonoBehaviour:
       - 
       - 
       - 
-      - 
-      - 
-      - 
     - columns:
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-    - columns:
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-    - columns:
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-    - columns:
-      - 
-      - 
-      - 
       - 
       - 
       - 
       - 
     RSItems:
-    - height: 2
+    - height: 1
       width: 2
       type: 0
     - height: 2
-      width: 3
-      type: 1
-    - height: 3
-      width: 3
-      type: 2
-    - height: 1
-      width: 1
+      width: 2
       type: 0
-    gridParentScaleXY: 0.71428573
+    gridParentScaleXY: 1
     tutorialDisplayType: 1
   - stageName: Stage 1-2
     worldLabel: World1
@@ -154,20 +76,20 @@ MonoBehaviour:
     - columns:
       - .
       - .
-      - .S
-      - .S
-      - .
-    - columns:
-      - .
-      - .
-      - .S
+      - .H
       - .
       - .
     - columns:
       - .
       - .
+      - .S
       - .
       - .
+    - columns:
+      - .
+      - .
+      - .S
+      - .S
       - .
     - columns:
       - .
@@ -183,29 +105,29 @@ MonoBehaviour:
       - 
       - 
     - columns:
+      - '#'
+      - '#S'
       - 
+      - 
+      - '#S'
+    - columns:
+      - '#'
       - 
       - 
       - 
       - 
     - columns:
-      - '#'
-      - '#'
-      - '#S'
       - 
-      - '#S'
-    - columns:
       - 
-      - '#S'
+      - '#H'
       - 
-      - '#'
-      - '#'
+      - 
     RSItems:
-    - height: 3
+    - height: 2
       width: 2
       type: 0
     - height: 2
-      width: 2
+      width: 3
       type: 0
     gridParentScaleXY: 1
     tutorialDisplayType: 0
@@ -215,9 +137,9 @@ MonoBehaviour:
     - columns:
       - .
       - .
-      - .S
       - .H
       - .
+      - .
     - columns:
       - .
       - .
@@ -227,8 +149,14 @@ MonoBehaviour:
     - columns:
       - .
       - .
+      - .H
       - .
       - .
+    - columns:
+      - .
+      - .
+      - .S
+      - .S
       - .
     - columns:
       - .
@@ -238,35 +166,44 @@ MonoBehaviour:
       - .
     rockStatus:
     - columns:
-      - '#'
-      - 
-      - 
-      - 
-      - 
-    - columns:
-      - 
-      - 
-      - 
-      - 
-      - 
-    - columns:
-      - '#'
-      - '#'
-      - '#S'
       - 
       - '#H'
+      - 
+      - 
+      - 
     - columns:
       - 
-      - '#S'
       - 
+      - 
+      - 
+      - 
+    - columns:
       - '#'
+      - '#H'
+      - 
+      - 
+      - '#S'
+    - columns:
       - '#'
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
     RSItems:
-    - height: 3
+    - height: 1
       width: 2
       type: 0
     - height: 2
       width: 2
+      type: 0
+    - height: 2
+      width: 3
       type: 0
     gridParentScaleXY: 1
     tutorialDisplayType: 0
@@ -278,25 +215,25 @@ MonoBehaviour:
       - .
       - .
       - .
-      - .
-      - .
-    - columns:
-      - .
-      - .
-      - .
-      - .P
-      - .
-      - .
-    - columns:
-      - .P
-      - .
-      - .
       - .S
       - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
       - .
     - columns:
+      - .
+      - .H
+      - .H
+      - .H
+      - .
+      - .C
+    - columns:
       - .S
-      - .P
+      - .
       - .
       - .
       - .
@@ -312,24 +249,31 @@ MonoBehaviour:
     - columns:
       - 
       - 
+      - 
+      - '#C'
+      - 
       - '#'
+    - columns:
+      - 
+      - 
+      - 
+      - '#H'
+      - 
       - '#'
+    - columns:
+      - 
+      - 
+      - 
+      - 
       - 
       - 
     - columns:
-      - '#'
       - 
-      - 
-      - 
-      - 
-      - 
-    - columns:
       - 
       - '#S'
       - 
       - 
-      - '#P'
-      - '#'
+      - '#C'
     - columns:
       - 
       - 
@@ -337,27 +281,911 @@ MonoBehaviour:
       - 
       - 
       - 
-    - columns:
-      - 
-      - 
-      - 
-      - '#S'
-      - '#P'
-      - '#'
     RSItems:
+    - height: 1
+      width: 2
+      type: 0
+    - height: 2
+      width: 3
+      type: 0
     - height: 3
+      width: 3
+      type: 0
+    gridParentScaleXY: 1
+    tutorialDisplayType: 0
+  - stageName: Stage 1-5
+    worldLabel: World1
+    massStatus:
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .C
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .S
+      - .S
+      - .
+      - .S
+      - .C
+    - columns:
+      - .
+      - .H
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .H
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - '#H'
+      - '#S'
+    - columns:
+      - 
+      - 
+      - '#C'
+      - '#'
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - '#S'
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - '#H'
+      - 
+      - 
+      - 
+      - 
+      - 
+    RSItems:
+    - height: 1
       width: 2
       type: 0
     - height: 1
       width: 3
       type: 0
     - height: 2
+      width: 3
+      type: 0
+    - height: 3
+      width: 3
+      type: 0
+    gridParentScaleXY: 0.8333333
+    tutorialDisplayType: 0
+  - stageName: Stage 2-1
+    worldLabel: Cave
+    massStatus:
+    - columns:
+      - .
+      - .S
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .S
+    - columns:
+      - .S
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - '#'
+      - 
+      - 
+      - '#'
+    - columns:
+      - 
+      - '#'
+      - '#'
+      - 
+    - columns:
+      - 
+      - '#'
+      - '#'
+      - 
+    - columns:
+      - '#'
+      - '#'
+      - '#S'
+      - '#'
+    RSItems:
+    - height: 2
+      width: 3
+      type: 0
+    - height: 2
       width: 2
+      type: 0
+    - height: 2
+      width: 2
+      type: 1
+    gridParentScaleXY: 1.25
+    tutorialDisplayType: 2
+  - stageName: Stage 2-2
+    worldLabel: Cave
+    massStatus:
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .C
+      - .
+      - .
+      - .
+      - .S
+    - columns:
+      - .H
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - '#'
+      - '#'
+      - '#C'
+      - 
+    - columns:
+      - 
+      - '#'
+      - '#H'
+      - '#'
+      - 
+    - columns:
+      - 
+      - '#S'
+      - '#'
+      - '#'
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    RSItems:
+    - height: 2
+      width: 3
+      type: 0
+    - height: 2
+      width: 2
+      type: 0
+    - height: 2
+      width: 2
+      type: 1
+    gridParentScaleXY: 1
+    tutorialDisplayType: 0
+  - stageName: Stage 2-3
+    worldLabel: Cave
+    massStatus:
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .H
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .C
+      - .S
+      - .
+      - .S
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - '#C'
+      - 
+      - 
+    - columns:
+      - '#S'
+      - '#'
+      - '#S'
+      - '#H'
+      - '#'
+      - 
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - '#'
+      - 
+      - '#'
+      - 
+      - 
+      - 
+    RSItems:
+    - height: 1
+      width: 3
+      type: 0
+    - height: 2
+      width: 3
+      type: 0
+    - height: 2
+      width: 2
+      type: 0
+    - height: 1
+      width: 2
+      type: 1
+    gridParentScaleXY: 0.8333333
+    tutorialDisplayType: 0
+  - stageName: Stage 2-4
+    worldLabel: Cave
+    massStatus:
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .H
+      - .
+      - .
+      - .
+      - .H
+    - columns:
+      - .
+      - .S
+      - .H
+      - .C
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - '#C'
+      - 
+      - '#H'
+      - 
+      - '#S'
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - '#H'
+      - 
+      - '#S'
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - '#H'
+      - 
+      - '#S'
+      - 
+      - '#C'
+    RSItems:
+    - height: 3
+      width: 3
+      type: 0
+    - height: 3
+      width: 3
+      type: 0
+    - height: 3
+      width: 3
+      type: 0
+    - height: 2
+      width: 3
+      type: 1
+    gridParentScaleXY: 1
+    tutorialDisplayType: 0
+  - stageName: Stage 2-5
+    worldLabel: Cave
+    massStatus:
+    - columns:
+      - .
+      - .C
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .P
+      - .
+    - columns:
+      - .
+      - .
+      - .S
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .S
+      - .
+      - .
+    - columns:
+      - .
+      - .S
+      - .P
+      - .C
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - '#'
+      - '#C'
+      - 
+      - 
+    - columns:
+      - 
+      - '#'
+      - 
+      - '#S'
+      - 
+      - 
+    - columns:
+      - 
+      - '#P'
+      - 
+      - 
+      - '#C'
+      - '#P'
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - '#'
+    - columns:
+      - 
+      - 
+      - 
+      - '#P'
+      - '#'
+      - 
+    RSItems:
+    - height: 2
+      width: 3
+      type: 0
+    - height: 2
+      width: 2
+      type: 0
+    - height: 1
+      width: 4
+      type: 0
+    - height: 1
+      width: 4
+      type: 0
+    gridParentScaleXY: 0.8333333
+    tutorialDisplayType: 0
+  - stageName: Stage 3-1
+    worldLabel: Magma
+    massStatus:
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .H
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .H
+      - .S
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .S
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - '#H'
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - '#S'
+      - 
+      - 
+      - 
+    RSItems:
+    - height: 2
+      width: 2
+      type: 0
+    - height: 3
+      width: 2
+      type: 2
+    - height: 3
+      width: 2
+      type: 2
+    gridParentScaleXY: 1
+    tutorialDisplayType: 3
+  - stageName: Stage 3-2
+    worldLabel: Cave
+    massStatus:
+    - columns:
+      - .
+      - .C
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .P
+      - .
+    - columns:
+      - .
+      - .
+      - .S
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .S
+      - .
+      - .
+    - columns:
+      - .
+      - .S
+      - .P
+      - .C
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - '#'
+      - '#C'
+      - 
+      - 
+    - columns:
+      - 
+      - '#'
+      - 
+      - '#S'
+      - 
+      - 
+    - columns:
+      - 
+      - '#P'
+      - 
+      - 
+      - '#C'
+      - '#P'
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - '#'
+    - columns:
+      - 
+      - 
+      - 
+      - '#P'
+      - '#'
+      - 
+    RSItems:
+    - height: 2
+      width: 3
+      type: 0
+    - height: 2
+      width: 2
+      type: 0
+    - height: 1
+      width: 4
+      type: 0
+    - height: 1
+      width: 4
       type: 0
     gridParentScaleXY: 1
     tutorialDisplayType: 0
-  - stageName: Stage 1-5
-    worldLabel: World1
+  - stageName: Stage 3-3
+    worldLabel: Cave
+    massStatus:
+    - columns:
+      - .
+      - .C
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .P
+      - .
+    - columns:
+      - .
+      - .
+      - .S
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .S
+      - .
+      - .
+    - columns:
+      - .
+      - .S
+      - .P
+      - .C
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - '#'
+      - '#C'
+      - 
+      - 
+    - columns:
+      - 
+      - '#'
+      - 
+      - '#S'
+      - 
+      - 
+    - columns:
+      - 
+      - '#P'
+      - 
+      - 
+      - '#C'
+      - '#P'
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - '#'
+    - columns:
+      - 
+      - 
+      - 
+      - '#P'
+      - '#'
+      - 
+    RSItems:
+    - height: 2
+      width: 3
+      type: 0
+    - height: 2
+      width: 2
+      type: 0
+    - height: 1
+      width: 4
+      type: 0
+    - height: 1
+      width: 4
+      type: 0
+    gridParentScaleXY: 1
+    tutorialDisplayType: 0
+  - stageName: Stage 3-4
+    worldLabel: Cave
+    massStatus:
+    - columns:
+      - .
+      - .C
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .P
+      - .
+    - columns:
+      - .
+      - .
+      - .S
+      - .
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .S
+      - .
+      - .
+    - columns:
+      - .
+      - .S
+      - .P
+      - .C
+      - .
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    rockStatus:
+    - columns:
+      - '#'
+      - 
+      - 
+      - 
+      - 
+      - 
+    - columns:
+      - 
+      - 
+      - '#'
+      - '#C'
+      - 
+      - 
+    - columns:
+      - 
+      - '#'
+      - 
+      - '#S'
+      - 
+      - 
+    - columns:
+      - 
+      - '#P'
+      - 
+      - 
+      - '#C'
+      - '#P'
+    - columns:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - '#'
+    - columns:
+      - 
+      - 
+      - 
+      - '#P'
+      - '#'
+      - 
+    RSItems:
+    - height: 2
+      width: 3
+      type: 0
+    - height: 2
+      width: 2
+      type: 0
+    - height: 1
+      width: 4
+      type: 0
+    - height: 1
+      width: 4
+      type: 0
+    gridParentScaleXY: 1
+    tutorialDisplayType: 0
+  - stageName: Stage 3-5
+    worldLabel: Cave
     massStatus:
     - columns:
       - .

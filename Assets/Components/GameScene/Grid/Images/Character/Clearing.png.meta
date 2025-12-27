@@ -116,10 +116,10 @@ TextureImporter:
       name: Clearing_0
       rect:
         serializedVersion: 2
-        x: 589
-        y: 197
-        width: 2372
-        height: 3306
+        x: 591
+        y: 199
+        width: 2368
+        height: 3302
       alignment: 3
       pivot: {x: 1, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ca4f2425a358424479c74483d2872ec1
+    spriteID: 62920b930543f42448f795b1836fd123
     internalID: 0
     vertices: []
     indices: 
