@@ -140,13 +140,19 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     /// <summary>
-    /// Clearing状態に設定します
+    /// Clearing状態に設定します（既にClearing状態の場合は処理をスキップ）
     /// </summary>
     public void SetClear()
     {
         if (animator == null)
         {
             Debug.LogWarning("CharacterAnimator: Animatorがアサインされていません");
+            return;
+        }
+
+        // 既にClearing状態の場合は処理をスキップ
+        if (animator.GetBool(PARAM_CLEAR))
+        {
             return;
         }
 

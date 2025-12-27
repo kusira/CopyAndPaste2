@@ -1,32 +1,23 @@
 using UnityEngine;
 
 /// <summary>
-/// sin関数を使用して一定周期で振動するスクリプト
+/// sin関数を使用してスクリーン空間（RectTransform）で一定周期で振動するスクリプト
 /// </summary>
-public class CharacterVibrator : MonoBehaviour
+[RequireComponent(typeof(RectTransform))]
+public class ResultCharacterVibrator : MonoBehaviour
 {
-    private static CharacterVibrator _instance;
-    public static CharacterVibrator Instance
+    private static ResultCharacterVibrator _instance;
+    public static ResultCharacterVibrator Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = Object.FindFirstObjectByType<CharacterVibrator>();
+                _instance = Object.FindFirstObjectByType<ResultCharacterVibrator>();
             }
             return _instance;
         }
     }
-
-    public enum TargetType
-    {
-        Transform,
-        RectTransform
-    }
-
-    [Header("Settings")]
-    [Tooltip("対象のタイプ")]
-    [SerializeField] private TargetType targetType = TargetType.Transform;
 
     [Header("Vibration Settings")]
     [Tooltip("振動の振幅（距離）")]
@@ -41,10 +32,10 @@ public class CharacterVibrator : MonoBehaviour
     [Tooltip("振動を有効にするか")]
     [SerializeField] private bool enableVibration = true;
 
+    private RectTransform rectTransform;
     private Vector3 initialPosition;
     private float timeElapsed = 0f;
     private bool isInitialized = false;
-    private RectTransform rectTransform;
 
     private void Awake()
     {
@@ -58,25 +49,16 @@ public class CharacterVibrator : MonoBehaviour
             return;
         }
 
-        if (targetType == TargetType.RectTransform)
+        rectTransform = GetComponent<RectTransform>();
+        if (rectTransform != null)
         {
-            rectTransform = GetComponent<RectTransform>();
-            if (rectTransform != null)
-            {
-                initialPosition = rectTransform.anchoredPosition3D;
-            }
-            else
-            {
-                Debug.LogWarning("TargetType is RectTransform but no RectTransform component found.");
-                initialPosition = transform.localPosition; // Fallback
-            }
+            initialPosition = rectTransform.anchoredPosition3D;
+            isInitialized = true;
         }
         else
         {
-            initialPosition = transform.localPosition;
+            Debug.LogWarning("ResultCharacterVibrator: RectTransformコンポーネントが見つかりません");
         }
-
-        isInitialized = true;
     }
 
     private void Start()
@@ -84,18 +66,12 @@ public class CharacterVibrator : MonoBehaviour
         // Startでも初期位置を確認・更新（Awakeで保存できなかった場合のフォールバック）
         if (!isInitialized || initialPosition == Vector3.zero)
         {
-            if (targetType == TargetType.RectTransform && rectTransform != null)
+            if (rectTransform != null && rectTransform.gameObject != null)
             {
                 if (rectTransform.anchoredPosition3D != Vector3.zero)
                 {
                     initialPosition = rectTransform.anchoredPosition3D;
-                }
-            }
-            else
-            {
-                if (transform.localPosition != Vector3.zero)
-                {
-                    initialPosition = transform.localPosition;
+                    isInitialized = true;
                 }
             }
         }
@@ -105,6 +81,12 @@ public class CharacterVibrator : MonoBehaviour
     {
         // 初期化されていない場合は処理をスキップ
         if (!isInitialized)
+        {
+            return;
+        }
+
+        // RectTransformが破棄されている場合は処理をスキップ
+        if (rectTransform == null || rectTransform.gameObject == null)
         {
             return;
         }
@@ -119,6 +101,12 @@ public class CharacterVibrator : MonoBehaviour
         // 経過時間を更新
         timeElapsed += Time.deltaTime;
 
+        // periodが0以下または無効な場合はスキップ
+        if (period <= 0f || float.IsNaN(period) || float.IsInfinity(period))
+        {
+            return;
+        }
+
         // sin関数を使って振動値を計算
         // sin(2π * t / period) で周期periodの振動を生成
         float sinValue = Mathf.Sin(2f * Mathf.PI * timeElapsed / period);
@@ -127,13 +115,9 @@ public class CharacterVibrator : MonoBehaviour
         Vector3 offset = direction.normalized * (sinValue * amplitude);
 
         // 初期位置からオフセットを加算
-        if (targetType == TargetType.RectTransform && rectTransform != null)
+        if (rectTransform != null && rectTransform.gameObject != null)
         {
             rectTransform.anchoredPosition3D = initialPosition + offset;
-        }
-        else
-        {
-            transform.localPosition = initialPosition + offset;
         }
     }
 
@@ -154,18 +138,11 @@ public class CharacterVibrator : MonoBehaviour
 
     private void ResetToInitialPosition()
     {
-        if (targetType == TargetType.RectTransform && rectTransform != null)
+        if (rectTransform != null && rectTransform.gameObject != null)
         {
             if (rectTransform.anchoredPosition3D != initialPosition)
             {
                 rectTransform.anchoredPosition3D = initialPosition;
-            }
-        }
-        else
-        {
-            if (transform.localPosition != initialPosition)
-            {
-                transform.localPosition = initialPosition;
             }
         }
     }
@@ -199,15 +176,11 @@ public class CharacterVibrator : MonoBehaviour
     /// </summary>
     public void ResetInitialPosition()
     {
-        if (targetType == TargetType.RectTransform && rectTransform != null)
+        if (rectTransform != null && rectTransform.gameObject != null)
         {
             initialPosition = rectTransform.anchoredPosition3D;
+            timeElapsed = 0f;
         }
-        else
-        {
-            initialPosition = transform.localPosition;
-        }
-        timeElapsed = 0f;
     }
 }
 
