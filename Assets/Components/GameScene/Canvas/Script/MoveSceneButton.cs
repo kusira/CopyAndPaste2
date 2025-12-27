@@ -69,16 +69,5 @@ public class MoveSceneButton : MonoBehaviour
             fadeManager.FadeOutAndLoadScene(targetSceneName);
         }
     }
-
-    /// <summary>
-    /// ボタンを無効/有効にします
-    /// </summary>
-    public void SetButtonEnabled(bool enabled)
-    {
-        if (button != null)
-        {
-            button.interactable = enabled;
-        }
-    }
 }
 

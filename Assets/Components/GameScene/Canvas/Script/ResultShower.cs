@@ -65,6 +65,9 @@ public class ResultShower : MonoBehaviour
     [Tooltip("背景用のBackdropオブジェクトをアサインします")]
     [SerializeField] private GameObject backdropObject;
 
+    [Tooltip("クリア時に最初に有効にするTransparentPanelオブジェクトをアサインします")]
+    [SerializeField] private GameObject transparentPanel;
+
     [Header("Global Volume")]
     [Tooltip("GlobalVolumeをアサインします")]
     [SerializeField] private Volume globalVolume;
@@ -79,20 +82,9 @@ public class ResultShower : MonoBehaviour
     [Tooltip("step2: DOFの最大Focal Length")]
     [SerializeField] private float dofMaxFocalLength = 30f;
 
-    [Header("Pre-Animation Objects")]
-    [Tooltip("アニメーションを行う前に有効にするゲームオブジェクトのリスト")]
-    [SerializeField] private List<GameObject> preAnimationObjects = new List<GameObject>();
-
     [Header("UI Animation Items")]
     [Tooltip("各UI要素のアニメーション設定")]
     [SerializeField] private List<AnimationItemData> animationItems = new List<AnimationItemData>();
-
-    [Header("Button References")]
-    [Tooltip("メニューボタンをアサインします（クリア時に無効化されます）")]
-    [SerializeField] private MenuButton menuButton;
-
-    [Tooltip("リスタートボタンをアサインします（クリア時に無効化されます）")]
-    [SerializeField] private MoveSceneButton restartButton;
 
     private bool isShown = false;
     private bool isResultShowing = false;
@@ -127,17 +119,6 @@ public class ResultShower : MonoBehaviour
     {
         if (isShown) return;
         isShown = true;
-
-        // クリアした瞬間にメニューボタンとリスタートボタンを無効化
-        if (menuButton != null)
-        {
-            menuButton.SetButtonEnabled(false);
-        }
-        if (restartButton != null)
-        {
-            restartButton.SetButtonEnabled(false);
-        }
-
         StartCoroutine(ShowResultRoutine());
     }
 
@@ -162,6 +143,12 @@ public class ResultShower : MonoBehaviour
                 backdropCanvasGroup = backdropObject.AddComponent<CanvasGroup>();
             }
             backdropCanvasGroup.alpha = 0f;
+        }
+
+        // TransparentPanelを有効化（待機時間の前に実行）
+        if (transparentPanel != null)
+        {
+            transparentPanel.SetActive(true);
         }
 
         // step1: 任意秒待機
@@ -199,15 +186,6 @@ public class ResultShower : MonoBehaviour
         }
 
         yield return dofAndBackdropSequence.WaitForCompletion();
-
-        // step2.5: アニメーション前に有効化するオブジェクトを有効化
-        foreach (var obj in preAnimationObjects)
-        {
-            if (obj != null)
-            {
-                obj.SetActive(true);
-            }
-        }
 
         // step3: 各UI要素を順番にアニメーション
         foreach (var item in animationItems)

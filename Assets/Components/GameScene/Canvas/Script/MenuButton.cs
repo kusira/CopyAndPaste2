@@ -187,16 +187,5 @@ public class MenuButton : MonoBehaviour
                 }
             });
     }
-
-    /// <summary>
-    /// メニューボタンを無効/有効にします
-    /// </summary>
-    public void SetButtonEnabled(bool enabled)
-    {
-        if (menuButton != null)
-        {
-            menuButton.interactable = enabled;
-        }
-    }
 }
 
