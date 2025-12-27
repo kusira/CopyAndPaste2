@@ -7082,8 +7082,8 @@ MonoBehaviour:
   progressCloverPrefab: {fileID: 205568367847208505, guid: 715f81c2fe8160c4c896423b461af347, type: 3}
   currentGameStatus: {fileID: 1138846806}
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
-  itemSpacing: 70
-  rowSpacing: 80
+  itemSpacing: 1
+  rowSpacing: 1
   resultShower: {fileID: 691284512}
 --- !u!1 &701193308
 GameObject:

@@ -207,6 +207,25 @@ public class ProgressManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 指定された座標とパターンキーに対応するProgressアイテムをリセットします
+    /// </summary>
+    public void ResetProgressItem(Vector2Int gridPosition, string patternKey)
+    {
+        // 指定されたパターンキーと座標に対応するアイテムを検索
+        foreach (var item in createdProgressItems)
+        {
+            if (item != null && item.patternKey == patternKey && item.gridPosition == gridPosition)
+            {
+                item.isAcquired = false;
+                item.isGlowing = false;
+                SetProgressItemState(item.gameObject, false);
+                Debug.Log($"ProgressManager: {item.patternKey} at ({item.gridPosition.x}, {item.gridPosition.y}) をリセットしました");
+                return;
+            }
+        }
+    }
+
+    /// <summary>
     /// Progressアイテムの状態を設定します（Acquired/NotAcquired）
     /// </summary>
     private void SetProgressItemState(GameObject progressItem, bool acquired, bool withAnimation = false)

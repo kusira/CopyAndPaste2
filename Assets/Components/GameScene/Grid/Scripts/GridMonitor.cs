@@ -204,6 +204,29 @@ public class GridMonitor : MonoBehaviour
             }
         }
 
+        // 条件を満たさなくなった座標を検出してacquiredProgressKeysから削除
+        foreach (var pos in currentlySatisfiedPositions)
+        {
+            if (!newSatisfiedPositions.Contains(pos))
+            {
+                // 条件を満たさなくなった座標のprogressKeyを削除
+                // 各パターンキー（S, H, C）をチェック
+                foreach (var key in new string[] { "S", "H", "C" })
+                {
+                    string progressKey = $"{key}_{pos.x}_{pos.y}";
+                    if (acquiredProgressKeys.Contains(progressKey))
+                    {
+                        acquiredProgressKeys.Remove(progressKey);
+                        // 対応するProgressアイテムもリセット
+                        if (ProgressManager != null)
+                        {
+                            ProgressManager.ResetProgressItem(pos, key);
+                        }
+                    }
+                }
+            }
+        }
+
         // 条件を満たしている座標のEmissionColorを更新
         UpdateRockEmissionStates(newSatisfiedPositions);
 
@@ -272,6 +295,7 @@ public class GridMonitor : MonoBehaviour
             if (item != null && item.gameObject != null)
             {
                 item.isAcquired = false;
+                item.isGlowing = false; // isGlowingもリセット
                 Transform acquiredTransform = item.gameObject.transform.Find("Acquired");
                 Transform notAcquiredTransform = item.gameObject.transform.Find("NotAcquired");
                 if (acquiredTransform != null)
