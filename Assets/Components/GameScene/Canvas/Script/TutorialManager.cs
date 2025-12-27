@@ -30,6 +30,8 @@ public class TutorialManager : MonoBehaviour
     [Header("Animation Settings")]
     [Tooltip("アニメーションの時間（秒）")]
     [SerializeField] private float animationDuration = 0.5f;
+    [Tooltip("Backdropのフェードアニメーション時間（秒）")]
+    [SerializeField] private float backdropFadeDuration = 0.3f;
 
     private CurrentGameStatus currentGameStatus;
     private bool isAnimating = false;
@@ -39,6 +41,8 @@ public class TutorialManager : MonoBehaviour
     private Vector2 openedPos;
     private Vector2 closedPos;
     private Tween panelTween;
+    private Tween backdropTween;
+    private CanvasGroup backdropCanvasGroup;
 
     private void Awake()
     {
@@ -65,6 +69,18 @@ public class TutorialManager : MonoBehaviour
         // 初期状態ではすべて非表示
         if (backdrop != null)
         {
+            // BackdropのCanvasGroupを取得
+            backdropCanvasGroup = backdrop.GetComponent<CanvasGroup>();
+            if (backdropCanvasGroup == null)
+            {
+                Debug.LogWarning("TutorialManager: BackdropにCanvasGroupコンポーネントがアタッチされていません");
+            }
+            else
+            {
+                // 初期状態を非表示（alpha = 0）
+                backdropCanvasGroup.alpha = 0f;
+            }
+            
             backdrop.SetActive(false);
         }
         if (tutorial_1 != null)
@@ -177,8 +193,17 @@ public class TutorialManager : MonoBehaviour
             tutorial_3.SetActive(tutorialNumber == 3);
         }
 
-        // BackdropとTutorialPanelを表示（アニメーションなし）
+        // Backdropを表示してフェードイン
         backdrop.SetActive(true);
+        backdropTween?.Kill();
+        
+        if (backdropCanvasGroup != null)
+        {
+            backdropCanvasGroup.alpha = 0f;
+            backdropTween = backdropCanvasGroup.DOFade(1f, backdropFadeDuration)
+                .SetEase(Ease.OutQuad);
+        }
+        
         tutorialPanel.SetActive(true);
         tutorialPanelRect.anchoredPosition = openedPos;
 
@@ -206,6 +231,29 @@ public class TutorialManager : MonoBehaviour
 
         isAnimating = true;
 
+        // Backdropをフェードアウト
+        backdropTween?.Kill();
+        if (backdropCanvasGroup != null)
+        {
+            backdropTween = backdropCanvasGroup.DOFade(0f, backdropFadeDuration)
+                .SetEase(Ease.InQuad)
+                .OnComplete(() =>
+                {
+                    if (backdrop != null)
+                    {
+                        backdrop.SetActive(false);
+                    }
+                });
+        }
+        else
+        {
+            // CanvasGroupがない場合は即座に非表示
+            if (backdrop != null)
+            {
+                backdrop.SetActive(false);
+            }
+        }
+
         // アニメーションを実行
         panelTween?.Kill();
         panelTween = tutorialPanelRect.DOAnchorPos(closedPos, animationDuration)
@@ -215,10 +263,6 @@ public class TutorialManager : MonoBehaviour
                 if (tutorialPanel != null)
                 {
                     tutorialPanel.SetActive(false);
-                }
-                if (backdrop != null)
-                {
-                    backdrop.SetActive(false);
                 }
                 if (tutorial_1 != null)
                 {
@@ -264,6 +308,7 @@ public class TutorialManager : MonoBehaviour
     {
         // DOTweenのTweenをクリーンアップ
         panelTween?.Kill();
+        backdropTween?.Kill();
     }
 }
 

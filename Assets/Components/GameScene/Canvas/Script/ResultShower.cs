@@ -78,7 +78,6 @@ public class ResultShower : MonoBehaviour
     private bool isResultShowing = false;
     private DepthOfField dofEffect;
     private Dictionary<GameObject, Vector2> originalPositions = new Dictionary<GameObject, Vector2>();
-    private bool isBackdropFadedIn = false;
 
     private void Start()
     {
@@ -133,7 +132,6 @@ public class ResultShower : MonoBehaviour
             }
             backdropCanvasGroup.alpha = 0f;
         }
-        isBackdropFadedIn = false;
 
         // step1: 任意秒待機
         if (initialWaitSeconds > 0f)
@@ -167,7 +165,6 @@ public class ResultShower : MonoBehaviour
             }
             backdropCanvasGroup.alpha = 0f;
             dofAndBackdropSequence.Join(backdropCanvasGroup.DOFade(1f, dofAnimationDuration).SetEase(Ease.OutQuad));
-            isBackdropFadedIn = true;
         }
 
         yield return dofAndBackdropSequence.WaitForCompletion();
