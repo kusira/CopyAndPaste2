@@ -49,20 +49,12 @@ public class MoveSceneButton : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // シーンロード後に設定を確認して処理を実行
-        if (PlayerPrefs.GetInt(PREFS_KEY_SHOW_TUTORIAL, 0) == 1)
-        {
-            PlayerPrefs.DeleteKey(PREFS_KEY_SHOW_TUTORIAL);
-            // TutorialManagerにチュートリアル表示を要求
-            TutorialManager tutorialManager = Object.FindFirstObjectByType<TutorialManager>();
-            if (tutorialManager != null)
-            {
-                tutorialManager.ShowTutorialIfNeeded();
-            }
-        }
-
+        // チュートリアル表示の設定はTutorialManagerのStart()で処理されるため、ここでは削除しない
+        
         if (PlayerPrefs.GetInt(PREFS_KEY_INCREMENT_STAGE, 0) == 1)
         {
             PlayerPrefs.DeleteKey(PREFS_KEY_INCREMENT_STAGE);
+            PlayerPrefs.Save();
             // CurrentGameStatusのステージをインクリメント
             CurrentGameStatus currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
             if (currentGameStatus != null)

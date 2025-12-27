@@ -43,6 +43,8 @@ public class TutorialManager : MonoBehaviour
     private Tween panelTween;
     private Tween backdropTween;
     private CanvasGroup backdropCanvasGroup;
+    
+    private const string PREFS_KEY_SHOW_TUTORIAL = "MoveSceneButton_ShowTutorial";
 
     private void Awake()
     {
@@ -126,8 +128,30 @@ public class TutorialManager : MonoBehaviour
             trigger.triggers.Add(entry);
         }
 
-        // ステージデータを確認してチュートリアルを表示
-        ShowTutorialIfNeeded();
+        // シーン遷移後のチュートリアル表示設定をチェック
+        int showTutorialFlag = PlayerPrefs.GetInt(PREFS_KEY_SHOW_TUTORIAL, -1);
+        
+        if (showTutorialFlag == 0)
+        {
+            // シーン遷移後にチュートリアルを表示しない設定
+            PlayerPrefs.DeleteKey(PREFS_KEY_SHOW_TUTORIAL);
+            PlayerPrefs.Save();
+            Debug.Log("TutorialManager: シーン遷移後のチュートリアル表示をスキップします");
+        }
+        else if (showTutorialFlag == 1)
+        {
+            // シーン遷移後にチュートリアルを表示する設定
+            PlayerPrefs.DeleteKey(PREFS_KEY_SHOW_TUTORIAL);
+            PlayerPrefs.Save();
+            // ステージデータを確認してチュートリアルを表示
+            ShowTutorialIfNeeded();
+        }
+        else
+        {
+            // 通常のシーン開始（PlayerPrefsに値がない場合）
+            // ステージデータを確認してチュートリアルを表示
+            ShowTutorialIfNeeded();
+        }
     }
 
     /// <summary>

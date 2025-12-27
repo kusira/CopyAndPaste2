@@ -3085,6 +3085,7 @@ GameObject:
   - component: {fileID: 262357799}
   - component: {fileID: 262357798}
   - component: {fileID: 262357797}
+  - component: {fileID: 262357800}
   m_Layer: 6
   m_Name: RestartButton
   m_TagString: Untagged
@@ -3193,6 +3194,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262357795}
   m_CullTransparentMesh: 1
+--- !u!114 &262357800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262357795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59899cb5fcc527e4a92a564c4c548388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveSceneButton
+  fadeManager: {fileID: 744732224533256878}
+  targetSceneName: GameScene
+  showTutorialAfterSceneChange: 0
+  incrementStageAfterSceneChange: 0
 --- !u!1 &263898613
 GameObject:
   m_ObjectHideFlags: 0
@@ -13626,6 +13643,7 @@ GameObject:
   - component: {fileID: 1368198921}
   - component: {fileID: 1368198920}
   - component: {fileID: 1368198919}
+  - component: {fileID: 1368198922}
   m_Layer: 6
   m_Name: NextButton
   m_TagString: Untagged
@@ -13734,6 +13752,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368198917}
   m_CullTransparentMesh: 1
+--- !u!114 &1368198922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368198917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59899cb5fcc527e4a92a564c4c548388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveSceneButton
+  fadeManager: {fileID: 744732224533256878}
+  targetSceneName: GameScene
+  showTutorialAfterSceneChange: 1
+  incrementStageAfterSceneChange: 1
 --- !u!1 &1374355607
 GameObject:
   m_ObjectHideFlags: 0
@@ -15366,6 +15400,7 @@ GameObject:
   - component: {fileID: 1574681287}
   - component: {fileID: 1574681286}
   - component: {fileID: 1574681285}
+  - component: {fileID: 1574681288}
   m_Layer: 6
   m_Name: HomeButton
   m_TagString: Untagged
@@ -15474,6 +15509,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1574681283}
   m_CullTransparentMesh: 1
+--- !u!114 &1574681288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574681283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59899cb5fcc527e4a92a564c4c548388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveSceneButton
+  fadeManager: {fileID: 744732224533256878}
+  targetSceneName: TitleScene
+  showTutorialAfterSceneChange: 0
+  incrementStageAfterSceneChange: 0
 --- !u!1 &1576288113
 GameObject:
   m_ObjectHideFlags: 0
@@ -21304,7 +21355,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveSceneButton
   fadeManager: {fileID: 744732224533256878}
   targetSceneName: GameScene
-  targetSceneBuildIndex: -1
+  showTutorialAfterSceneChange: 0
+  incrementStageAfterSceneChange: 0
 --- !u!1 &2105861585
 GameObject:
   m_ObjectHideFlags: 0
