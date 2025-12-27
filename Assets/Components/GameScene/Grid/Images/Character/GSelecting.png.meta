@@ -116,10 +116,10 @@ TextureImporter:
       name: GSelecting_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2720
-        height: 3401
+        x: 695
+        y: 197
+        width: 2267
+        height: 3306
       alignment: 3
       pivot: {x: 1, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7f1c8fcee17969d4b84b361acecd3492
+    spriteID: b1a69123bb27ecd48a8ee7d02f54e007
     internalID: 0
     vertices: []
     indices: 

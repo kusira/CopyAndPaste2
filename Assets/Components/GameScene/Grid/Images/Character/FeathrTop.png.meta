@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3ef12dadec7724645842b2ed446799cb
+guid: 4cc68e85ea1bdd44e93a5fdf0ea4960d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8770786226985426706
-    second: Clearing_0
+      213: 1493154383252488461
+    second: FeathrTop_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Clearing_0
+      name: FeathrTop_0
       rect:
         serializedVersion: 2
-        x: 241
-        y: 102
-        width: 2720
-        height: 3401
-      alignment: 3
-      pivot: {x: 1, y: 1}
+        x: 30
+        y: 1696
+        width: 1379
+        height: 1200
+      alignment: 9
+      pivot: {x: 0.95944494, y: 0.038836975}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 21fda549a9718b970800000000000000
-      internalID: 8770786226985426706
+      spriteID: d0105902000c8b410800000000000000
+      internalID: 1493154383252488461
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5b9e70059667d9a4788fbe66e5ef9185
+    spriteID: 0ed4ced1e2ecd984a839baf61c034e55
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Clearing_0: 8770786226985426706
+      FeathrTop_0: 1493154383252488461
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
