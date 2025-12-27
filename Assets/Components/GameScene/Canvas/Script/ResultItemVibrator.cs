@@ -1,24 +1,12 @@
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
-/// sin関数を使用してスクリーン空間（RectTransform）で一定周期で振動するスクリプト
+/// リザルト表示の各オブジェクト用の振動コンポーネント（シングルトンではない）
 /// </summary>
 [RequireComponent(typeof(RectTransform))]
-public class ResultCharacterVibrator : MonoBehaviour
+public class ResultItemVibrator : MonoBehaviour
 {
-    private static ResultCharacterVibrator _instance;
-    public static ResultCharacterVibrator Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = Object.FindFirstObjectByType<ResultCharacterVibrator>();
-            }
-            return _instance;
-        }
-    }
-
     [Header("Vibration Settings")]
     [Tooltip("振動の振幅（距離）")]
     [SerializeField] private float amplitude = 0.1f;
@@ -30,7 +18,7 @@ public class ResultCharacterVibrator : MonoBehaviour
     [SerializeField] private Vector3 direction = Vector3.up;
     
     [Tooltip("振動を有効にするか")]
-    [SerializeField] private bool enableVibration = true;
+    [SerializeField] private bool enableVibration = false;
 
     private RectTransform rectTransform;
     private Vector3 initialPosition;
@@ -39,16 +27,6 @@ public class ResultCharacterVibrator : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance == null)
-        {
-            _instance = this;
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         rectTransform = GetComponent<RectTransform>();
         if (rectTransform != null)
         {
@@ -57,7 +35,7 @@ public class ResultCharacterVibrator : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("ResultCharacterVibrator: RectTransformコンポーネントが見つかりません");
+            Debug.LogWarning("ResultItemVibrator: RectTransformコンポーネントが見つかりません");
         }
     }
 
@@ -87,6 +65,13 @@ public class ResultCharacterVibrator : MonoBehaviour
 
         // RectTransformが破棄されている場合は処理をスキップ
         if (rectTransform == null || rectTransform.gameObject == null)
+        {
+            return;
+        }
+
+        // DOTweenアニメーションが実行中かどうかをチェック
+        // 他のアニメーションが実行中の場合は振動をスキップ
+        if (DOTween.IsTweening(rectTransform))
         {
             return;
         }
@@ -181,6 +166,20 @@ public class ResultCharacterVibrator : MonoBehaviour
             initialPosition = rectTransform.anchoredPosition3D;
             timeElapsed = 0f;
         }
+    }
+
+    /// <summary>
+    /// 振動設定を一括で設定します
+    /// </summary>
+    public void SetupVibration(float amplitude, float period, Vector3 direction, bool enabled)
+    {
+        this.amplitude = amplitude;
+        this.period = period;
+        this.direction = direction;
+        this.enableVibration = enabled;
+        
+        // 初期位置を再設定
+        ResetInitialPosition();
     }
 }
 

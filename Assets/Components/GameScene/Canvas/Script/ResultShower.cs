@@ -47,6 +47,19 @@ public class ResultShower : MonoBehaviour
 
         [Tooltip("前回のオブジェクトがアニメーション後に待機する時間（秒）")]
         public float waitAfterPrevious = 0f;
+
+        [Header("Vibration Settings")]
+        [Tooltip("出現後に振動を有効にするか")]
+        public bool enableVibration = false;
+
+        [Tooltip("振動の振幅（距離）")]
+        public float vibrationAmplitude = 0.1f;
+
+        [Tooltip("振動の周期（秒）")]
+        public float vibrationPeriod = 1.0f;
+
+        [Tooltip("振動の方向")]
+        public Vector3 vibrationDirection = Vector3.up;
     }
     [Header("Result Objects")]
     [Tooltip("背景用のBackdropオブジェクトをアサインします")]
@@ -259,6 +272,24 @@ public class ResultShower : MonoBehaviour
         }
 
         yield return sequence.WaitForCompletion();
+
+        // アニメーション完了後、振動が有効な場合は振動を開始
+        if (item.enableVibration)
+        {
+            ResultItemVibrator vibrator = obj.GetComponent<ResultItemVibrator>();
+            if (vibrator == null)
+            {
+                vibrator = obj.AddComponent<ResultItemVibrator>();
+            }
+            
+            // 振動設定を適用
+            vibrator.SetupVibration(
+                item.vibrationAmplitude,
+                item.vibrationPeriod,
+                item.vibrationDirection,
+                true
+            );
+        }
     }
 
     /// <summary>
