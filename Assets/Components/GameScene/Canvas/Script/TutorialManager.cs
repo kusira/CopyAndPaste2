@@ -133,7 +133,7 @@ public class TutorialManager : MonoBehaviour
     /// <summary>
     /// ステージデータに基づいてチュートリアルを表示します
     /// </summary>
-    private void ShowTutorialIfNeeded()
+    public void ShowTutorialIfNeeded()
     {
         if (currentGameStatus == null)
         {

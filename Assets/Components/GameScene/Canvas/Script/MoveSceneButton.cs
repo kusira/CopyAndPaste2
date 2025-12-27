@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// ボタンを押したらフェードアウトしてシーン遷移するスクリプト
@@ -15,11 +16,17 @@ public class MoveSceneButton : MonoBehaviour
     [Tooltip("遷移先のシーン名を入力します")]
     [SerializeField] private string targetSceneName;
 
-    [Tooltip("遷移先のシーンのビルドインデックスを指定します（-1の場合はシーン名を使用）")]
-    [SerializeField] private int targetSceneBuildIndex = -1;
+    [Header("シーン遷移後の動作")]
+    [Tooltip("シーンチェンジ後、ステージがチュートリアル表示設定であるとき、再びチュートリアルを表示するか")]
+    [SerializeField] private bool showTutorialAfterSceneChange = false;
+
+    [Tooltip("シーンチェンジ後現在のステージ数をインクリメントするかどうか")]
+    [SerializeField] private bool incrementStageAfterSceneChange = true;
 
     private Button button;
     private bool isTransitioning;
+    private const string PREFS_KEY_SHOW_TUTORIAL = "MoveSceneButton_ShowTutorial";
+    private const string PREFS_KEY_INCREMENT_STAGE = "MoveSceneButton_IncrementStage";
 
     private void Awake()
     {
@@ -27,6 +34,42 @@ public class MoveSceneButton : MonoBehaviour
         if (fadeManager == null)
         {
             Debug.LogWarning("MoveSceneButton: FadeManagerがアサインされていません");
+        }
+
+        // シーンロードイベントを登録
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        // イベントを解除
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // シーンロード後に設定を確認して処理を実行
+        if (PlayerPrefs.GetInt(PREFS_KEY_SHOW_TUTORIAL, 0) == 1)
+        {
+            PlayerPrefs.DeleteKey(PREFS_KEY_SHOW_TUTORIAL);
+            // TutorialManagerにチュートリアル表示を要求
+            TutorialManager tutorialManager = Object.FindFirstObjectByType<TutorialManager>();
+            if (tutorialManager != null)
+            {
+                tutorialManager.ShowTutorialIfNeeded();
+            }
+        }
+
+        if (PlayerPrefs.GetInt(PREFS_KEY_INCREMENT_STAGE, 0) == 1)
+        {
+            PlayerPrefs.DeleteKey(PREFS_KEY_INCREMENT_STAGE);
+            // CurrentGameStatusのステージをインクリメント
+            CurrentGameStatus currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+            if (currentGameStatus != null)
+            {
+                int currentIndex = currentGameStatus.GetCurrentStageIndex();
+                currentGameStatus.SetCurrentStageIndex(currentIndex + 1);
+            }
         }
     }
 
@@ -50,24 +93,22 @@ public class MoveSceneButton : MonoBehaviour
             return;
         }
 
-        if (string.IsNullOrEmpty(targetSceneName) && targetSceneBuildIndex < 0)
+        if (string.IsNullOrEmpty(targetSceneName))
         {
-            Debug.LogError("MoveSceneButton: 遷移先のシーン名またはビルドインデックスが設定されていません");
+            Debug.LogError("MoveSceneButton: 遷移先のシーン名が設定されていません");
             return;
         }
+
+        // シーン遷移前に設定を保存
+        PlayerPrefs.SetInt(PREFS_KEY_SHOW_TUTORIAL, showTutorialAfterSceneChange ? 1 : 0);
+        PlayerPrefs.SetInt(PREFS_KEY_INCREMENT_STAGE, incrementStageAfterSceneChange ? 1 : 0);
+        PlayerPrefs.Save();
 
         isTransitioning = true;
         button.interactable = false;
 
         // FadeManagerのAPIを呼び出してフェードアウトとシーン遷移を実行
-        if (targetSceneBuildIndex >= 0)
-        {
-            fadeManager.FadeOutAndLoadScene(targetSceneBuildIndex);
-        }
-        else
-        {
-            fadeManager.FadeOutAndLoadScene(targetSceneName);
-        }
+        fadeManager.FadeOutAndLoadScene(targetSceneName);
     }
 }
 
