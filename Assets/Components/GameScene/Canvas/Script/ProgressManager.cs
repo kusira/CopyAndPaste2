@@ -240,19 +240,8 @@ public class ProgressManager : MonoBehaviour
             if (acquired)
             {
                 acquiredTransform.gameObject.SetActive(true);
-                
-                // アニメーション付きでAcquiredにする場合
-                if (withAnimation)
-                {
-                    // スケールを0に設定してからアニメーション（緩やかに増大）
-                    acquiredTransform.localScale = Vector3.zero;
-                    acquiredTransform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutQuad);
-                }
-                else
-                {
-                    // アニメーションなしの場合は通常のスケール
-                    acquiredTransform.localScale = Vector3.one;
-                }
+                // アニメーションなしで通常のスケール
+                acquiredTransform.localScale = Vector3.one;
             }
             else
             {
@@ -260,9 +249,10 @@ public class ProgressManager : MonoBehaviour
                 acquiredTransform.localScale = Vector3.one; // リセット
             }
         }
+        // NotAcquiredは常に表示したまま（削除しない）
         if (notAcquiredTransform != null)
         {
-            notAcquiredTransform.gameObject.SetActive(!acquired);
+            notAcquiredTransform.gameObject.SetActive(true);
         }
     }
 
@@ -314,12 +304,12 @@ public class ProgressManager : MonoBehaviour
                     return;
                 }
 
-                // 光っていないなら、光らせるフラグを立ててアニメーションを実行
+                // 光っていないなら、光らせるフラグを立てる（アニメーションなし）
                 targetItem.isGlowing = true;
                 targetItem.isAcquired = true;
                 
-                // 緩やかに増大させるアニメーション（SetProgressItemState内で実装）
-                SetProgressItemState(targetItem.gameObject, true, true); 
+                // アニメーションなしで状態を設定
+                SetProgressItemState(targetItem.gameObject, true, false); 
                 
                 Debug.Log($"ProgressManager: {targetItem.patternKey}行の{targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をGlow(Acquired)にしました");
 

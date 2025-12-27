@@ -471,17 +471,21 @@ MonoBehaviour:
     RSPrefab: {fileID: 6544520345476898276, guid: 3c865ff41afd81441bebb25af34122df, type: 3}
     RSItemMassPrefab: {fileID: 246989973394450972, guid: 503aaa26a9ef0b34f8ea5f1b4fd89529, type: 3}
     RSItemMasses: {fileID: 6025783471593167213}
-    sprite: {fileID: 3626170018067094600, guid: 4b981c3fa84595f4fae9a45120a6e62d, type: 3}
+    sprite: {fileID: 5396743481326563937, guid: 0b85d0e6542bec7488c827b6f73c1804, type: 3}
   gravitySettings:
     RSPrefab: {fileID: 6544520345476898276, guid: 3f3394fb8ef2690468a1cb1faae7d53a, type: 3}
     RSItemMassPrefab: {fileID: 246989973394450972, guid: abca5864229ca5f4eacb5c18b01b570a, type: 3}
     RSItemMasses: {fileID: 1751098630283738941}
-    sprite: {fileID: 3626170018067094600, guid: 4b981c3fa84595f4fae9a45120a6e62d, type: 3}
+    sprite: {fileID: -829180926908724825, guid: 4094772f098c6d8408bc9d86bb952d01, type: 3}
   selection: {fileID: 6150345130779730232}
   selectionBack: {fileID: 6166333267980462276}
   itemWidth: 0
   itemHeight: 0
   gridScale: 0.5
+  noSelectionLeftClickText: "\u30A2\u30A4\u30C6\u30E0\u9078\u629E"
+  noSelectionRightClickText: "\u30FC"
+  noSelectionMouseWheelText: "\u30FC"
+  characterAnimator: {fileID: 0}
   itemIndex: -1
 --- !u!1 &6150345130779730232
 GameObject:
