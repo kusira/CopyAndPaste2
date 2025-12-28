@@ -573,8 +573,8 @@ MonoBehaviour:
       - 
       - 
       - 
-      - 
-      - 
+      - '#'
+      - '#'
     - columns:
       - 
       - 
@@ -703,40 +703,40 @@ MonoBehaviour:
     - columns:
       - .
       - .
-      - .H
-      - .
-      - .
-      - .
-    - columns:
-      - .
-      - .
-      - .C
-      - .
-      - .H
-      - .
-    - columns:
-      - .
-      - .
-      - .H
       - .
       - .S
-      - .
-    - columns:
-      - .
-      - .C
-      - .C
-      - .
-      - .
-      - .
-    - columns:
-      - .
-      - .H
-      - .
       - .S
+      - .H
+    - columns:
+      - .
+      - .
+      - .
+      - .C
+      - .H
+      - .H
+    - columns:
+      - .
+      - .
+      - .
+      - .H
+      - .C
+      - .S
+    - columns:
+      - .
+      - .
+      - .
+      - .
       - .
       - .
     - columns:
-      - .H
+      - .
+      - .
+      - .
+      - .
+      - .
+      - .
+    - columns:
+      - .
       - .
       - .
       - .
@@ -759,47 +759,47 @@ MonoBehaviour:
       - 
     - columns:
       - 
-      - '#C'
       - 
-      - '#S'
+      - 
+      - 
       - 
       - 
     - columns:
-      - 
-      - 
+      - '#S'
       - 
       - '#H'
       - 
       - 
+      - '#'
     - columns:
       - 
       - 
-      - '#'
+      - '#C'
       - 
       - 
       - 
     - columns:
       - 
       - 
-      - '#'
-      - '#'
+      - 
+      - 
       - 
       - 
     RSItems:
     - height: 2
-      width: 3
-      type: 0
-    - height: 2
-      width: 3
-      type: 0
-    - height: 2
       width: 2
+      type: 0
+    - height: 1
+      width: 3
+      type: 0
+    - height: 2
+      width: 3
       type: 0
     - height: 3
       width: 3
       type: 0
-    - height: 2
-      width: 2
+    - height: 1
+      width: 1
       type: 1
     gridParentScaleXY: 0.8333333
     tutorialDisplayType: 0
@@ -1024,11 +1024,11 @@ MonoBehaviour:
     - height: 1
       width: 3
       type: 0
-    - height: 2
-      width: 2
+    - height: 1
+      width: 3
       type: 0
     - height: 2
-      width: 3
+      width: 2
       type: 0
     - height: 3
       width: 3
@@ -1042,13 +1042,13 @@ MonoBehaviour:
       - .
       - .
       - .
-      - .
+      - .C
       - .
       - .
     - columns:
       - .
       - .
-      - .
+      - .S
       - .
       - .
       - .
@@ -1068,15 +1068,15 @@ MonoBehaviour:
       - .
     - columns:
       - .
+      - .S
       - .
-      - .
-      - .
+      - .S
       - .
       - .S
     - columns:
       - .
       - .
-      - .S
+      - .
       - .
       - .
       - .
@@ -1127,7 +1127,7 @@ MonoBehaviour:
     - height: 2
       width: 3
       type: 0
-    - height: 3
+    - height: 2
       width: 3
       type: 0
     - height: 1
@@ -1156,27 +1156,27 @@ MonoBehaviour:
       - .
       - .C
       - .
+      - .S
+      - .S
+    - columns:
+      - .
+      - .S
+      - .
+      - .
+      - .H
+      - .
+    - columns:
+      - .
+      - .
+      - .
+      - .
+      - .
       - .C
-      - .H
-    - columns:
-      - .
-      - .S
-      - .
-      - .
-      - .H
-      - .
     - columns:
       - .
       - .
       - .
-      - .
-      - .
-      - .S
-    - columns:
-      - .
-      - .
-      - .
-      - .
+      - .C
       - .
       - .
     - columns:
