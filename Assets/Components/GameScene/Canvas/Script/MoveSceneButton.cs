@@ -125,9 +125,13 @@ public class MoveSceneButton : MonoBehaviour
         }
 
         // 次のステージ番号を計算して保存
-        if (incrementStageAfterSceneChange && currentStatus != null)
+        if (currentStatus != null)
         {
-            int nextIndex = currentStatus.GetCurrentStageIndex() + 1;
+            int nextIndex = currentStatus.GetCurrentStageIndex();
+            if (incrementStageAfterSceneChange)
+            {
+                nextIndex++;
+            }
             PlayerPrefs.SetInt(PREFS_KEY_NEXT_STAGE_INDEX, nextIndex);
         }
 
