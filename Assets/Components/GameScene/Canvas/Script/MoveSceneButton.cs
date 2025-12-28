@@ -19,6 +19,9 @@ public class MoveSceneButton : MonoBehaviour
     [Tooltip("遷移先のシーン名を入力します")]
     [SerializeField] private string targetSceneName;
 
+    [Tooltip("ステージ数以上になった場合の遷移先シーン名（デフォルト: EndScene）")]
+    [SerializeField] private string endSceneName = "EndScene";
+
     [Header("シーン遷移後の動作")]
     [Tooltip("シーンチェンジ後、ステージがチュートリアル表示設定であるとき、再びチュートリアルを表示するか")]
     [SerializeField] private bool showTutorialAfterSceneChange = false;
@@ -127,10 +130,13 @@ public class MoveSceneButton : MonoBehaviour
             currentStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
         }
 
-        // 次のステージ番号を計算して保存
+        // 次のステージ番号を計算
+        string sceneToLoad = targetSceneName;
+        
         if (currentStatus != null)
         {
             int nextIndex;
+            bool willIncrement = false;
             
             // 任意のステージインデックスが指定されている場合はそれを使用
             if (specifiedStageIndex >= 0)
@@ -140,14 +146,39 @@ public class MoveSceneButton : MonoBehaviour
             else
             {
                 // 指定されていない場合は現在のロジックを使用
-                nextIndex = currentStatus.GetCurrentStageIndex();
+                int currentIndex = currentStatus.GetCurrentStageIndex();
+                nextIndex = currentIndex;
+                
                 if (incrementStageAfterSceneChange)
                 {
                     nextIndex++;
+                    willIncrement = true;
                 }
             }
             
-            PlayerPrefs.SetInt(PREFS_KEY_NEXT_STAGE_INDEX, nextIndex);
+            // ステージ数を取得してチェック
+            StageDatabase stageDatabase = currentStatus.GetStageDatabase();
+            if (stageDatabase != null)
+            {
+                int stageCount = stageDatabase.GetStageCount();
+                
+                // インクリメントする場合のみ、インクリメント後の値がステージ数以上かチェック
+                if (willIncrement && nextIndex >= stageCount)
+                {
+                    sceneToLoad = endSceneName;
+                    Debug.Log($"MoveSceneButton: インクリメント後のステージインデックス({nextIndex})がステージ数({stageCount})以上なので、{endSceneName}に遷移します");
+                }
+                else
+                {
+                    // 通常のシーン遷移
+                    PlayerPrefs.SetInt(PREFS_KEY_NEXT_STAGE_INDEX, nextIndex);
+                }
+            }
+            else
+            {
+                // StageDatabaseが見つからない場合は通常通り処理
+                PlayerPrefs.SetInt(PREFS_KEY_NEXT_STAGE_INDEX, nextIndex);
+            }
         }
 
         // シーン遷移前に設定を保存
@@ -159,7 +190,7 @@ public class MoveSceneButton : MonoBehaviour
         button.interactable = false;
 
         // FadeManagerのAPIを呼び出してフェードアウトとシーン遷移を実行
-        fadeManager.FadeOutAndLoadScene(targetSceneName);
+        fadeManager.FadeOutAndLoadScene(sceneToLoad);
     }
 }
 
