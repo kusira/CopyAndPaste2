@@ -1877,7 +1877,7 @@ MonoBehaviour:
   globalVolume: {fileID: 0}
   bloomAnimationDuration: 0.3
   bloomMaxIntensity: 2
-  rockParent: {fileID: 0}
+  rockParent: {fileID: 426106427}
 --- !u!114 &186233957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11815,6 +11815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CurrentGameStatus
   currentStageIndex: 14
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
+  maxReachedStageIndex: 0
 --- !u!4 &1138846807
 Transform:
   m_ObjectHideFlags: 0
