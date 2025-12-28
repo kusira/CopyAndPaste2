@@ -846,13 +846,9 @@ public class RSBehavior : MonoBehaviour
             return;
         }
 
-        // RSParentを取得（RSParent配下のRockは除外するため）
+        // RSParentを取得（親がRSParentであるRockのみを対象にするため）
         Transform rsParent = transform.parent;
-        if (rsParent != null && (rsParent.name == "RSParent" || rsParent.name == "RSPParent"))
-        {
-            // RSParentが見つかった
-        }
-        else
+        if (rsParent == null || (rsParent.name != "RSParent" && rsParent.name != "RSPParent"))
         {
             // 名前で探す
             var transforms = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None);
@@ -866,6 +862,12 @@ public class RSBehavior : MonoBehaviour
             }
         }
 
+        // RSParentが見つからない場合は処理をスキップ
+        if (rsParent == null)
+        {
+            return;
+        }
+
         // シーン上のすべてのRockオブジェクトを取得
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
 
@@ -873,8 +875,8 @@ public class RSBehavior : MonoBehaviour
         {
             if (rock == null) continue;
 
-            // RSParent配下のRockは除外
-            if (rsParent != null && rock.transform.IsChildOf(rsParent))
+            // 親がRSParentでないRockは除外（親がRSParentであるRockのみを対象にする）
+            if (rsParent == null || !rock.transform.IsChildOf(rsParent))
             {
                 continue;
             }
