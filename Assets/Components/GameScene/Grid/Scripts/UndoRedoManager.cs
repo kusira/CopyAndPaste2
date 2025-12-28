@@ -12,10 +12,6 @@ public class UndoRedoManager : MonoBehaviour
     [Tooltip("RedoスプライトのGameObject（SpriteRendererとCollider2Dが必要）")]
     [SerializeField] private GameObject redoSpriteObject;
 
-    [Header("References")]
-    [Tooltip("現在のゲームステータスを参照します")]
-    [SerializeField] private CurrentGameStatus currentGameStatus;
-
     [Header("Color Settings")]
     [Tooltip("通常時の色")]
     [SerializeField] private Color normalColor = Color.white;
@@ -112,9 +108,10 @@ public class UndoRedoManager : MonoBehaviour
     /// </summary>
     public void RecordSnapshot()
     {
-        if (currentGameStatus == null) return;
+        var currentStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+        if (currentStatus == null) return;
 
-        var currentData = currentGameStatus.GetCurrentStageData();
+        var currentData = currentStatus.GetCurrentStageData();
         if (currentData != null)
         {
             // 現在の状態を複製してUndoスタックへ
@@ -135,10 +132,11 @@ public class UndoRedoManager : MonoBehaviour
     {
         if (undoStack.Count == 0) return;
 
-        if (currentGameStatus == null) return;
+        var currentStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+        if (currentStatus == null) return;
 
         // 現在の状態をRedo用に保存
-        var currentData = currentGameStatus.GetCurrentStageData();
+        var currentData = currentStatus.GetCurrentStageData();
         if (currentData != null)
         {
             redoStack.Push(currentData.DeepCopy());
@@ -158,10 +156,11 @@ public class UndoRedoManager : MonoBehaviour
     {
         if (redoStack.Count == 0) return;
 
-        if (currentGameStatus == null) return;
+        var currentStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+        if (currentStatus == null) return;
 
         // 現在の状態をUndo用に保存
-        var currentData = currentGameStatus.GetCurrentStageData();
+        var currentData = currentStatus.GetCurrentStageData();
         if (currentData != null)
         {
             undoStack.Push(currentData.DeepCopy());
@@ -177,22 +176,15 @@ public class UndoRedoManager : MonoBehaviour
     /// <summary>
     /// ステートを適用し、画面を更新します
     /// </summary>
-    /// <summary>
-    /// ステートを適用し、画面を更新します
-    /// </summary>
     private void ApplyState(StageDatabase.StageData data)
     {
         if (data == null) return;
 
-        // 1. データをセット（StageDatabaseに直接設定）
-        if (currentGameStatus != null)
+        // 1. データをセット
+        var currentStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+        if (currentStatus != null)
         {
-            var stageDatabase = currentGameStatus.GetStageDatabase();
-            if (stageDatabase != null)
-            {
-                int stageIndex = currentGameStatus.GetCurrentStageIndex();
-                stageDatabase.SetStageData(stageIndex, data);
-            }
+            currentStatus.SetRuntimeStageData(data);
         }
 
         // 2. RSParentの中身を破棄
