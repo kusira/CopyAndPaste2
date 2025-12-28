@@ -124,6 +124,9 @@ public class RSGBehavior : MonoBehaviour
         // RSGをグリッドの中央に配置（SetupSelectionCorners()も内部で呼ばれる）
         PositionToGridCenter();
 
+        // グリッドにスナップ（確実にスナップするため追加処理）
+        SnapToGrid();
+
         // UIテキスト要素を取得
         uiHelper.FindUIElements();
         
@@ -274,6 +277,31 @@ public class RSGBehavior : MonoBehaviour
         { 
             gridScale = massParent.lossyScale.x; 
         }
+    }
+
+    /// <summary>
+    /// グリッドにスナップします
+    /// </summary>
+    private void SnapToGrid()
+    {
+        if (gridWidth == 0 || gridHeight == 0)
+        {
+            return;
+        }
+
+        // RSGのサイズを取得
+        Vector3 selectorScale = transform.localScale;
+        int selectorW = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
+        int selectorH = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
+
+        // 現在位置をグリッドにスナップ
+        Vector3 snappedPos = RSGridHelper.SnapToGrid(transform.position, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
+
+        // グリッド範囲内に収まるようにクランプ
+        transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
+
+        // Selectionの位置も更新
+        SetupSelectionCorners();
     }
 
     /// <summary>
