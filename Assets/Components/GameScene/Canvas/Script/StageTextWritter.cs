@@ -16,15 +16,9 @@ public class StageTextWritter : MonoBehaviour
 
     private void Start()
     {
-        // CurrentGameStatusが見つからない場合は自動検索
         if (currentGameStatus == null)
         {
-            currentGameStatus = FindFirstObjectByType<CurrentGameStatus>();
-        }
-
-        if (currentGameStatus == null)
-        {
-            Debug.LogWarning("StageTextWritter: CurrentGameStatusが見つかりません");
+            Debug.LogWarning("StageTextWritter: CurrentGameStatusがアサインされていません");
         }
 
         // ステージ名を更新

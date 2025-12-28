@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 /// <summary>
 /// ボタンを押したらフェードアウトしてシーン遷移するスクリプト
@@ -22,6 +23,10 @@ public class MoveSceneButton : MonoBehaviour
 
     [Tooltip("シーンチェンジ後現在のステージ数をインクリメントするかどうか")]
     [SerializeField] private bool incrementStageAfterSceneChange = true;
+
+    [Header("References")]
+    [Tooltip("現在のゲームステータスを参照します")]
+    [SerializeField] private CurrentGameStatus currentGameStatus;
 
     private Button button;
     private bool isTransitioning;
@@ -49,18 +54,30 @@ public class MoveSceneButton : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // シーンロード後に設定を確認して処理を実行
-        // チュートリアル表示の設定はTutorialManagerのStart()で処理されるため、ここでは削除しない
+        // Start()の後に実行されるようにコルーチンで遅延実行
+        StartCoroutine(ProcessAfterSceneLoad());
+    }
+
+    private System.Collections.IEnumerator ProcessAfterSceneLoad()
+    {
+        // 1フレーム待機して、すべてのStart()が実行されるのを待つ
+        yield return null;
         
         if (PlayerPrefs.GetInt(PREFS_KEY_INCREMENT_STAGE, 0) == 1)
         {
             PlayerPrefs.DeleteKey(PREFS_KEY_INCREMENT_STAGE);
             PlayerPrefs.Save();
+            
             // CurrentGameStatusのステージをインクリメント
-            CurrentGameStatus currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
             if (currentGameStatus != null)
             {
                 int currentIndex = currentGameStatus.GetCurrentStageIndex();
                 currentGameStatus.SetCurrentStageIndex(currentIndex + 1);
+                Debug.Log($"MoveSceneButton: ステージを {currentIndex} から {currentIndex + 1} にインクリメントしました");
+            }
+            else
+            {
+                Debug.LogWarning("MoveSceneButton: CurrentGameStatusがアサインされていません");
             }
         }
     }
