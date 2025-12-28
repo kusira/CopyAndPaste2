@@ -56,7 +56,7 @@ public class StickyNotesGenerator : MonoBehaviour
     {
         if (currentGameStatus == null)
         {
-            Debug.LogWarning("StickyNotesGenerator: CurrentGameStatusがアサインされていません");
+            currentGameStatus = FindFirstObjectByType<CurrentGameStatus>();
         }
 
         GenerateStickyNotes();

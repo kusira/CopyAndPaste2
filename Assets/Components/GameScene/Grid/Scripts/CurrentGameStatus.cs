@@ -1,10 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CurrentGameStatus", menuName = "Game/Current Game Status")]
-public class CurrentGameStatus : ScriptableObject
+public class CurrentGameStatus : MonoBehaviour
 {
-    private const string PREFS_KEY_STAGE_INDEX = "CurrentGameStatus_StageIndex";
-
     [Tooltip("現在のステージ番号（0から開始）")]
     [SerializeField] private int currentStageIndex = 0;
 
@@ -15,13 +12,11 @@ public class CurrentGameStatus : ScriptableObject
     private StageDatabase.StageData runtimeStageData;
     private int cachedStageIndex = -1;
 
-    private void OnEnable()
+    private void Start()
     {
-        // PlayerPrefsからステージ番号を読み込む
-        if (Application.isPlaying && PlayerPrefs.HasKey(PREFS_KEY_STAGE_INDEX))
+        // ゲーム開始時にデータをコピー
+        if (Application.isPlaying)
         {
-            currentStageIndex = PlayerPrefs.GetInt(PREFS_KEY_STAGE_INDEX, 0);
-            // データを更新
             RefreshRuntimeStageData();
         }
     }
@@ -166,12 +161,6 @@ public class CurrentGameStatus : ScriptableObject
         if (currentStageIndex != index)
         {
             currentStageIndex = index;
-            // PlayerPrefsに保存
-            if (Application.isPlaying)
-            {
-                PlayerPrefs.SetInt(PREFS_KEY_STAGE_INDEX, index);
-                PlayerPrefs.Save();
-            }
             // データ更新
             RefreshRuntimeStageData();
         }

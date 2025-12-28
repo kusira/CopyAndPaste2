@@ -154,4 +154,21 @@ public class StageDatabase : ScriptableObject
     {
         return stages.Count;
     }
+
+    /// <summary>
+    /// 指定されたステージ番号のデータを設定します（Undo/Redo用）
+    /// </summary>
+    public void SetStageData(int stageIndex, StageData data)
+    {
+        if (stageIndex < 0 || stageIndex >= stages.Count)
+        {
+            Debug.LogWarning($"ステージ番号{stageIndex}が範囲外です。ステージ数: {stages.Count}");
+            return;
+        }
+
+        if (data != null)
+        {
+            stages[stageIndex] = data;
+        }
+    }
 }

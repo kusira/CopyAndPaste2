@@ -33,9 +33,7 @@ public class TutorialManager : MonoBehaviour
     [Tooltip("Backdropのフェードアニメーション時間（秒）")]
     [SerializeField] private float backdropFadeDuration = 0.3f;
 
-    [Header("References")]
-    [Tooltip("現在のゲームステータスを参照します")]
-    [SerializeField] private CurrentGameStatus currentGameStatus;
+    private CurrentGameStatus currentGameStatus;
     private bool isAnimating = false;
     private bool initialized = false;
 
@@ -105,10 +103,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        if (currentGameStatus == null)
-        {
-            Debug.LogWarning("TutorialManager: CurrentGameStatusがアサインされていません");
-        }
+        // CurrentGameStatusを取得
+        currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
 
         // 閉じるボタンのイベントを設定
         if (closeButton != null)
