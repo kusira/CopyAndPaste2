@@ -29,7 +29,8 @@ public class MoveSceneButton : MonoBehaviour
     private Button button;
     private bool isTransitioning;
     private const string PREFS_KEY_SHOW_TUTORIAL = "MoveSceneButton_ShowTutorial";
-    private const string PREFS_KEY_INCREMENT_STAGE = "MoveSceneButton_IncrementStage";
+    // private const string PREFS_KEY_INCREMENT_STAGE = "MoveSceneButton_IncrementStage"; // 旧キー
+    private const string PREFS_KEY_NEXT_STAGE_INDEX = "MoveSceneButton_NextStageIndex";
 
     private void Awake()
     {
@@ -54,33 +55,38 @@ public class MoveSceneButton : MonoBehaviour
         // シーンロード後に設定を確認して処理を実行
         // チュートリアル表示の設定はTutorialManagerのStart()で処理されるため、ここでは削除しない
         
-        if (PlayerPrefs.GetInt(PREFS_KEY_INCREMENT_STAGE, 0) == 1)
+        if (PlayerPrefs.HasKey(PREFS_KEY_NEXT_STAGE_INDEX))
         {
-            PlayerPrefs.DeleteKey(PREFS_KEY_INCREMENT_STAGE);
+            int nextStageIndex = PlayerPrefs.GetInt(PREFS_KEY_NEXT_STAGE_INDEX);
+            PlayerPrefs.DeleteKey(PREFS_KEY_NEXT_STAGE_INDEX);
             PlayerPrefs.Save();
             
-            // CurrentGameStatusのステージをインクリメント
+            // CurrentGameStatusのステージを設定
             // シーン遷移後は currentGameStatus が null の可能性があるため、検索する
             CurrentGameStatus statusToUpdate = currentGameStatus;
             if (statusToUpdate == null)
             {
-                // ScriptableObject を検索
+                // ScriptableObject を検索 (またはシーン内のオブジェクト)
                 CurrentGameStatus[] allStatuses = Resources.FindObjectsOfTypeAll<CurrentGameStatus>();
                 if (allStatuses.Length > 0)
                 {
                     statusToUpdate = allStatuses[0];
                 }
+                else 
+                {
+                    // シーン内のActiveなものを探す
+                    statusToUpdate = Object.FindFirstObjectByType<CurrentGameStatus>();
+                }
             }
             
             if (statusToUpdate != null)
             {
-                int currentIndex = statusToUpdate.GetCurrentStageIndex();
-                statusToUpdate.SetCurrentStageIndex(currentIndex + 1);
-                Debug.Log($"MoveSceneButton: ステージ番号を {currentIndex} から {currentIndex + 1} にインクリメントしました");
+                statusToUpdate.SetCurrentStageIndex(nextStageIndex);
+                Debug.Log($"MoveSceneButton: ステージ番号を {nextStageIndex} に設定しました");
             }
             else
             {
-                Debug.LogWarning("MoveSceneButton: CurrentGameStatus ScriptableObject が見つかりませんでした");
+                Debug.LogWarning("MoveSceneButton: CurrentGameStatus が見つかりませんでした");
             }
         }
     }
@@ -111,9 +117,23 @@ public class MoveSceneButton : MonoBehaviour
             return;
         }
 
+        // 現在のステータスを取得（アサインされていない場合は探す）
+        CurrentGameStatus currentStatus = currentGameStatus;
+        if (currentStatus == null)
+        {
+            currentStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+        }
+
+        // 次のステージ番号を計算して保存
+        if (incrementStageAfterSceneChange && currentStatus != null)
+        {
+            int nextIndex = currentStatus.GetCurrentStageIndex() + 1;
+            PlayerPrefs.SetInt(PREFS_KEY_NEXT_STAGE_INDEX, nextIndex);
+        }
+
         // シーン遷移前に設定を保存
         PlayerPrefs.SetInt(PREFS_KEY_SHOW_TUTORIAL, showTutorialAfterSceneChange ? 1 : 0);
-        PlayerPrefs.SetInt(PREFS_KEY_INCREMENT_STAGE, incrementStageAfterSceneChange ? 1 : 0);
+        // PlayerPrefs.SetInt(PREFS_KEY_INCREMENT_STAGE, incrementStageAfterSceneChange ? 1 : 0); // 旧ロジック廃止
         PlayerPrefs.Save();
 
         isTransitioning = true;
