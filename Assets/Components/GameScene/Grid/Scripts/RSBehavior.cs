@@ -807,7 +807,6 @@ public class RSBehavior : MonoBehaviour
             if (hasExistingRock && preview != null)
             {
                 overlappingPreviewRocks.Add(preview);
-                Debug.Log($"プレビューと重なっているRockを検出: グリッド位置({gx}, {gy}), プレビューオブジェクト={preview.name}");
             }
         }
 
@@ -971,8 +970,6 @@ public class RSBehavior : MonoBehaviour
     /// </summary>
     private void SetMaskActiveForOverlappingRocks(bool active)
     {
-        Debug.Log($"SetMaskActiveForOverlappingRocks: active={active}, 重なっているプレビューRock数={overlappingPreviewRocks.Count}");
-        
         int successCount = 0;
         int noMaskCount = 0;
         int nullCount = 0;
@@ -991,16 +988,12 @@ public class RSBehavior : MonoBehaviour
             {
                 maskTransform.gameObject.SetActive(active);
                 successCount++;
-                Debug.Log($"プレビューRock({previewRock.name})のMaskを{(active ? "有効" : "無効")}にしました");
             }
             else
             {
                 noMaskCount++;
-                Debug.LogWarning($"プレビューRock({previewRock.name})にMaskが見つかりませんでした");
             }
         }
-        
-        Debug.Log($"Mask操作結果: 成功={successCount}, Mask未発見={noMaskCount}, null={nullCount}");
     }
 
     /// <summary>
@@ -1009,9 +1002,6 @@ public class RSBehavior : MonoBehaviour
     private void SetValidColor(bool isValid)
     {
         if (spriteRenderer == null) return;
-        
-        Debug.Log($"SetValidColor: isValid={isValid}, 重なっているプレビューRock数={overlappingPreviewRocks.Count}");
-        
         if (isValid)
         {
             // 有効な場合は通常色（アルファも元に戻す）
