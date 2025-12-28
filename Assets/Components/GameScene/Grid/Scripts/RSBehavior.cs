@@ -36,8 +36,8 @@ public class RSBehavior : MonoBehaviour
     private int lastPreviewRotationIndex = -1;
     private bool lastCanPaste = true;
 
-    // Mask表示用（配置不可能な時に範囲内のRockのMaskをアクティブ化）
-    private readonly List<GameObject> activeMaskObjects = new List<GameObject>();
+    // プレビューと重なっているRockのプレビューオブジェクトを記録（RSParent直下のRock）
+    private List<GameObject> overlappingPreviewRocks = new List<GameObject>();
 
     // 点線表示用
     [Header("Prefabs")]
@@ -528,14 +528,13 @@ public class RSBehavior : MonoBehaviour
         hasCopy = false;
         copiedOffsets.Clear();
         rotatedOffsets.Clear();
+        overlappingPreviewRocks.Clear(); // 重なっているRockのプレビューオブジェクトもクリア
         
         // プレビュー消去
         ClearPreviewChildren();
         // 点線を削除
         ClearDashLine();
-        // Maskを非アクティブ化
-        ClearRockMasks();
-        SetValidColor(true); // 通常色に戻す
+        SetValidColor(true); // 通常色に戻す（Maskも無効化される）
         UpdateUITexts();
         
         // アニメーションをNSelectに設定
@@ -685,7 +684,6 @@ public class RSBehavior : MonoBehaviour
         if (!hasCopy)
         {
             ClearPreviewChildren();
-            ClearRockMasks(); // Maskを非アクティブ化
             SetValidColor(true);
             return;
         }
@@ -727,6 +725,9 @@ public class RSBehavior : MonoBehaviour
         // 回転済みオフセットをヘルパーで計算
         RSHelper.RotateOffsets(copiedOffsets, rotationIndex, copiedSize.x, copiedSize.y, rotatedOffsets);
 
+        // 重なっているRockのプレビューオブジェクトをリセット
+        overlappingPreviewRocks.Clear();
+
         Transform previewParent = transform.parent != null ? transform.parent : transform;
 
         foreach (var data in rotatedOffsets)
@@ -761,6 +762,7 @@ public class RSBehavior : MonoBehaviour
                 }
             }
 
+            bool hasExistingRock = false;
             // 既にRockがある場合はNG
             if (gy < rockStatus.Count && rockStatus[gy] != null && rockStatus[gy].columns != null &&
                 gx < rockStatus[gy].columns.Count)
@@ -773,14 +775,16 @@ public class RSBehavior : MonoBehaviour
                 if (baseChar == '#')
                 {
                     canPaste = false;
+                    hasExistingRock = true;
                 }
             }
 
             // プレビュー用オブジェクトを生成（自身の兄弟として作成）
+            GameObject preview = null;
             if (rockPreviewPrefab != null)
             {
                 Vector3 worldPreviewPos = RSGridHelper.GridIndexToWorld(gx, gy, transform.position.z, gridParentPosition, gridOffset, gridScale);
-                GameObject preview = Instantiate(rockPreviewPrefab, worldPreviewPos, Quaternion.identity, previewParent);
+                preview = Instantiate(rockPreviewPrefab, worldPreviewPos, Quaternion.identity, previewParent);
                 previewObjects.Add(preview);
 
                 var sr = preview.GetComponent<SpriteRenderer>();
@@ -798,141 +802,21 @@ public class RSBehavior : MonoBehaviour
                     assigner.ApplyPatterns(data.value);
                 }
             }
+
+            // 既存のRockと重なっている場合は、プレビューオブジェクトを記録
+            if (hasExistingRock && preview != null)
+            {
+                overlappingPreviewRocks.Add(preview);
+                Debug.Log($"プレビューと重なっているRockを検出: グリッド位置({gx}, {gy}), プレビューオブジェクト={preview.name}");
+            }
         }
 
         SetValidColor(canPaste);
-        
-        // 配置不可能な時、範囲内のRockのMaskをアクティブ化
-        if (!canPaste && hasCopy)
-        {
-            UpdateRockMasks(centerX, centerY);
-        }
-        else
-        {
-            // 配置可能な時や範囲外の時はMaskを非アクティブ化
-            ClearRockMasks();
-        }
-        
         lastCanPaste = canPaste;
         lastPreviewCenterX = centerX;
         lastPreviewCenterY = centerY;
         lastPreviewRotationIndex = rotationIndex;
         previewDirty = false;
-    }
-
-    /// <summary>
-    /// 範囲内のRockのMaskを更新します（配置不可能な時のみ）
-    /// </summary>
-    private void UpdateRockMasks(int centerX, int centerY)
-    {
-        // 以前アクティブにしたMaskを非アクティブ化
-        ClearRockMasks();
-
-        if (!hasCopy || rotatedOffsets.Count == 0)
-        {
-            return;
-        }
-
-        // 選択範囲の矩形を計算
-        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
-        Vector3 selectorScale = transform.localScale;
-        int selWidth = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
-        int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
-        var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
-
-        // グリッド範囲外ならスキップ
-        if (minX < 0 || minY < 0 || maxX >= gridWidth || maxY >= gridHeight)
-        {
-            return;
-        }
-
-        // RSParentを取得（親がRSParentであるRockのみを対象にするため）
-        Transform rsParent = transform.parent;
-        if (rsParent == null || (rsParent.name != "RSParent" && rsParent.name != "RSPParent"))
-        {
-            // 名前で探す
-            var transforms = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None);
-            foreach (var t in transforms)
-            {
-                if (t != null && (t.name == "RSParent" || t.name == "RSPParent"))
-                {
-                    rsParent = t;
-                    break;
-                }
-            }
-        }
-
-        // RSParentが見つからない場合は処理をスキップ
-        if (rsParent == null)
-        {
-            return;
-        }
-
-        // シーン上のすべてのRockオブジェクトを取得
-        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-
-        foreach (GameObject rock in rocks)
-        {
-            if (rock == null) continue;
-
-            // 親がRSParentでないRockは除外（親がRSParentであるRockのみを対象にする）
-            if (rsParent == null || !rock.transform.IsChildOf(rsParent))
-            {
-                continue;
-            }
-
-            // Rockの位置をグリッドインデックスに変換
-            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset, gridScale);
-
-            // 範囲内にあるかチェック
-            if (rockGridIndex.x < minX || rockGridIndex.x > maxX ||
-                rockGridIndex.y < minY || rockGridIndex.y > maxY)
-            {
-                continue; // 範囲外のRockはスキップ
-            }
-
-            // 回転済みオフセットに含まれているかチェック（貼り付け位置と一致するか）
-            bool isInPasteArea = false;
-            foreach (var data in rotatedOffsets)
-            {
-                Vector2Int o = data.offset;
-                int gx = centerX + o.x;
-                int gy = centerY + o.y;
-
-                if (rockGridIndex.x == gx && rockGridIndex.y == gy)
-                {
-                    isInPasteArea = true;
-                    break;
-                }
-            }
-
-            // 貼り付け範囲内にある場合のみMaskをアクティブ化
-            if (isInPasteArea)
-            {
-                // Rockの子要素からMaskを検索
-                Transform maskTransform = rock.transform.Find("Mask");
-                if (maskTransform != null)
-                {
-                    maskTransform.gameObject.SetActive(true);
-                    activeMaskObjects.Add(maskTransform.gameObject);
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// アクティブ化したRockのMaskを非アクティブ化します
-    /// </summary>
-    private void ClearRockMasks()
-    {
-        foreach (GameObject maskObj in activeMaskObjects)
-        {
-            if (maskObj != null)
-            {
-                maskObj.SetActive(false);
-            }
-        }
-        activeMaskObjects.Clear();
     }
 
     /// <summary>
@@ -1083,16 +967,57 @@ public class RSBehavior : MonoBehaviour
     }
 
     /// <summary>
+    /// 重なっているRockのMaskを一括で有効/無効にします（プレビューオブジェクトを直接参照）
+    /// </summary>
+    private void SetMaskActiveForOverlappingRocks(bool active)
+    {
+        Debug.Log($"SetMaskActiveForOverlappingRocks: active={active}, 重なっているプレビューRock数={overlappingPreviewRocks.Count}");
+        
+        int successCount = 0;
+        int noMaskCount = 0;
+        int nullCount = 0;
+        
+        foreach (GameObject previewRock in overlappingPreviewRocks)
+        {
+            if (previewRock == null)
+            {
+                nullCount++;
+                continue;
+            }
+
+            // Rockの子オブジェクトで「Mask」という名前のものを探す
+            Transform maskTransform = previewRock.transform.Find("Mask");
+            if (maskTransform != null)
+            {
+                maskTransform.gameObject.SetActive(active);
+                successCount++;
+                Debug.Log($"プレビューRock({previewRock.name})のMaskを{(active ? "有効" : "無効")}にしました");
+            }
+            else
+            {
+                noMaskCount++;
+                Debug.LogWarning($"プレビューRock({previewRock.name})にMaskが見つかりませんでした");
+            }
+        }
+        
+        Debug.Log($"Mask操作結果: 成功={successCount}, Mask未発見={noMaskCount}, null={nullCount}");
+    }
+
+    /// <summary>
     /// 有効/無効に応じて色と透明度を変更
     /// </summary>
     private void SetValidColor(bool isValid)
     {
         if (spriteRenderer == null) return;
         
+        Debug.Log($"SetValidColor: isValid={isValid}, 重なっているプレビューRock数={overlappingPreviewRocks.Count}");
+        
         if (isValid)
         {
             // 有効な場合は通常色（アルファも元に戻す）
             spriteRenderer.color = normalColor;
+            // 重なっているRockのMaskを無効化
+            SetMaskActiveForOverlappingRocks(false);
         }
         else
         {
@@ -1100,6 +1025,8 @@ public class RSBehavior : MonoBehaviour
             Color invalid = invalidColor;
             invalid.a = invalidAlpha;
             spriteRenderer.color = invalid;
+            // 重なっているRockのMaskを有効化
+            SetMaskActiveForOverlappingRocks(true);
         }
     }
 
