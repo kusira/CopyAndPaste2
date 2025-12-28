@@ -1987,17 +1987,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &217785022 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 53996028250060311, guid: 620477212116d294494358c3c87242d0, type: 3}
-  m_PrefabInstance: {fileID: 705622555175695960}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1 &220420766
 GameObject:
   m_ObjectHideFlags: 0
@@ -2426,6 +2415,7 @@ MonoBehaviour:
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
   showTutorialAfterSceneChange: 0
+  specifiedStageIndex: -1
   incrementStageAfterSceneChange: 0
 --- !u!1 &271389492
 GameObject:
@@ -3666,37 +3656,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &468021134 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1928600760210239496, guid: 620477212116d294494358c3c87242d0, type: 3}
-  m_PrefabInstance: {fileID: 705622555175695960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &468021135 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 471499013125479845, guid: 620477212116d294494358c3c87242d0, type: 3}
   m_PrefabInstance: {fileID: 705622555175695960}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &468021136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468021134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 352415c26897cdc4fb02782a1931cd5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Components.Game.Canvas.Scripts.VolumeManager
-  audioMixer: {fileID: 0}
-  bgmPrefKey: BGM
-  sePrefKey: SE
-  bgmSlider: {fileID: 1976544724}
-  bgmValueText: {fileID: 1706785656}
-  seSlider: {fileID: 217785022}
-  seValueText: {fileID: 1878738696}
-  sePreviewAudioSource: {fileID: 0}
-  sePreviewMinIntervalSeconds: 0.08
 --- !u!1 &484555714
 GameObject:
   m_ObjectHideFlags: 0
@@ -11014,6 +10978,7 @@ MonoBehaviour:
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
   showTutorialAfterSceneChange: 1
+  specifiedStageIndex: -1
   incrementStageAfterSceneChange: 1
 --- !u!1 &1403520178
 GameObject:
@@ -12290,6 +12255,7 @@ MonoBehaviour:
   currentGameStatus: {fileID: 0}
   targetSceneName: TitleScene
   showTutorialAfterSceneChange: 0
+  specifiedStageIndex: -1
   incrementStageAfterSceneChange: 0
 --- !u!1 &1578078148
 GameObject:
@@ -13386,17 +13352,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1706785656 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7028498620244772774, guid: 620477212116d294494358c3c87242d0, type: 3}
-  m_PrefabInstance: {fileID: 705622555175695960}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1710955167
 GameObject:
   m_ObjectHideFlags: 0
@@ -14458,6 +14413,7 @@ MonoBehaviour:
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
   showTutorialAfterSceneChange: 1
+  specifiedStageIndex: -1
   incrementStageAfterSceneChange: 1
 --- !u!114 &1797484923
 MonoBehaviour:
@@ -15108,17 +15064,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1878738696 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2102895733080727376, guid: 620477212116d294494358c3c87242d0, type: 3}
-  m_PrefabInstance: {fileID: 705622555175695960}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1907026951
 GameObject:
   m_ObjectHideFlags: 0
@@ -16190,17 +16135,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1976544724 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2445990050743166538, guid: 620477212116d294494358c3c87242d0, type: 3}
-  m_PrefabInstance: {fileID: 705622555175695960}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1 &1998600276
 GameObject:
   m_ObjectHideFlags: 0
@@ -16884,6 +16818,7 @@ MonoBehaviour:
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
   showTutorialAfterSceneChange: 0
+  specifiedStageIndex: -1
   incrementStageAfterSceneChange: 0
 --- !u!1 &2105861585
 GameObject:
@@ -17405,6 +17340,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Volume
       objectReference: {fileID: 0}
+    - target: {fileID: 1928600760210239496, guid: 620477212116d294494358c3c87242d0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2049986021799937406, guid: 620477212116d294494358c3c87242d0, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -17452,10 +17391,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1928600760210239496, guid: 620477212116d294494358c3c87242d0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 468021136}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 620477212116d294494358c3c87242d0, type: 3}
 --- !u!114 &744732224533256878 stripped
 MonoBehaviour:

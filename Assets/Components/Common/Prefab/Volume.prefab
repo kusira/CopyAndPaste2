@@ -220,6 +220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 471499013125479845}
+  - component: {fileID: 2975398605706241516}
   m_Layer: 5
   m_Name: Volume
   m_TagString: Untagged
@@ -248,6 +249,27 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1100, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2975398605706241516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928600760210239496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352415c26897cdc4fb02782a1931cd5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.Game.Canvas.Scripts.VolumeManager
+  audioMixer: {fileID: 0}
+  bgmPrefKey: BGM
+  sePrefKey: SE
+  bgmSlider: {fileID: 2445990050743166538}
+  bgmValueText: {fileID: 7028498620244772774}
+  seSlider: {fileID: 53996028250060311}
+  seValueText: {fileID: 2102895733080727376}
+  sePreviewAudioSource: {fileID: 0}
+  sePreviewMinIntervalSeconds: 0.08
 --- !u!1 &2164250762438806964
 GameObject:
   m_ObjectHideFlags: 0
