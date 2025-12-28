@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 096cfd10691fc2e41b94beada5243658
+guid: 3cd4dbfe7737dd849960f480eb947a34
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8243771702101438760
-    second: SSBinder_0
+      213: -8780256108639866731
+    second: SSButton_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SSBinder_0
+      name: SS_Button_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 0
-        width: 787
-        height: 1034
+        x: 197
+        y: 191
+        width: 107
+        height: 114
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8de83d6705d389d80800000000000000
-      internalID: -8243771702101438760
+      spriteID: 5903197c693462680800000000000000
+      internalID: -8780256108639866731
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a8b5f326a76235c438a815d31c1ebee5
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SSBinder_0: -8243771702101438760
+      SS_Button_0: -8780256108639866731
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
