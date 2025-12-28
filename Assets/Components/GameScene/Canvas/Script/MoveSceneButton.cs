@@ -23,7 +23,10 @@ public class MoveSceneButton : MonoBehaviour
     [Tooltip("シーンチェンジ後、ステージがチュートリアル表示設定であるとき、再びチュートリアルを表示するか")]
     [SerializeField] private bool showTutorialAfterSceneChange = false;
 
-    [Tooltip("シーンチェンジ後現在のステージ数をインクリメントするかどうか")]
+    [Tooltip("任意のステージインデックスを指定します（-1の場合は無効、incrementStageAfterSceneChangeの設定を使用）")]
+    [SerializeField] private int specifiedStageIndex = -1;
+
+    [Tooltip("シーンチェンジ後現在のステージ数をインクリメントするかどうか（specifiedStageIndexが-1の場合のみ有効）")]
     [SerializeField] private bool incrementStageAfterSceneChange = true;
 
     private Button button;
@@ -127,11 +130,23 @@ public class MoveSceneButton : MonoBehaviour
         // 次のステージ番号を計算して保存
         if (currentStatus != null)
         {
-            int nextIndex = currentStatus.GetCurrentStageIndex();
-            if (incrementStageAfterSceneChange)
+            int nextIndex;
+            
+            // 任意のステージインデックスが指定されている場合はそれを使用
+            if (specifiedStageIndex >= 0)
             {
-                nextIndex++;
+                nextIndex = specifiedStageIndex;
             }
+            else
+            {
+                // 指定されていない場合は現在のロジックを使用
+                nextIndex = currentStatus.GetCurrentStageIndex();
+                if (incrementStageAfterSceneChange)
+                {
+                    nextIndex++;
+                }
+            }
+            
             PlayerPrefs.SetInt(PREFS_KEY_NEXT_STAGE_INDEX, nextIndex);
         }
 

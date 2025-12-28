@@ -1696,6 +1696,7 @@ RectTransform:
   m_Children:
   - {fileID: 1708053094}
   - {fileID: 1506213960}
+  - {fileID: 1533286919}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2360,8 +2361,11 @@ GameObject:
   - component: {fileID: 765571913}
   - component: {fileID: 765571915}
   - component: {fileID: 765571914}
+  - component: {fileID: 765571917}
+  - component: {fileID: 765571916}
+  - component: {fileID: 765571918}
   m_Layer: 5
-  m_Name: XButton
+  m_Name: XPostButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2426,6 +2430,78 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765571912}
   m_CullTransparentMesh: 1
+--- !u!114 &765571916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765571912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 765571914}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &765571917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765571912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c27bd9cca76e624b8a4aeb5e975b443, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TitleButtonSlider
+  moveOffset: 20
+  animationDuration: 0.3
+  easing: 6
+--- !u!114 &765571918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765571912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed6a349e1a41c4647bf6fbe7f63e84ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::XPostButton
+  postText: "\u300E\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\u300F\u3092\u30D7\u30EC\u30A4\u3057\u305F\u3088\r\n#\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\r\nhttps://unityroom.com/games/copipechan"
 --- !u!1 &861673327
 GameObject:
   m_ObjectHideFlags: 0
@@ -2804,15 +2880,15 @@ MonoBehaviour:
     vibrationDirection: {x: 0, y: 0, z: 0}
   - gameObject: {fileID: 1076172985}
     direction: 1
-    enableFade: 1
+    enableFade: 0
     easing: 6
     animationDuration: 0.3
     moveOffset: 500
     waitAfterPrevious: 0.2
-    enableVibration: 0
-    vibrationAmplitude: 1
+    enableVibration: 1
+    vibrationAmplitude: 20
     vibrationPeriod: 4
-    vibrationDirection: {x: 0, y: 50, z: 0}
+    vibrationDirection: {x: 0, y: 1, z: 0}
   - gameObject: {fileID: 62615984}
     direction: 1
     enableFade: 1
@@ -2820,10 +2896,10 @@ MonoBehaviour:
     animationDuration: 0.3
     moveOffset: 500
     waitAfterPrevious: 0.1
-    enableVibration: 0
-    vibrationAmplitude: 1
+    enableVibration: 1
+    vibrationAmplitude: 20
     vibrationPeriod: 4
-    vibrationDirection: {x: 0, y: 50, z: 0}
+    vibrationDirection: {x: 0, y: 1, z: 0}
   - gameObject: {fileID: 867375149}
     direction: 1
     enableFade: 0
@@ -2954,8 +3030,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1533286919}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4789,7 +4864,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1065470028}
+    m_TransformParent: {fileID: 488864184}
     m_Modifications:
     - target: {fileID: 2538281457164582188, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
       propertyPath: m_Pivot.x
@@ -4817,11 +4892,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2538281457164582188, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -1920
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2538281457164582188, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -1080
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2538281457164582188, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4853,11 +4928,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2538281457164582188, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -671.00574
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2538281457164582188, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -236.93683
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2538281457164582188, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4874,6 +4949,10 @@ PrefabInstance:
     - target: {fileID: 6675743046963257191, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
       propertyPath: m_Name
       value: Fade
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397497149034154857, guid: e6281d260274b9248a79641dfd7e2daa, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5394,6 +5473,8 @@ GameObject:
   - component: {fileID: 1796958602}
   - component: {fileID: 1796958604}
   - component: {fileID: 1796958603}
+  - component: {fileID: 1796958606}
+  - component: {fileID: 1796958605}
   m_Layer: 5
   m_Name: StageSelectButton
   m_TagString: Untagged
@@ -5459,6 +5540,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796958601}
   m_CullTransparentMesh: 1
+--- !u!114 &1796958605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796958601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1796958603}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1796958606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796958601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c27bd9cca76e624b8a4aeb5e975b443, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TitleButtonSlider
+  moveOffset: 20
+  animationDuration: 0.3
+  easing: 6
 --- !u!1 &1854013795
 GameObject:
   m_ObjectHideFlags: 0
