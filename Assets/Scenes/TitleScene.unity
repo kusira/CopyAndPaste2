@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 11671318}
   - component: {fileID: 11671321}
   - component: {fileID: 11671320}
+  - component: {fileID: 11671322}
   m_Layer: 5
   m_Name: Stage1-1
   m_TagString: Untagged
@@ -212,6 +213,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 10
   incrementStageAfterSceneChange: 0
@@ -240,7 +242,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -259,6 +261,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &11671322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11671316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &42610782
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,6 +439,7 @@ GameObject:
   - component: {fileID: 84679712}
   - component: {fileID: 84679715}
   - component: {fileID: 84679714}
+  - component: {fileID: 84679716}
   m_Layer: 5
   m_Name: Stage1-5
   m_TagString: Untagged
@@ -502,6 +520,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 9
   incrementStageAfterSceneChange: 0
@@ -530,7 +549,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -549,6 +568,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &84679716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84679710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &104057889
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,6 +1126,7 @@ GameObject:
   - component: {fileID: 240337629}
   - component: {fileID: 240337632}
   - component: {fileID: 240337631}
+  - component: {fileID: 240337633}
   m_Layer: 5
   m_Name: Stage1-4
   m_TagString: Untagged
@@ -1172,6 +1207,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 13
   incrementStageAfterSceneChange: 0
@@ -1200,7 +1236,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1219,6 +1255,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &240337633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240337627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &247202445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,6 +1283,7 @@ GameObject:
   - component: {fileID: 247202447}
   - component: {fileID: 247202450}
   - component: {fileID: 247202449}
+  - component: {fileID: 247202451}
   m_Layer: 5
   m_Name: Stage1-2
   m_TagString: Untagged
@@ -1312,6 +1364,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 11
   incrementStageAfterSceneChange: 0
@@ -1340,7 +1393,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1359,6 +1412,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &247202451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247202445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &316171588
 GameObject:
   m_ObjectHideFlags: 0
@@ -2011,6 +2079,7 @@ GameObject:
   - component: {fileID: 550694664}
   - component: {fileID: 550694667}
   - component: {fileID: 550694666}
+  - component: {fileID: 550694668}
   m_Layer: 5
   m_Name: Stage1-4
   m_TagString: Untagged
@@ -2091,6 +2160,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 8
   incrementStageAfterSceneChange: 0
@@ -2119,7 +2189,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2138,6 +2208,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &550694668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550694662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &584066245
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,6 +2372,7 @@ GameObject:
   - component: {fileID: 604235890}
   - component: {fileID: 604235893}
   - component: {fileID: 604235892}
+  - component: {fileID: 604235894}
   m_Layer: 5
   m_Name: Stage1-2
   m_TagString: Untagged
@@ -2367,6 +2453,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 1
   incrementStageAfterSceneChange: 0
@@ -2395,7 +2482,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2414,6 +2501,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &604235894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604235888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &680917394
 GameObject:
   m_ObjectHideFlags: 0
@@ -3157,6 +3259,7 @@ GameObject:
   - component: {fileID: 967839302}
   - component: {fileID: 967839305}
   - component: {fileID: 967839304}
+  - component: {fileID: 967839306}
   m_Layer: 5
   m_Name: Stage1-5
   m_TagString: Untagged
@@ -3237,6 +3340,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 4
   incrementStageAfterSceneChange: 0
@@ -3265,7 +3369,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3284,6 +3388,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &967839306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967839300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &978771568
 GameObject:
   m_ObjectHideFlags: 0
@@ -3687,6 +3806,7 @@ GameObject:
   - component: {fileID: 1116148734}
   - component: {fileID: 1116148737}
   - component: {fileID: 1116148736}
+  - component: {fileID: 1116148738}
   m_Layer: 5
   m_Name: Stage1-1
   m_TagString: Untagged
@@ -3767,6 +3887,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 1638611066}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 0
   incrementStageAfterSceneChange: 0
@@ -3795,7 +3916,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3814,6 +3935,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1116148738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116148732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &1137576977
 GameObject:
   m_ObjectHideFlags: 0
@@ -3827,6 +3963,7 @@ GameObject:
   - component: {fileID: 1137576979}
   - component: {fileID: 1137576982}
   - component: {fileID: 1137576981}
+  - component: {fileID: 1137576983}
   m_Layer: 5
   m_Name: Stage1-3
   m_TagString: Untagged
@@ -3907,6 +4044,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 2
   incrementStageAfterSceneChange: 0
@@ -3935,7 +4073,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3954,6 +4092,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1137576983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137576977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &1157444137
 GameObject:
   m_ObjectHideFlags: 0
@@ -4140,6 +4293,7 @@ GameObject:
   - component: {fileID: 1197027439}
   - component: {fileID: 1197027442}
   - component: {fileID: 1197027441}
+  - component: {fileID: 1197027443}
   m_Layer: 5
   m_Name: Stage1-3
   m_TagString: Untagged
@@ -4220,6 +4374,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 7
   incrementStageAfterSceneChange: 0
@@ -4248,7 +4403,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4267,6 +4422,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1197027443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197027437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &1202283071
 GameObject:
   m_ObjectHideFlags: 0
@@ -4495,6 +4665,7 @@ GameObject:
   - component: {fileID: 1312203425}
   - component: {fileID: 1312203428}
   - component: {fileID: 1312203427}
+  - component: {fileID: 1312203429}
   m_Layer: 5
   m_Name: Stage1-4
   m_TagString: Untagged
@@ -4575,6 +4746,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 3
   incrementStageAfterSceneChange: 0
@@ -4603,7 +4775,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4622,6 +4794,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1312203429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312203423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &1314835973
 GameObject:
   m_ObjectHideFlags: 0
@@ -4635,6 +4822,7 @@ GameObject:
   - component: {fileID: 1314835975}
   - component: {fileID: 1314835978}
   - component: {fileID: 1314835977}
+  - component: {fileID: 1314835979}
   m_Layer: 5
   m_Name: Stage1-5
   m_TagString: Untagged
@@ -4715,6 +4903,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 14
   incrementStageAfterSceneChange: 0
@@ -4743,7 +4932,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4762,6 +4951,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1314835979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314835973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &1372942304
 GameObject:
   m_ObjectHideFlags: 0
@@ -5487,6 +5691,7 @@ GameObject:
   - component: {fileID: 1495234924}
   - component: {fileID: 1495234927}
   - component: {fileID: 1495234926}
+  - component: {fileID: 1495234928}
   m_Layer: 5
   m_Name: Stage1-2
   m_TagString: Untagged
@@ -5567,6 +5772,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 6
   incrementStageAfterSceneChange: 0
@@ -5595,7 +5801,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -5614,6 +5820,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1495234928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495234922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &1506213959
 GameObject:
   m_ObjectHideFlags: 0
@@ -6186,6 +6407,7 @@ GameObject:
   - component: {fileID: 1766047035}
   - component: {fileID: 1766047038}
   - component: {fileID: 1766047037}
+  - component: {fileID: 1766047039}
   m_Layer: 5
   m_Name: Stage1-3
   m_TagString: Untagged
@@ -6266,6 +6488,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 12
   incrementStageAfterSceneChange: 0
@@ -6294,7 +6517,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -6313,6 +6536,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1766047039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766047033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &1793837959
 GameObject:
   m_ObjectHideFlags: 0
@@ -7116,6 +7354,7 @@ GameObject:
   - component: {fileID: 1948124654}
   - component: {fileID: 1948124657}
   - component: {fileID: 1948124656}
+  - component: {fileID: 1948124658}
   m_Layer: 5
   m_Name: Stage1-1
   m_TagString: Untagged
@@ -7196,6 +7435,7 @@ MonoBehaviour:
   fadeManager: {fileID: 2125097826}
   currentGameStatus: {fileID: 0}
   targetSceneName: GameScene
+  endSceneName: EndScene
   showTutorialAfterSceneChange: 1
   specifiedStageIndex: 5
   incrementStageAfterSceneChange: 0
@@ -7224,7 +7464,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -7243,6 +7483,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1948124658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948124652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf786a24345ad5468551c731070ad40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectButton
+  rotationAngle: 20
+  animationDuration: 0.1
+  easing: 1
 --- !u!1 &1953289941
 GameObject:
   m_ObjectHideFlags: 0
