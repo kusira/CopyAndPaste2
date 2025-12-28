@@ -36,6 +36,9 @@ public class RSBehavior : MonoBehaviour
     private int lastPreviewRotationIndex = -1;
     private bool lastCanPaste = true;
 
+    // Mask表示用（配置不可能な時に範囲内のRockのMaskをアクティブ化）
+    private readonly List<GameObject> activeMaskObjects = new List<GameObject>();
+
     // 点線表示用
     [Header("Prefabs")]
     [Tooltip("コピー時の矩形を囲む点線のPrefabをアサインします")]
@@ -530,6 +533,8 @@ public class RSBehavior : MonoBehaviour
         ClearPreviewChildren();
         // 点線を削除
         ClearDashLine();
+        // Maskを非アクティブ化
+        ClearRockMasks();
         SetValidColor(true); // 通常色に戻す
         UpdateUITexts();
         
@@ -680,6 +685,7 @@ public class RSBehavior : MonoBehaviour
         if (!hasCopy)
         {
             ClearPreviewChildren();
+            ClearRockMasks(); // Maskを非アクティブ化
             SetValidColor(true);
             return;
         }
@@ -795,11 +801,136 @@ public class RSBehavior : MonoBehaviour
         }
 
         SetValidColor(canPaste);
+        
+        // 配置不可能な時、範囲内のRockのMaskをアクティブ化
+        if (!canPaste && hasCopy)
+        {
+            UpdateRockMasks(centerX, centerY);
+        }
+        else
+        {
+            // 配置可能な時や範囲外の時はMaskを非アクティブ化
+            ClearRockMasks();
+        }
+        
         lastCanPaste = canPaste;
         lastPreviewCenterX = centerX;
         lastPreviewCenterY = centerY;
         lastPreviewRotationIndex = rotationIndex;
         previewDirty = false;
+    }
+
+    /// <summary>
+    /// 範囲内のRockのMaskを更新します（配置不可能な時のみ）
+    /// </summary>
+    private void UpdateRockMasks(int centerX, int centerY)
+    {
+        // 以前アクティブにしたMaskを非アクティブ化
+        ClearRockMasks();
+
+        if (!hasCopy || rotatedOffsets.Count == 0)
+        {
+            return;
+        }
+
+        // 選択範囲の矩形を計算
+        Vector2 centerFloat = RSGridHelper.WorldToGridCenter(transform.position, gridParentPosition, gridOffset, gridScale);
+        Vector3 selectorScale = transform.localScale;
+        int selWidth = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
+        int selHeight = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
+        var (minX, minY, maxX, maxY) = RSGridHelper.CalculateSelectionBounds(centerFloat.x, centerFloat.y, selWidth, selHeight);
+
+        // グリッド範囲外ならスキップ
+        if (minX < 0 || minY < 0 || maxX >= gridWidth || maxY >= gridHeight)
+        {
+            return;
+        }
+
+        // RSParentを取得（RSParent配下のRockは除外するため）
+        Transform rsParent = transform.parent;
+        if (rsParent != null && (rsParent.name == "RSParent" || rsParent.name == "RSPParent"))
+        {
+            // RSParentが見つかった
+        }
+        else
+        {
+            // 名前で探す
+            var transforms = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None);
+            foreach (var t in transforms)
+            {
+                if (t != null && (t.name == "RSParent" || t.name == "RSPParent"))
+                {
+                    rsParent = t;
+                    break;
+                }
+            }
+        }
+
+        // シーン上のすべてのRockオブジェクトを取得
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+            if (rock == null) continue;
+
+            // RSParent配下のRockは除外
+            if (rsParent != null && rock.transform.IsChildOf(rsParent))
+            {
+                continue;
+            }
+
+            // Rockの位置をグリッドインデックスに変換
+            Vector2Int rockGridIndex = RSGridHelper.WorldToGridIndex(rock.transform.position, gridParentPosition, gridOffset, gridScale);
+
+            // 範囲内にあるかチェック
+            if (rockGridIndex.x < minX || rockGridIndex.x > maxX ||
+                rockGridIndex.y < minY || rockGridIndex.y > maxY)
+            {
+                continue; // 範囲外のRockはスキップ
+            }
+
+            // 回転済みオフセットに含まれているかチェック（貼り付け位置と一致するか）
+            bool isInPasteArea = false;
+            foreach (var data in rotatedOffsets)
+            {
+                Vector2Int o = data.offset;
+                int gx = centerX + o.x;
+                int gy = centerY + o.y;
+
+                if (rockGridIndex.x == gx && rockGridIndex.y == gy)
+                {
+                    isInPasteArea = true;
+                    break;
+                }
+            }
+
+            // 貼り付け範囲内にある場合のみMaskをアクティブ化
+            if (isInPasteArea)
+            {
+                // Rockの子要素からMaskを検索
+                Transform maskTransform = rock.transform.Find("Mask");
+                if (maskTransform != null)
+                {
+                    maskTransform.gameObject.SetActive(true);
+                    activeMaskObjects.Add(maskTransform.gameObject);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// アクティブ化したRockのMaskを非アクティブ化します
+    /// </summary>
+    private void ClearRockMasks()
+    {
+        foreach (GameObject maskObj in activeMaskObjects)
+        {
+            if (maskObj != null)
+            {
+                maskObj.SetActive(false);
+            }
+        }
+        activeMaskObjects.Clear();
     }
 
     /// <summary>
