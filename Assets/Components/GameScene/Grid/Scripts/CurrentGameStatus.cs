@@ -8,9 +8,15 @@ public class CurrentGameStatus : MonoBehaviour
     [Tooltip("ステージデータベース")]
     [SerializeField] private StageDatabase stageDatabase;
 
+    [Header("到達ステージ情報")]
+    [Tooltip("到達したステージの最大値（読み取り専用）")]
+    [SerializeField, ReadOnly] private int maxReachedStageIndex = 0;
+
     // ランタイム用のステージデータ（コピー）
     private StageDatabase.StageData runtimeStageData;
     private int cachedStageIndex = -1;
+
+    private const string PREFS_KEY_MAX_REACHED_STAGE_INDEX = "MaxReachedStageIndex";
 
     private void Start()
     {
@@ -19,6 +25,9 @@ public class CurrentGameStatus : MonoBehaviour
         {
             RefreshRuntimeStageData();
         }
+
+        // 到達したステージの最大値を読み込む
+        LoadMaxReachedStageIndex();
     }
 
     /// <summary>
@@ -163,6 +172,54 @@ public class CurrentGameStatus : MonoBehaviour
             currentStageIndex = index;
             // データ更新
             RefreshRuntimeStageData();
+            
+            // 到達したステージの最大値を更新
+            UpdateMaxReachedStageIndex(index);
         }
     }
+
+    /// <summary>
+    /// 到達したステージの最大値を更新します
+    /// </summary>
+    private void UpdateMaxReachedStageIndex(int stageIndex)
+    {
+        if (stageIndex > maxReachedStageIndex)
+        {
+            maxReachedStageIndex = stageIndex;
+            PlayerPrefs.SetInt(PREFS_KEY_MAX_REACHED_STAGE_INDEX, maxReachedStageIndex);
+            PlayerPrefs.Save();
+        }
+    }
+
+    /// <summary>
+    /// 到達したステージの最大値を読み込みます
+    /// </summary>
+    public void LoadMaxReachedStageIndex()
+    {
+        maxReachedStageIndex = PlayerPrefs.GetInt(PREFS_KEY_MAX_REACHED_STAGE_INDEX, 0);
+    }
+
+    /// <summary>
+    /// 到達したステージの最大値を取得します
+    /// </summary>
+    public int GetMaxReachedStageIndex()
+    {
+        return maxReachedStageIndex;
+    }
+
+    /// <summary>
+    /// 到達したステージの最大値をリセットします
+    /// </summary>
+    public void ResetMaxReachedStageIndex()
+    {
+        maxReachedStageIndex = 0;
+        PlayerPrefs.DeleteKey(PREFS_KEY_MAX_REACHED_STAGE_INDEX);
+        PlayerPrefs.Save();
+        Debug.Log("到達したステージの最大値をリセットしました");
+    }
 }
+
+/// <summary>
+/// Inspectorで読み取り専用フィールドを表示するための属性
+/// </summary>
+public class ReadOnlyAttribute : PropertyAttribute { }

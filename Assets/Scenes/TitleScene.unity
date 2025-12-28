@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 11671320}
   - component: {fileID: 11671322}
   m_Layer: 5
-  m_Name: Stage1-1
+  m_Name: Stage3-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 84679714}
   - component: {fileID: 84679716}
   m_Layer: 5
-  m_Name: Stage1-5
+  m_Name: Stage2-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1128,7 +1128,7 @@ GameObject:
   - component: {fileID: 240337631}
   - component: {fileID: 240337633}
   m_Layer: 5
-  m_Name: Stage1-4
+  m_Name: Stage3-4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1285,7 +1285,7 @@ GameObject:
   - component: {fileID: 247202449}
   - component: {fileID: 247202451}
   m_Layer: 5
-  m_Name: Stage1-2
+  m_Name: Stage3-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2037,6 +2037,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543051654}
+  - component: {fileID: 543051655}
   m_Layer: 5
   m_Name: SSButtonList
   m_TagString: Untagged
@@ -2066,6 +2067,35 @@ RectTransform:
   m_AnchoredPosition: {x: -146.16455, y: -62.835693}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &543051655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543051653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481edbc2a054f004fb7f41a798f5b4aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectEnabler
+  currentGameStatus: {fileID: 1638611066}
+  stageButtons:
+  - {fileID: 1116148737}
+  - {fileID: 604235893}
+  - {fileID: 1766047038}
+  - {fileID: 1312203428}
+  - {fileID: 967839305}
+  - {fileID: 1948124657}
+  - {fileID: 1495234927}
+  - {fileID: 1197027442}
+  - {fileID: 550694667}
+  - {fileID: 84679715}
+  - {fileID: 11671321}
+  - {fileID: 247202450}
+  - {fileID: 1766047038}
+  - {fileID: 240337632}
+  - {fileID: 1314835978}
 --- !u!1 &550694662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2081,7 +2111,7 @@ GameObject:
   - component: {fileID: 550694666}
   - component: {fileID: 550694668}
   m_Layer: 5
-  m_Name: Stage1-4
+  m_Name: Stage2-4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4295,7 +4325,7 @@ GameObject:
   - component: {fileID: 1197027441}
   - component: {fileID: 1197027443}
   m_Layer: 5
-  m_Name: Stage1-3
+  m_Name: Stage2-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4824,7 +4854,7 @@ GameObject:
   - component: {fileID: 1314835977}
   - component: {fileID: 1314835979}
   m_Layer: 5
-  m_Name: Stage1-5
+  m_Name: Stage3-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5693,7 +5723,7 @@ GameObject:
   - component: {fileID: 1495234926}
   - component: {fileID: 1495234928}
   m_Layer: 5
-  m_Name: Stage1-2
+  m_Name: Stage2-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6259,6 +6289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CurrentGameStatus
   currentStageIndex: 0
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
+  maxReachedStageIndex: 1
 --- !u!4 &1638611067
 Transform:
   m_ObjectHideFlags: 0
@@ -6409,7 +6440,7 @@ GameObject:
   - component: {fileID: 1766047037}
   - component: {fileID: 1766047039}
   m_Layer: 5
-  m_Name: Stage1-3
+  m_Name: Stage3-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7356,7 +7387,7 @@ GameObject:
   - component: {fileID: 1948124656}
   - component: {fileID: 1948124658}
   m_Layer: 5
-  m_Name: Stage1-1
+  m_Name: Stage2-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

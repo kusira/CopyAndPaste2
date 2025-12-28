@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6a349e1a41c4647bf6fbe7f63e84ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::XPostButton
-  postText: "\u300E\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\u300F\u3092\u30D7\u30EC\u30A4\u3057\u305F\u3088\r\n#\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\r\nhttps://unityroom.com/games/copipechan"
+  postText: "\u300E\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\u300F\u3092\u30AF\u30EA\u30A2\u3057\u307E\u3057\u305F\uFF01\u304A\u3081\u3067\u3068\u3046\uFF01\n\r\n#\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\r\nhttps://unityroom.com/games/copipechan"
 --- !u!114 &303881765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,7 +777,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1341619588}
   m_Layer: 5
-  m_Name: TitleButton
+  m_Name: EndButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1727,6 +1727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CurrentGameStatus
   currentStageIndex: 0
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
+  maxReachedStageIndex: 0
 --- !u!4 &2144105782
 Transform:
   m_ObjectHideFlags: 0
