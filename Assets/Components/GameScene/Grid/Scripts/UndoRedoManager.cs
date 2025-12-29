@@ -29,6 +29,9 @@ public class UndoRedoManager : MonoBehaviour
     private readonly Stack<StageDatabase.StageData> undoStack = new Stack<StageDatabase.StageData>();
     private readonly Stack<StageDatabase.StageData> redoStack = new Stack<StageDatabase.StageData>();
 
+    // ボタン押下時のSE用のCuePlay（キャッシュ）
+    private CuePlay redoCuePlay;
+
     private void Awake()
     {
         if (Instance == null)
@@ -100,6 +103,30 @@ public class UndoRedoManager : MonoBehaviour
         }
 
         UpdateButtons();
+
+        // Redo(CriAtomSource)オブジェクトを検索してCuePlayを取得
+        FindRedoCuePlay();
+    }
+
+    /// <summary>
+    /// Redo(CriAtomSource)オブジェクトを検索してCuePlayを取得します
+    /// </summary>
+    private void FindRedoCuePlay()
+    {
+        // シーン内から"Redo(CriAtomSource)"という名前のオブジェクトを検索
+        GameObject redoObj = GameObject.Find("Redo(CriAtomSource)");
+        if (redoObj != null)
+        {
+            redoCuePlay = redoObj.GetComponent<CuePlay>();
+            if (redoCuePlay == null)
+            {
+                Debug.LogWarning("UndoRedoManager: Redo(CriAtomSource)にCuePlayコンポーネントが見つかりませんでした");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("UndoRedoManager: Redo(CriAtomSource)オブジェクトが見つかりませんでした");
+        }
     }
 
     /// <summary>
@@ -276,6 +303,12 @@ public class UndoRedoManager : MonoBehaviour
     /// </summary>
     public void OnUndoClicked()
     {
+        // ボタン押下時のSEを再生
+        if (redoCuePlay != null)
+        {
+            redoCuePlay.PlaySound();
+        }
+
         Undo();
     }
 
@@ -284,6 +317,12 @@ public class UndoRedoManager : MonoBehaviour
     /// </summary>
     public void OnRedoClicked()
     {
+        // ボタン押下時のSEを再生
+        if (redoCuePlay != null)
+        {
+            redoCuePlay.PlaySound();
+        }
+
         Redo();
     }
 

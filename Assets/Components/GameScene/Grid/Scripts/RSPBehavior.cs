@@ -439,6 +439,12 @@ public class RSPBehavior : MonoBehaviour
                 dragOffset += pivotShift;
             }
 
+            // 回転時のSEを再生
+            if (rotationStep != 0)
+            {
+                RSHelper.PlayTurnSound();
+            }
+
             Debug.Log($"マウスホイール：現在の回転インデックス={rotationIndex}");
             // RSP本体の見た目の向きも変更
             UpdateSelectorRotation();
@@ -1102,6 +1108,8 @@ public class RSPBehavior : MonoBehaviour
     /// </summary>
     public void CancelSelection()
     {
+        // キャンセル時のSEを再生
+        RSHelper.PlayCancelSound();
         DestroySelector();
     }
 

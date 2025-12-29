@@ -110,6 +110,28 @@ public static class RSHelper
                 }
             }
         }
+
+        // コピー時のSEを再生
+        if (copiedOffsets.Count > 0)
+        {
+            PlayCopySound();
+        }
+    }
+
+    /// <summary>
+    /// Copy SEを再生します
+    /// </summary>
+    private static void PlayCopySound()
+    {
+        GameObject copyObj = GameObject.Find("Copy(CriAtomSource)");
+        if (copyObj != null)
+        {
+            CuePlay cuePlay = copyObj.GetComponent<CuePlay>();
+            if (cuePlay != null)
+            {
+                cuePlay.PlaySound();
+            }
+        }
     }
 
     /// <summary>
@@ -289,6 +311,28 @@ public static class RSHelper
 
             rockStatus[gy].columns[gx] = data.value;
         }
+
+        // 貼り付け時のSEを再生
+        if (rotatedOffsets != null && rotatedOffsets.Count > 0)
+        {
+            PlayPasteSound();
+        }
+    }
+
+    /// <summary>
+    /// Paste SEを再生します
+    /// </summary>
+    private static void PlayPasteSound()
+    {
+        GameObject pasteObj = GameObject.Find("Paste(CriAtomSource)");
+        if (pasteObj != null)
+        {
+            CuePlay cuePlay = pasteObj.GetComponent<CuePlay>();
+            if (cuePlay != null)
+            {
+                cuePlay.PlaySound();
+            }
+        }
     }
 
     /// <summary>
@@ -367,7 +411,29 @@ public static class RSHelper
             }
         }
 
+        // 破壊時のSEを再生
+        if (destroyedCount > 0)
+        {
+            PlayPuzzleBreakSound();
+        }
+
         return destroyedCount;
+    }
+
+    /// <summary>
+    /// Puzzle_Break SEを再生します
+    /// </summary>
+    private static void PlayPuzzleBreakSound()
+    {
+        GameObject puzzleBreakObj = GameObject.Find("Puzzle_Break(CriAtomSource)");
+        if (puzzleBreakObj != null)
+        {
+            CuePlay cuePlay = puzzleBreakObj.GetComponent<CuePlay>();
+            if (cuePlay != null)
+            {
+                cuePlay.PlaySound();
+            }
+        }
     }
 
     /// <summary>
@@ -668,6 +734,54 @@ public static class RSHelper
 
                 // Rockを配置
                 rockStatus[toY].columns[toX] = rockValues[moveInfo.fromPosition];
+            }
+        }
+    }
+
+    /// <summary>
+    /// Puzzle_Gravity SEを再生します
+    /// </summary>
+    public static void PlayPuzzleGravitySound()
+    {
+        GameObject puzzleGravityObj = GameObject.Find("Puzzle_Gravity(CriAtomSource)");
+        if (puzzleGravityObj != null)
+        {
+            CuePlay cuePlay = puzzleGravityObj.GetComponent<CuePlay>();
+            if (cuePlay != null)
+            {
+                cuePlay.PlaySound();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Turn SEを再生します
+    /// </summary>
+    public static void PlayTurnSound()
+    {
+        GameObject turnObj = GameObject.Find("Turn(CriAtomSource)");
+        if (turnObj != null)
+        {
+            CuePlay cuePlay = turnObj.GetComponent<CuePlay>();
+            if (cuePlay != null)
+            {
+                cuePlay.PlaySound();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Cancel SEを再生します
+    /// </summary>
+    public static void PlayCancelSound()
+    {
+        GameObject cancelObj = GameObject.Find("Cancel(CriAtomSource)");
+        if (cancelObj != null)
+        {
+            CuePlay cuePlay = cancelObj.GetComponent<CuePlay>();
+            if (cuePlay != null)
+            {
+                cuePlay.PlaySound();
             }
         }
     }

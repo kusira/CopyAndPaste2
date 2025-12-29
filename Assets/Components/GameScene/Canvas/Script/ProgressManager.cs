@@ -34,6 +34,9 @@ public class ProgressManager : MonoBehaviour
 
     private List<ProgressItemData> createdProgressItems = new List<ProgressItemData>();
 
+    // Acquired時のSE用のCuePlay（キャッシュ）
+    private CuePlay successCuePlay;
+
     /// <summary>
     /// Progressアイテムのデータを保持するクラス
     /// </summary>
@@ -59,6 +62,30 @@ public class ProgressManager : MonoBehaviour
     private void Start()
     {
         CreateProgressItems();
+
+        // Success(CriAtomSource)オブジェクトを検索してCuePlayを取得
+        FindSuccessCuePlay();
+    }
+
+    /// <summary>
+    /// Success(CriAtomSource)オブジェクトを検索してCuePlayを取得します
+    /// </summary>
+    private void FindSuccessCuePlay()
+    {
+        // シーン内から"Success(CriAtomSource)"という名前のオブジェクトを検索
+        GameObject successObj = GameObject.Find("Success(CriAtomSource)");
+        if (successObj != null)
+        {
+            successCuePlay = successObj.GetComponent<CuePlay>();
+            if (successCuePlay == null)
+            {
+                Debug.LogWarning("ProgressManager: Success(CriAtomSource)にCuePlayコンポーネントが見つかりませんでした");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("ProgressManager: Success(CriAtomSource)オブジェクトが見つかりませんでした");
+        }
     }
 
     /// <summary>
@@ -309,7 +336,13 @@ public class ProgressManager : MonoBehaviour
                 targetItem.isAcquired = true;
                 
                 // アニメーションなしで状態を設定
-                SetProgressItemState(targetItem.gameObject, true, false); 
+                SetProgressItemState(targetItem.gameObject, true, false);
+
+                // Acquired時のSEを再生
+                if (successCuePlay != null)
+                {
+                    successCuePlay.PlaySound();
+                }
                 
                 Debug.Log($"ProgressManager: {targetItem.patternKey}行の{targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をGlow(Acquired)にしました");
 

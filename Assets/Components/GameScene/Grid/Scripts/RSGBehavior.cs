@@ -448,6 +448,12 @@ public class RSGBehavior : MonoBehaviour
                 dragOffset += pivotShift;
             }
 
+            // 回転時のSEを再生
+            if (rotationStep != 0)
+            {
+                RSHelper.PlayTurnSound();
+            }
+
             Debug.Log($"マウスホイール：現在の回転インデックス={rotationIndex}");
             // RSG本体の見た目の向きも変更
             UpdateSelectorRotation();
@@ -540,6 +546,12 @@ public class RSGBehavior : MonoBehaviour
         string[] directionNames = { "上", "右", "下", "左" };
         string directionName = directionNames[((rotationIndex % 4) + 4) % 4];
         Debug.Log($"範囲内のRockを{directionName}に詰めます（移動数: {moveInfos.Count}）");
+
+        // 3.5. 重力操作時のSEを再生（アニメーションの前）
+        if (moveInfos.Count > 0)
+        {
+            RSHelper.PlayPuzzleGravitySound();
+        }
 
         // 4. 岩の移動をアニメーション化（範囲情報も渡す）
         AnimateRockMoves(moveInfos, minX, minY, maxX, maxY);
@@ -881,6 +893,8 @@ public class RSGBehavior : MonoBehaviour
     /// </summary>
     public void CancelSelection()
     {
+        // キャンセル時のSEを再生
+        RSHelper.PlayCancelSound();
         DestroySelector();
     }
 
