@@ -1675,7 +1675,7 @@ MonoBehaviour:
     numberOfMaxEntries: 4
     useStreamerManager: 0
   dontInitializeOnAwake: 0
-  dontDestroyOnLoad: 0
+  dontDestroyOnLoad: 1
 --- !u!4 &1956145905
 Transform:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -43,6 +44,9 @@ public class TutorialManager : MonoBehaviour
     private Tween panelTween;
     private Tween backdropTween;
     private CanvasGroup backdropCanvasGroup;
+    private Button backdropButton;
+    private EventTrigger backdropEventTrigger;
+    private Coroutine backdropDisableCoroutine;
     
     private const string PREFS_KEY_SHOW_TUTORIAL = "MoveSceneButton_ShowTutorial";
 
@@ -83,6 +87,10 @@ public class TutorialManager : MonoBehaviour
                 backdropCanvasGroup.alpha = 0f;
             }
             
+            // BackdropのButtonとEventTriggerを取得
+            backdropButton = backdrop.GetComponent<Button>();
+            backdropEventTrigger = backdrop.GetComponent<EventTrigger>();
+            
             backdrop.SetActive(false);
         }
         if (tutorial_1 != null)
@@ -115,17 +123,16 @@ public class TutorialManager : MonoBehaviour
         // Backdropにクリックイベントを設定
         if (backdrop != null)
         {
-            // EventTriggerを追加
-            EventTrigger trigger = backdrop.GetComponent<EventTrigger>();
-            if (trigger == null)
+            // EventTriggerを追加（既に存在しない場合）
+            if (backdropEventTrigger == null)
             {
-                trigger = backdrop.AddComponent<EventTrigger>();
+                backdropEventTrigger = backdrop.AddComponent<EventTrigger>();
             }
 
             EventTrigger.Entry entry = new EventTrigger.Entry();
             entry.eventID = EventTriggerType.PointerClick;
             entry.callback.AddListener((data) => { OnBackdropClicked(); });
-            trigger.triggers.Add(entry);
+            backdropEventTrigger.triggers.Add(entry);
         }
 
         // シーン遷移後のチュートリアル表示設定をチェック
@@ -217,6 +224,25 @@ public class TutorialManager : MonoBehaviour
             tutorial_3.SetActive(tutorialNumber == 3);
         }
 
+        // BackdropのButtonとEventTriggerを無効化（アニメーション中はクリックできないように）
+        if (backdropButton != null)
+        {
+            backdropButton.interactable = false;
+        }
+        if (backdropEventTrigger != null)
+        {
+            backdropEventTrigger.enabled = false;
+        }
+
+        // 既存のコルーチンを停止
+        if (backdropDisableCoroutine != null)
+        {
+            StopCoroutine(backdropDisableCoroutine);
+        }
+        
+        // animationDuration秒後にbackdropButtonとEventTriggerを有効化
+        backdropDisableCoroutine = StartCoroutine(EnableBackdropAfterDelay());
+
         // Backdropを表示してフェードイン
         backdrop.SetActive(true);
         backdropTween?.Kill();
@@ -249,6 +275,16 @@ public class TutorialManager : MonoBehaviour
         }
 
         if (tutorialPanelRect == null || backdrop == null)
+        {
+            return;
+        }
+        
+        // backdropButtonが無効化されている場合は何もしない（アニメーション中）
+        if (backdropButton != null && !backdropButton.interactable)
+        {
+            return;
+        }
+        if (backdropEventTrigger != null && !backdropEventTrigger.enabled)
         {
             return;
         }
@@ -328,11 +364,36 @@ public class TutorialManager : MonoBehaviour
         HideTutorial();
     }
 
+    /// <summary>
+    /// animationDuration秒後にbackdropButtonとEventTriggerを有効化します
+    /// </summary>
+    private IEnumerator EnableBackdropAfterDelay()
+    {
+        yield return new WaitForSeconds(animationDuration);
+        
+        if (backdropButton != null)
+        {
+            backdropButton.interactable = true;
+        }
+        if (backdropEventTrigger != null)
+        {
+            backdropEventTrigger.enabled = true;
+        }
+        
+        backdropDisableCoroutine = null;
+    }
+
     private void OnDestroy()
     {
         // DOTweenのTweenをクリーンアップ
         panelTween?.Kill();
         backdropTween?.Kill();
+        
+        // コルーチンを停止
+        if (backdropDisableCoroutine != null)
+        {
+            StopCoroutine(backdropDisableCoroutine);
+        }
     }
 }
 

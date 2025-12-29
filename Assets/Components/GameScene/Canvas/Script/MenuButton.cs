@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ public class MenuButton : MonoBehaviour
     [SerializeField] private float backdropFadeDuration = 0.3f;
 
     private Button menuButton;
+    private Button backdropButton;
     private Tween panelTween;
     private Tween backdropTween;
     private CanvasGroup backdropCanvasGroup;
@@ -26,6 +28,7 @@ public class MenuButton : MonoBehaviour
     private Vector2 closedPos;
     private bool initialized;
     private bool isMenuOpen = false;
+    private Coroutine backdropDisableCoroutine;
 
     private void Awake()
     {
@@ -45,7 +48,7 @@ public class MenuButton : MonoBehaviour
         menuPanel.anchoredPosition = closedPos;
         menuPanel.gameObject.SetActive(false);
         
-        // BackdropのCanvasGroupを取得
+        // BackdropのCanvasGroupとButtonを取得
         if (backdrop != null)
         {
             backdropCanvasGroup = backdrop.GetComponent<CanvasGroup>();
@@ -59,6 +62,7 @@ public class MenuButton : MonoBehaviour
                 backdropCanvasGroup.alpha = 0f;
             }
             
+            backdropButton = backdrop.GetComponent<Button>();
             backdrop.SetActive(false);
         }
 
@@ -77,13 +81,9 @@ public class MenuButton : MonoBehaviour
         closeButton.onClick.AddListener(CloseMenu);
         }
 
-        if (backdrop != null)
-        {
-        var backdropButton = backdrop.GetComponent<Button>();
         if (backdropButton != null)
         {
             backdropButton.onClick.AddListener(CloseMenu);
-            }
         }
     }
 
@@ -100,13 +100,9 @@ public class MenuButton : MonoBehaviour
         closeButton.onClick.RemoveListener(CloseMenu);
         }
 
-        if (backdrop != null)
-        {
-        var backdropButton = backdrop.GetComponent<Button>();
         if (backdropButton != null)
         {
             backdropButton.onClick.RemoveListener(CloseMenu);
-            }
         }
     }
 
@@ -114,6 +110,10 @@ public class MenuButton : MonoBehaviour
     {
         panelTween?.Kill();
         backdropTween?.Kill();
+        if (backdropDisableCoroutine != null)
+        {
+            StopCoroutine(backdropDisableCoroutine);
+        }
     }
 
     private void OpenMenu()
@@ -122,8 +122,21 @@ public class MenuButton : MonoBehaviour
         if (backdrop == null || menuPanel == null) return;
         if (isMenuOpen) return; // 既に開いている場合は何もしない
 
-        // アニメーション中はボタンを無効化
+        // アニメーション中はボタンを無効化（backdropButtonを最初に無効化）
+        if (backdropButton != null)
+        {
+            backdropButton.interactable = false;
+        }
         SetButtonsEnabled(false);
+
+        // 既存のコルーチンを停止
+        if (backdropDisableCoroutine != null)
+        {
+            StopCoroutine(backdropDisableCoroutine);
+        }
+        
+        // animationDuration秒後にbackdropButtonを有効化
+        backdropDisableCoroutine = StartCoroutine(EnableBackdropButtonAfterDelay());
 
         // Backdropを表示してフェードイン
         backdrop.SetActive(true);
@@ -145,6 +158,7 @@ public class MenuButton : MonoBehaviour
             .OnComplete(() =>
             {
                 // アニメーション完了後、クローズボタンを有効化（メニューボタンは無効のまま）
+                // backdropButtonはコルーチンで有効化される
                 if (closeButton != null)
                 {
                     closeButton.interactable = true;
@@ -164,6 +178,18 @@ public class MenuButton : MonoBehaviour
         if (!initialized) return;
         if (menuPanel == null || backdrop == null) return;
         if (!isMenuOpen) return; // 既に閉じている場合は何もしない
+        
+        // メニューが開くアニメーション中は何もしない（panelTweenがアクティブでisMenuOpenがfalseの場合）
+        if (panelTween != null && panelTween.IsActive() && !isMenuOpen)
+        {
+            return;
+        }
+        
+        // backdropButtonが無効化されている場合は何もしない（アニメーション中）
+        if (backdropButton != null && !backdropButton.interactable)
+        {
+            return;
+        }
 
         // アニメーション中はボタンを無効化
         SetButtonsEnabled(false);
@@ -214,7 +240,22 @@ public class MenuButton : MonoBehaviour
     }
 
     /// <summary>
-    /// メニューボタンとクローズボタンの有効/無効を設定します
+    /// animationDuration秒後にbackdropButtonを有効化します
+    /// </summary>
+    private IEnumerator EnableBackdropButtonAfterDelay()
+    {
+        yield return new WaitForSeconds(animationDuration);
+        
+        if (backdropButton != null && isMenuOpen)
+        {
+            backdropButton.interactable = true;
+        }
+        
+        backdropDisableCoroutine = null;
+    }
+
+    /// <summary>
+    /// メニューボタン、クローズボタン、バックドロップボタンの有効/無効を設定します
     /// </summary>
     private void SetButtonsEnabled(bool enabled)
     {
@@ -225,6 +266,10 @@ public class MenuButton : MonoBehaviour
         if (closeButton != null)
         {
             closeButton.interactable = enabled;
+        }
+        if (backdropButton != null)
+        {
+            backdropButton.interactable = enabled;
         }
     }
 }
