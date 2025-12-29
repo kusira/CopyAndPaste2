@@ -21,6 +21,9 @@ public class ProgressManager : MonoBehaviour
     [Tooltip("ステージデータベース。ここからステージデータを取得します")]
     [SerializeField] private StageDatabase stageDatabase;
 
+    [Tooltip("GridMonitorへの参照（未設定の場合は自動検索します）")]
+    [SerializeField] private GridMonitor gridMonitor;
+
     [Header("Layout Settings")]
     [Tooltip("アイテム間の間隔")]
     [SerializeField] private float itemSpacing = 70;
@@ -32,10 +35,11 @@ public class ProgressManager : MonoBehaviour
     [Tooltip("すべてAcquiredになったときにリザルトを表示するコンポーネント")]
     [SerializeField] private ResultShower resultShower;
 
-    private List<ProgressItemData> createdProgressItems = new List<ProgressItemData>();
+    [Header("Sound Settings")]
+    private CuePlay successCuePlay; // "Success(CriAtomSource)"のCuePlay
 
-    // Acquired時のSE用のCuePlay（キャッシュ）
-    private CuePlay successCuePlay;
+    private List<ProgressItemData> createdProgressItems = new List<ProgressItemData>();
+    private HashSet<Vector2Int> currentlyGlowingRockPositions = new HashSet<Vector2Int>(); // 現在光っている岩の座標リスト
 
     /// <summary>
     /// Progressアイテムのデータを保持するクラス
@@ -63,29 +67,43 @@ public class ProgressManager : MonoBehaviour
     {
         CreateProgressItems();
 
-        // Success(CriAtomSource)オブジェクトを検索してCuePlayを取得
-        FindSuccessCuePlay();
+        // GridMonitorが設定されていない場合は自動検索
+        if (gridMonitor == null)
+        {
+            gridMonitor = FindFirstObjectByType<GridMonitor>();
+        }
+
+        // Success SE用CuePlayを検索してキャッシュ
+        successCuePlay = FindCuePlayInGameObject("Success(CriAtomSource)");
     }
 
+    // Update()メソッドは削除（現在は使用していません）
+    // private void Update()
+    // {
+    //     // GridMonitorから現在条件を満たしている座標リストを取得して、現在光っている岩の座標リストを更新
+    //     if (gridMonitor != null)
+    //     {
+    //         currentlyGlowingRockPositions = gridMonitor.GetCurrentlySatisfiedPositions();
+    //     }
+    // }
+
     /// <summary>
-    /// Success(CriAtomSource)オブジェクトを検索してCuePlayを取得します
+    /// 指定されたGameObject名を持つオブジェクトからCuePlayコンポーネントを検索します
     /// </summary>
-    private void FindSuccessCuePlay()
+    private CuePlay FindCuePlayInGameObject(string gameObjectName)
     {
-        // シーン内から"Success(CriAtomSource)"という名前のオブジェクトを検索
-        GameObject successObj = GameObject.Find("Success(CriAtomSource)");
-        if (successObj != null)
+        GameObject obj = GameObject.Find(gameObjectName);
+        if (obj != null)
         {
-            successCuePlay = successObj.GetComponent<CuePlay>();
-            if (successCuePlay == null)
+            CuePlay cp = obj.GetComponent<CuePlay>();
+            if (cp == null)
             {
-                Debug.LogWarning("ProgressManager: Success(CriAtomSource)にCuePlayコンポーネントが見つかりませんでした");
+                Debug.LogWarning($"ProgressManager: GameObject '{gameObjectName}' に CuePlay コンポーネントが見つかりません。");
             }
+            return cp;
         }
-        else
-        {
-            Debug.LogWarning("ProgressManager: Success(CriAtomSource)オブジェクトが見つかりませんでした");
-        }
+        Debug.LogWarning($"ProgressManager: GameObject '{gameObjectName}' がシーンに見つかりません。");
+        return null;
     }
 
     /// <summary>
@@ -290,6 +308,9 @@ public class ProgressManager : MonoBehaviour
     /// </summary>
     public void SetProgressAcquired(Vector2Int gridPosition, string patternKey)
     {
+        // 変化前のAcquired数を記録
+        int beforeAcquiredCount = GetTotalAcquiredCount();
+
         // 指定されたパターンキーに対応するアイテムのみをフィルタリング
         List<ProgressItemData> filteredItems = new List<ProgressItemData>();
         foreach (var item in createdProgressItems)
@@ -335,16 +356,25 @@ public class ProgressManager : MonoBehaviour
                 targetItem.isGlowing = true;
                 targetItem.isAcquired = true;
                 
-                // アニメーションなしで状態を設定
-                SetProgressItemState(targetItem.gameObject, true, false);
-
-                // Acquired時のSEを再生
-                if (successCuePlay != null)
+                // 変化後のAcquired数を記録
+                int afterAcquiredCount = GetTotalAcquiredCount();
+                
+                // Acquired数が増加している場合のみSuccess SEを再生
+                if (afterAcquiredCount > beforeAcquiredCount)
                 {
-                    successCuePlay.PlaySound();
+                    if (successCuePlay != null)
+                    {
+                        successCuePlay.PlaySound();
+                        Debug.Log($"ProgressManager: Success SEを再生しました（Acquired数: {beforeAcquiredCount} → {afterAcquiredCount}）");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("ProgressManager: SuccessのCuePlayが設定されていません。");
+                    }
                 }
                 
-                Debug.Log($"ProgressManager: {targetItem.patternKey}行の{targetItem.patternKey} at ({targetItem.gridPosition.x}, {targetItem.gridPosition.y}) をGlow(Acquired)にしました");
+                // アニメーションなしで状態を設定
+                SetProgressItemState(targetItem.gameObject, true, false); 
 
                 // すべてのProgressがAcquiredになったかチェック
                 if (IsAllAcquired())
@@ -366,6 +396,22 @@ public class ProgressManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 現在AcquiredになっているProgressアイテムの総数を取得します
+    /// </summary>
+    private int GetTotalAcquiredCount()
+    {
+        int count = 0;
+        foreach (var item in createdProgressItems)
+        {
+            if (item != null && item.isAcquired)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     /// <summary>

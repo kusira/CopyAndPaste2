@@ -142,8 +142,6 @@ public class RockPatternAssigner : MonoBehaviour
             return;
         }
 
-        Debug.Log($"{name}: SetEmissionEnabled呼び出し。enabled={enabled}, animate={animate}");
-
         // 既存のTweenがあれば停止
         if (emissionTween != null && emissionTween.IsActive())
         {
@@ -184,7 +182,6 @@ public class RockPatternAssigner : MonoBehaviour
             if (animate)
             {
                 // HDR値を現在値→最大値とアニメーション
-                Debug.Log($"{name}: Emissionアニメーション開始。現在HDR: {currentHDR}, 目標HDR: {emissionMaxHDR}");
                 emissionTween = DOTween.To(
                     () => currentHDR,
                     hdr => {
@@ -199,7 +196,6 @@ public class RockPatternAssigner : MonoBehaviour
             {
                 // 即座に最大値に設定
                 Color emissionColor = baseColor * emissionMaxHDR;
-                Debug.Log($"{name}: Emission即座に設定。HDR: {emissionMaxHDR}, カラー: {emissionColor}");
                 patternRenderer.color = emissionColor;
             }
         }

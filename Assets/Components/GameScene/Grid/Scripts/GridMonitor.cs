@@ -41,6 +41,7 @@ public class GridMonitor : MonoBehaviour
     private float lastCheckTime = 0f;
     private HashSet<string> acquiredProgressKeys = new HashSet<string>();
     private HashSet<Vector2Int> currentlySatisfiedPositions = new HashSet<Vector2Int>();
+    private HashSet<Vector2Int> lastReturnedSatisfiedPositions = new HashSet<Vector2Int>(); // 前回返した座標を保持
     private Bloom bloomEffect;
     private Tween bloomTween;
 
@@ -241,6 +242,7 @@ public class GridMonitor : MonoBehaviour
     {
         acquiredProgressKeys.Clear();
         currentlySatisfiedPositions.Clear();
+        lastReturnedSatisfiedPositions.Clear();
         
         // すべてのRockのEmissionColorをリセット
         if (rockParent != null)
@@ -635,6 +637,60 @@ public class GridMonitor : MonoBehaviour
         currentlySatisfiedPositions = satisfiedPositions;
     }
 
+    /// <summary>
+    /// 外部から呼び出して、前回の呼び出し以降に「新しく条件を満たした」岩だけを返します。
+    /// 新しく条件を満たした岩のリストをDebug.Logで出力します。
+    /// </summary>
+    /// <returns>新しく条件を満たしたRockのGameObjectリスト</returns>
+    public List<GameObject> GetNewlySatisfiedRocks()
+    {
+        var result = new List<GameObject>();
+
+        // 現在条件を満たしている座標のうち、前回返していないものだけを抽出
+        foreach (var pos in currentlySatisfiedPositions)
+        {
+            if (!lastReturnedSatisfiedPositions.Contains(pos))
+            {
+                GameObject rock = GetRockAtPosition(pos);
+                if (rock != null)
+                {
+                    result.Add(rock);
+                }
+            }
+        }
+
+        // Debug.Logで新しく条件を満たした岩のリストを出力
+        if (result.Count > 0)
+        {
+            string logMessage = $"GridMonitor: 新しく条件を満たした岩の数: {result.Count}\n";
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (result[i] != null)
+                {
+                    logMessage += $"  [{i + 1}] {result[i].name}\n";
+                }
+            }
+            Debug.Log(logMessage);
+        }
+        else
+        {
+            Debug.Log("GridMonitor: 新しく条件を満たした岩はありません。");
+        }
+
+        // 今回の状態を「前回の状態」として保存しておく
+        lastReturnedSatisfiedPositions = new HashSet<Vector2Int>(currentlySatisfiedPositions);
+
+        return result;
+    }
+
+    /// <summary>
+    /// 現在条件を満たしている座標のリストを返します（外部から呼び出し用）
+    /// </summary>
+    /// <returns>現在条件を満たしている座標のHashSet</returns>
+    public HashSet<Vector2Int> GetCurrentlySatisfiedPositions()
+    {
+        return new HashSet<Vector2Int>(currentlySatisfiedPositions);
+    }
 
     private void OnDestroy()
     {
