@@ -35,9 +35,6 @@ public class ProgressManager : MonoBehaviour
     [Tooltip("すべてAcquiredになったときにリザルトを表示するコンポーネント")]
     [SerializeField] private ResultShower resultShower;
 
-    [Header("Sound Settings")]
-    private CuePlay successCuePlay; // "Success(CriAtomSource)"のCuePlay
-
     private List<ProgressItemData> createdProgressItems = new List<ProgressItemData>();
     private HashSet<Vector2Int> currentlyGlowingRockPositions = new HashSet<Vector2Int>(); // 現在光っている岩の座標リスト
 
@@ -72,20 +69,7 @@ public class ProgressManager : MonoBehaviour
         {
             gridMonitor = FindFirstObjectByType<GridMonitor>();
         }
-
-        // Success SE用CuePlayを検索してキャッシュ
-        successCuePlay = FindCuePlayInGameObject("Success(CriAtomSource)");
     }
-
-    // Update()メソッドは削除（現在は使用していません）
-    // private void Update()
-    // {
-    //     // GridMonitorから現在条件を満たしている座標リストを取得して、現在光っている岩の座標リストを更新
-    //     if (gridMonitor != null)
-    //     {
-    //         currentlyGlowingRockPositions = gridMonitor.GetCurrentlySatisfiedPositions();
-    //     }
-    // }
 
     /// <summary>
     /// 指定されたGameObject名を持つオブジェクトからCuePlayコンポーネントを検索します
@@ -358,20 +342,6 @@ public class ProgressManager : MonoBehaviour
                 
                 // 変化後のAcquired数を記録
                 int afterAcquiredCount = GetTotalAcquiredCount();
-                
-                // Acquired数が増加している場合のみSuccess SEを再生
-                if (afterAcquiredCount > beforeAcquiredCount)
-                {
-                    if (successCuePlay != null)
-                    {
-                        successCuePlay.PlaySound();
-                        Debug.Log($"ProgressManager: Success SEを再生しました（Acquired数: {beforeAcquiredCount} → {afterAcquiredCount}）");
-                    }
-                    else
-                    {
-                        Debug.LogWarning("ProgressManager: SuccessのCuePlayが設定されていません。");
-                    }
-                }
                 
                 // アニメーションなしで状態を設定
                 SetProgressItemState(targetItem.gameObject, true, false); 
