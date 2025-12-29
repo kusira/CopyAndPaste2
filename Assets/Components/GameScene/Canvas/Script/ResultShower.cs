@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using CriWare;
 
 /// <summary>
 /// すべてのProgressがAcquiredになったときにリザルトを表示するクラス
@@ -86,6 +87,19 @@ public class ResultShower : MonoBehaviour
     [Tooltip("各UI要素のアニメーション設定")]
     [SerializeField] private List<AnimationItemData> animationItems = new List<AnimationItemData>();
 
+    [Header("BGM Crossfade Settings")]
+    [Tooltip("クリア時に停止するCuePlayのリスト（フェードアウト）")]
+    [SerializeField] private List<CuePlay> fadeOutCuePlays = new List<CuePlay>();
+
+    [Tooltip("クリア時に再生するCuePlay（フェードイン）")]
+    [SerializeField] private CuePlay fadeInCuePlay;
+
+    [Tooltip("フェードアウトの時間（秒）")]
+    [SerializeField] private float fadeOutDuration = 0.5f;
+
+    [Tooltip("フェードインの時間（秒）")]
+    [SerializeField] private float fadeInDuration = 0.3f;
+
     private bool isShown = false;
     private bool isResultShowing = false;
     private DepthOfField dofEffect;
@@ -156,6 +170,9 @@ public class ResultShower : MonoBehaviour
         {
             yield return new WaitForSeconds(initialWaitSeconds);
         }
+
+        // step1.5: BGMのクロスフェードを開始
+        yield return StartCoroutine(CrossfadeBGM());
 
         // step2: DOFのFocal LengthとBackdropを同時にアニメーション
         Sequence dofAndBackdropSequence = DOTween.Sequence();
@@ -347,6 +364,83 @@ public class ResultShower : MonoBehaviour
         if (CharacterVibrator.Instance != null)
         {
             CharacterVibrator.Instance.SetVibrationEnabled(true);
+        }
+    }
+
+    /// <summary>
+    /// BGMをクロスフェードします（複数のCuePlayをフェードアウト、1つのCuePlayをフェードイン）
+    /// </summary>
+    private IEnumerator CrossfadeBGM()
+    {
+        // 各CuePlayからCriAtomSourceを取得して元の音量を保存
+        Dictionary<CriAtomSource, float> fadeOutAtomSources = new Dictionary<CriAtomSource, float>();
+        foreach (var cuePlay in fadeOutCuePlays)
+        {
+            if (cuePlay != null)
+            {
+                CriAtomSource atomSource = cuePlay.GetComponent<CriAtomSource>();
+                if (atomSource != null)
+                {
+                    float originalVolume = atomSource.volume;
+                    fadeOutAtomSources[atomSource] = originalVolume;
+                }
+            }
+        }
+
+        // フェードインするCuePlayのCriAtomSourceを取得
+        CriAtomSource fadeInAtomSource = null;
+        if (fadeInCuePlay != null)
+        {
+            fadeInAtomSource = fadeInCuePlay.GetComponent<CriAtomSource>();
+        }
+
+        // フェードインするCuePlayを再生（音量0で開始）
+        if (fadeInAtomSource != null)
+        {
+            float originalVolume = fadeInAtomSource.volume;
+            fadeInAtomSource.volume = 0f;
+            fadeInCuePlay.PlaySound();
+        }
+
+        // クロスフェードアニメーション
+        Sequence crossfadeSequence = DOTween.Sequence();
+
+        // フェードアウト：複数のCuePlayの音量を0に
+        foreach (var kvp in fadeOutAtomSources)
+        {
+            CriAtomSource atomSource = kvp.Key;
+            float originalVolume = kvp.Value;
+            crossfadeSequence.Join(DOTween.To(
+                () => atomSource.volume,
+                x => atomSource.volume = x,
+                0f,
+                fadeOutDuration
+            ).SetEase(Ease.Linear));
+        }
+
+        // フェードイン：1つのCuePlayの音量を目標値に
+        if (fadeInAtomSource != null)
+        {
+            // 元の音量を取得（PlayerPrefsからBGM音量を取得）
+            float targetVolume = PlayerPrefs.HasKey("VolumeManager_BGM") ? PlayerPrefs.GetFloat("VolumeManager_BGM") : 1f;
+            
+            crossfadeSequence.Join(DOTween.To(
+                () => fadeInAtomSource.volume,
+                x => fadeInAtomSource.volume = x,
+                targetVolume,
+                fadeInDuration
+            ).SetEase(Ease.Linear));
+        }
+
+        yield return crossfadeSequence.WaitForCompletion();
+
+        // フェードアウト完了後に古いCuePlayを停止
+        foreach (var cuePlay in fadeOutCuePlays)
+        {
+            if (cuePlay != null)
+            {
+                cuePlay.PlayAndStopSound(); // 停止
+            }
         }
     }
 }

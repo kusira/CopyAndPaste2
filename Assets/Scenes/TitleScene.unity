@@ -6611,7 +6611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a266917ece02a8144b6656d980e95fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrentGameStatus
-  currentStageIndex: 0
+  currentStageIndex: 1
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
   maxReachedStageIndex: 1
 --- !u!4 &1638611067

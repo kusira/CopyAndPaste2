@@ -256,6 +256,59 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &99334567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 99334569}
+  - component: {fileID: 99334568}
+  m_Layer: 0
+  m_Name: CRIWARE
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &99334568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99334567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f529aa944b914449d62b8c40f188fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtom
+  acfFile: CopyAndPaste.acf
+  cueSheets:
+  - name: CueSheet
+    acbFile: CueSheet.acb
+    awbFile: CueSheet.awb
+    loaderStatus: 0
+  dspBusSetting: 
+  dontDestroyOnLoad: 0
+  dontRemoveExistsCueSheet: 0
+--- !u!4 &99334569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99334567}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 436.3026, y: 440.65118, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &254309476
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,7 +475,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 303881767}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1986929706}
+        m_TargetAssemblyTypeName: CuePlay, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &303881766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,6 +503,7 @@ MonoBehaviour:
   moveOffset: 20
   animationDuration: 0.3
   easing: 6
+  cuePlay: {fileID: 699338795}
 --- !u!114 &303881767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +542,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303881762}
   m_CullTransparentMesh: 1
+--- !u!1001 &432580025
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 275618117726108996, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: bgmAtomSources.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 275618117726108996, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: 'bgmAtomSources.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1910829460}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 960
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 540
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800534404562693040, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: m_Name
+      value: Sound
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1910829461}
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+--- !u!114 &699338795 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3145172532026657822, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+  m_PrefabInstance: {fileID: 432580025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11fa3ae2f0099be48b1bf9d480f09a18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CuePlay
 --- !u!1 &847030243
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,6 +1280,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1583028953}
   m_CullTransparentMesh: 1
+--- !u!4 &1601219176 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+  m_PrefabInstance: {fileID: 432580025}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1727242887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,6 +1436,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1727242887}
   m_CullTransparentMesh: 1
+--- !u!1 &1910829459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1910829461}
+  - component: {fileID: 1910829460}
+  m_Layer: 0
+  m_Name: ClearResult_Intro(CriAtomSource)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1910829460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910829459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomSource
+  _playOnStart: 1
+  _regionOnStart: {fileID: 0}
+  _listenerOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _freezeOrientation: 0
+  _loop: 1
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
+  _use3dRandomization: 0
+  _randomPositionListMaxLength: 0
+  randomize3dConfig:
+    followsOriginalSource: 0
+    calculationType: 0
+    calculationParameters:
+    - 0
+    - 0
+    - 0
+  _cueName: ClearResult_Intro
+  _cueSheet: CueSheet
+--- !u!4 &1910829461
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910829459}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -960, y: -540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1601219176}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1976459991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,6 +1576,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1976459991}
   m_CullTransparentMesh: 1
+--- !u!114 &1986929706 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4036490282656133361, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+  m_PrefabInstance: {fileID: 432580025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11fa3ae2f0099be48b1bf9d480f09a18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CuePlay
 --- !u!1 &2034709783
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,7 +1671,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2034709787}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1986929706}
+        m_TargetAssemblyTypeName: CuePlay, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2034709786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1461,6 +1699,7 @@ MonoBehaviour:
   moveOffset: 20
   animationDuration: 0.3
   easing: 6
+  cuePlay: {fileID: 699338795}
 --- !u!114 &2034709787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1662,7 +1901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CurrentGameStatus
   currentStageIndex: 0
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
-  maxReachedStageIndex: 0
+  maxReachedStageIndex: 1
 --- !u!4 &2144105782
 Transform:
   m_ObjectHideFlags: 0
@@ -1687,3 +1926,5 @@ SceneRoots:
   - {fileID: 847030246}
   - {fileID: 2144105782}
   - {fileID: 254309478}
+  - {fileID: 432580025}
+  - {fileID: 99334569}

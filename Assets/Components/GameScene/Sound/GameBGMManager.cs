@@ -14,6 +14,9 @@ public class GameBGMManager : MonoBehaviour
 
         [Tooltip("このワールドで再生するCuePlayオブジェクト（CriAtomSourceがアサインされている必要があります）")]
         public CuePlay cuePlay;
+
+        [Tooltip("このBGMを流す最大ステージインデックス（CurrentIndexがこの値以下の場合にこのBGMが流れます）")]
+        public int maxStageIndex = 0;
     }
 
     [Header("ワールド別BGM設定")]
@@ -47,41 +50,43 @@ public class GameBGMManager : MonoBehaviour
             return;
         }
 
-        // 現在のステージデータを取得
-        var stageData = currentGameStatus.GetCurrentStageData();
-        if (stageData == null)
-        {
-            Debug.LogWarning("GameBGMManager: ステージデータが取得できませんでした。");
-            return;
-        }
+        // 現在のステージインデックスを取得
+        int currentStageIndex = currentGameStatus.GetCurrentStageIndex();
 
-        // ワールドラベルを取得
-        string worldLabel = stageData.worldLabel;
-        if (string.IsNullOrEmpty(worldLabel))
-        {
-            Debug.LogWarning("GameBGMManager: ワールドラベルが設定されていません。");
-            return;
-        }
+        // maxStageIndexでソートされたリストを作成（小さい順）
+        List<WorldBGMData> sortedList = new List<WorldBGMData>(worldBGMList);
+        sortedList.Sort((a, b) => a.maxStageIndex.CompareTo(b.maxStageIndex));
 
-        // 対応するCuePlayを検索
+        // 現在のステージインデックスが範囲内にあるBGMを検索
         CuePlay targetCuePlay = null;
-        foreach (var worldBGM in worldBGMList)
+        int selectedMaxIndex = -1;
+        int minStageIndex = 0; // 最初のBGMの最小値は0
+
+        foreach (var worldBGM in sortedList)
         {
-            if (worldBGM.worldLabel == worldLabel)
+            if (worldBGM.cuePlay == null) continue;
+
+            // 現在のステージインデックスがこのBGMの範囲内にあるかチェック
+            // 範囲: minStageIndex から worldBGM.maxStageIndex まで
+            if (currentStageIndex >= minStageIndex && currentStageIndex <= worldBGM.maxStageIndex)
             {
                 targetCuePlay = worldBGM.cuePlay;
-                break;
+                selectedMaxIndex = worldBGM.maxStageIndex;
+                break; // 最初に見つかったBGMを使用
             }
+
+            // 次のBGMの最小値は、現在のBGMのmaxStageIndex + 1
+            minStageIndex = worldBGM.maxStageIndex + 1;
         }
 
         if (targetCuePlay != null)
         {
             targetCuePlay.PlaySound();
-            Debug.Log($"GameBGMManager: ワールド '{worldLabel}' のBGMを再生開始しました");
+            Debug.Log($"GameBGMManager: ステージインデックス {currentStageIndex} に対応するBGMを再生開始しました（maxStageIndex: {selectedMaxIndex}）");
         }
         else
         {
-            Debug.LogWarning($"GameBGMManager: ワールド '{worldLabel}' に対応するCuePlayが見つかりませんでした。");
+            Debug.LogWarning($"GameBGMManager: ステージインデックス {currentStageIndex} に対応するCuePlayが見つかりませんでした。");
         }
     }
 
