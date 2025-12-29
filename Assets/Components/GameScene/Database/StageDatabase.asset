@@ -68,7 +68,7 @@ MonoBehaviour:
     - height: 2
       width: 2
       type: 0
-    gridParentScaleXY: 1
+    gridParentScaleXY: 1.25
     tutorialDisplayType: 1
   - stageName: Stage 1-2
     worldLabel: World1

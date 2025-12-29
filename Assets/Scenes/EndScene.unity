@@ -2091,7 +2091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CurrentGameStatus
   currentStageIndex: 0
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
-  maxReachedStageIndex: 3
+  maxReachedStageIndex: 0
 --- !u!4 &2144105782
 Transform:
   m_ObjectHideFlags: 0
@@ -2114,7 +2114,6 @@ SceneRoots:
   - {fileID: 49355333}
   - {fileID: 1580286087}
   - {fileID: 847030246}
-  - {fileID: 2144105782}
   - {fileID: 254309478}
   - {fileID: 1872445934}
   - {fileID: 432580025}
@@ -2122,3 +2121,4 @@ SceneRoots:
   - {fileID: 1026283728}
   - {fileID: 1956145905}
   - {fileID: 321555421}
+  - {fileID: 2144105782}

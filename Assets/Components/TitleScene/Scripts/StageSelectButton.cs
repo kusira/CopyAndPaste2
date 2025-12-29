@@ -19,6 +19,14 @@ public class StageSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [Tooltip("Easingタイプ")]
     [SerializeField] private Ease easing = Ease.OutQuad;
 
+    [Header("Stage Settings")]
+    [Tooltip("このボタンが対応するステージインデックス（0から開始）")]
+    [SerializeField] private int stageIndex = 0;
+
+    [Header("References")]
+    [Tooltip("CurrentGameStatus（未設定の場合は自動検索します）")]
+    [SerializeField] private CurrentGameStatus currentGameStatus;
+
     private RectTransform rectTransform;
     private Button button;
     private Vector3 originalRotation;
@@ -40,6 +48,43 @@ public class StageSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         // 自身のButtonコンポーネントを取得
         button = GetComponent<Button>();
+    }
+
+    private void Start()
+    {
+        // CurrentGameStatusが設定されていない場合は自動検索
+        if (currentGameStatus == null)
+        {
+            currentGameStatus = FindFirstObjectByType<CurrentGameStatus>();
+        }
+
+        // MaxReachedStageIndexを超過している場合はボタンを無効化
+        UpdateButtonState();
+    }
+
+    /// <summary>
+    /// ボタンの有効/無効状態を更新します（MaxReachedStageIndexに基づく）
+    /// </summary>
+    private void UpdateButtonState()
+    {
+        if (button == null) return;
+
+        if (currentGameStatus == null)
+        {
+            // CurrentGameStatusが見つからない場合は無効化
+            button.interactable = false;
+            Debug.LogWarning("StageSelectButton: CurrentGameStatus が見つかりませんでした。ボタンを無効化します。");
+            return;
+        }
+
+        // 到達したステージの最大値を取得
+        int maxReachedIndex = currentGameStatus.GetMaxReachedStageIndex();
+
+        // ステージインデックスがMaxReachedStageIndex以下の場合のみ有効化
+        bool shouldBeInteractable = (stageIndex <= maxReachedIndex);
+        button.interactable = shouldBeInteractable;
+
+        Debug.Log($"StageSelectButton: ステージ{stageIndex}のボタンは、MaxReachedStageIndex({maxReachedIndex})に基づいて{(shouldBeInteractable ? "有効" : "無効")}に設定されました。");
     }
 
     private void OnDestroy()
