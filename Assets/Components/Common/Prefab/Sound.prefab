@@ -1480,6 +1480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6775164016153046773}
+  - component: {fileID: 275618117726108996}
   m_Layer: 0
   m_Name: Sound
   m_TagString: Untagged
@@ -1504,6 +1505,38 @@ Transform:
   - {fileID: 6170226168944863016}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &275618117726108996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8800534404562693040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf6a518dec9d254fbafee067caf9b45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  bgmPrefKey: VolumeManager_BGM
+  sePrefKey: VolumeManager_SE
+  bgmAtomSources: []
+  seAtomSources:
+  - {fileID: 2346522376800009037}
+  - {fileID: 957182401301636483}
+  - {fileID: 8972853156959298034}
+  - {fileID: 5323149305974429251}
+  - {fileID: 3943343762324456724}
+  - {fileID: 3248803510697954706}
+  - {fileID: 7408767459291991303}
+  - {fileID: 7291442328406672998}
+  - {fileID: 8284901827038764665}
+  - {fileID: 1228695909350399245}
+  - {fileID: 7499686536477199771}
+  - {fileID: 1037808229746087362}
+  - {fileID: 6987463378379182209}
+  - {fileID: 4371405392365161746}
+  - {fileID: 2400749147609847005}
+  - {fileID: 3274875505700915877}
 --- !u!1 &9075048888671236353
 GameObject:
   m_ObjectHideFlags: 0

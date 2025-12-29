@@ -94,6 +94,12 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
     // 論理サイズ（グリッド上のサイズ）を保持。未設定(0,0)の場合はtransform.localScaleを使用（互換性のため）
     private Vector2Int logicalSize = Vector2Int.zero;
     
+    // ホバー時のSE用のCuePlay（キャッシュ）
+    private CuePlay puzzleCursurCuePlay;
+    
+    // クリック時のSE用のCuePlay（キャッシュ）
+    private CuePlay puzzlePickCuePlay;
+    
     // このアイテムのインデックス（StickyNotesGeneratorで設定される）
     [SerializeField] private int itemIndex = -1;
 
@@ -130,6 +136,54 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
 
         // RSItemMassを生成
         GenerateItemMasses();
+
+        // PuzzleCursur(CriAtomSource)オブジェクトを検索してCuePlayを取得
+        FindPuzzleCursurCuePlay();
+        
+        // Puzzle_Pick(CriAtomSource)オブジェクトを検索してCuePlayを取得
+        FindPuzzlePickCuePlay();
+    }
+
+    /// <summary>
+    /// PuzzleCursur(CriAtomSource)オブジェクトを検索してCuePlayを取得します
+    /// </summary>
+    private void FindPuzzleCursurCuePlay()
+    {
+        // シーン内から"PuzzleCursur(CriAtomSource)"という名前のオブジェクトを検索
+        GameObject puzzleCursurObj = GameObject.Find("PuzzleCursur(CriAtomSource)");
+        if (puzzleCursurObj != null)
+        {
+            puzzleCursurCuePlay = puzzleCursurObj.GetComponent<CuePlay>();
+            if (puzzleCursurCuePlay == null)
+            {
+                Debug.LogWarning("StickyNoteBehavior: PuzzleCursur(CriAtomSource)にCuePlayコンポーネントが見つかりませんでした");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("StickyNoteBehavior: PuzzleCursur(CriAtomSource)オブジェクトが見つかりませんでした");
+        }
+    }
+
+    /// <summary>
+    /// Puzzle_Pick(CriAtomSource)オブジェクトを検索してCuePlayを取得します
+    /// </summary>
+    private void FindPuzzlePickCuePlay()
+    {
+        // シーン内から"Puzzle_Pick(CriAtomSource)"という名前のオブジェクトを検索
+        GameObject puzzlePickObj = GameObject.Find("Puzzle_Pick(CriAtomSource)");
+        if (puzzlePickObj != null)
+        {
+            puzzlePickCuePlay = puzzlePickObj.GetComponent<CuePlay>();
+            if (puzzlePickCuePlay == null)
+            {
+                Debug.LogWarning("StickyNoteBehavior: Puzzle_Pick(CriAtomSource)にCuePlayコンポーネントが見つかりませんでした");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("StickyNoteBehavior: Puzzle_Pick(CriAtomSource)オブジェクトが見つかりませんでした");
+        }
     }
 
     /// <summary>
@@ -477,6 +531,12 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
             return;
         }
 
+        // クリック時のSEを再生
+        if (puzzlePickCuePlay != null)
+        {
+            puzzlePickCuePlay.PlaySound();
+        }
+
         // すでにこのアイテムが選択されている場合は何もしない
         if (currentSelectedItem == this)
         {
@@ -543,6 +603,12 @@ public class StickyNoteBehavior : MonoBehaviour, IPointerDownHandler, IPointerEn
         if (selection != null)
         {
             selection.SetActive(true);
+        }
+
+        // ホバー時のSEを再生
+        if (puzzleCursurCuePlay != null)
+        {
+            puzzleCursurCuePlay.PlaySound();
         }
     }
 

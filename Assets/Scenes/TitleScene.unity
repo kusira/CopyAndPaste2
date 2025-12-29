@@ -2926,7 +2926,7 @@ PrefabInstance:
     - target: {fileID: 2975398605706241516, guid: 620477212116d294494358c3c87242d0, type: 3}
       propertyPath: sliderPreviewAtomSource
       value: 
-      objectReference: {fileID: 753199903}
+      objectReference: {fileID: 2819816748938223692}
     - target: {fileID: 2975398605706241516, guid: 620477212116d294494358c3c87242d0, type: 3}
       propertyPath: 'seAtomSources.Array.data[0]'
       value: 
@@ -2981,17 +2981,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 471499013125479845, guid: 620477212116d294494358c3c87242d0, type: 3}
   m_PrefabInstance: {fileID: 710069478}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &753199903 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 265885905798053648, guid: 620477212116d294494358c3c87242d0, type: 3}
-  m_PrefabInstance: {fileID: 710069478}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomSource
 --- !u!1 &765571912
 GameObject:
   m_ObjectHideFlags: 0
@@ -8507,6 +8496,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 275618117726108996, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: bgmAtomSources.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 275618117726108996, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+      propertyPath: 'bgmAtomSources.Array.data[0]'
+      value: 
+      objectReference: {fileID: 851284504}
     - target: {fileID: 6775164016153046773, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
       propertyPath: m_LocalPosition.x
       value: 523.6974
@@ -8559,6 +8556,17 @@ PrefabInstance:
       addedObject: {fileID: 851284503}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+--- !u!114 &2819816748938223692 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5323149305974429251, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}
+  m_PrefabInstance: {fileID: 2819816748938223691}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomSource
 --- !u!114 &9014955084257354024 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3145172532026657822, guid: 14f2d4650eab9d449bc60582e5ac4952, type: 3}

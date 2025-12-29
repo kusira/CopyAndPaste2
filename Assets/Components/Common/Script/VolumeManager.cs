@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using CriWare;
-using System.Collections.Generic;
 
 namespace Components.Game.Canvas.Scripts
 {
@@ -15,14 +14,10 @@ namespace Components.Game.Canvas.Scripts
         [Header("BGM Settings")]
         [SerializeField] private Slider bgmSlider;
         [SerializeField] private TMP_Text bgmValueText;
-        [Tooltip("BGMの音量を変更する対象のCriAtomSourceのリスト")]
-        [SerializeField] private List<CriAtomSource> bgmAtomSources = new List<CriAtomSource>();
 
         [Header("SE Settings")]
         [SerializeField] private Slider seSlider;
         [SerializeField] private TMP_Text seValueText;
-        [Tooltip("SEの音量を変更する対象のCriAtomSourceのリスト")]
-        [SerializeField] private List<CriAtomSource> seAtomSources = new List<CriAtomSource>();
 
         [Header("スライダー操作時のプレビュー音")]
         [Tooltip("スライダー操作時に鳴らすCriAtomSource（Prefab）")]
@@ -87,17 +82,16 @@ namespace Components.Game.Canvas.Scripts
                 bgmValueText.text = (value * 100f).ToString("F0");
             }
 
-            // BGMのCriAtomSourceリストの音量を更新
-            foreach (var atomSource in bgmAtomSources)
-            {
-                if (atomSource != null)
-                {
-                    atomSource.volume = value;
-                }
-            }
-
+            // PlayerPrefsに保存
             PlayerPrefs.SetFloat(bgmPrefKey, value);
             PlayerPrefs.Save();
+
+            // SoundManagerに通知（存在する場合）
+            SoundManager soundManager = FindFirstObjectByType<SoundManager>();
+            if (soundManager != null)
+            {
+                soundManager.ApplyBGMVolume(value);
+            }
         }
 
         public void SetSEVolume(float value)
@@ -108,17 +102,16 @@ namespace Components.Game.Canvas.Scripts
                 seValueText.text = (value * 100f).ToString("F0");
             }
 
-            // SEのCriAtomSourceリストの音量を更新
-            foreach (var atomSource in seAtomSources)
-            {
-                if (atomSource != null)
-                {
-                    atomSource.volume = value;
-                }
-            }
-
+            // PlayerPrefsに保存
             PlayerPrefs.SetFloat(sePrefKey, value);
             PlayerPrefs.Save();
+
+            // SoundManagerに通知（存在する場合）
+            SoundManager soundManager = FindFirstObjectByType<SoundManager>();
+            if (soundManager != null)
+            {
+                soundManager.ApplySEVolume(value);
+            }
         }
     }
 }
