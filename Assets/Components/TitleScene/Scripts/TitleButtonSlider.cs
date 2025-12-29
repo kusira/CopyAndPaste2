@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using CriWare;
 
 /// <summary>
 /// UI Imageにアサインしてホバー時に左に移動するアニメーションを実装するクラス
@@ -18,6 +19,10 @@ public class TitleButtonSlider : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [Tooltip("Easingタイプ")]
     [SerializeField] private Ease easing = Ease.OutQuad;
 
+    [Header("Sound Settings")]
+    [Tooltip("ホバー時に再生するCuePlayコンポーネント（未設定の場合は同じGameObjectから取得を試みます）")]
+    [SerializeField] private CuePlay cuePlay;
+
     private RectTransform rectTransform;
     private Vector2 originalPosition;
     private Tween positionTween;
@@ -34,6 +39,12 @@ public class TitleButtonSlider : MonoBehaviour, IPointerEnterHandler, IPointerEx
         else
         {
             Debug.LogWarning("MenuButton: RectTransformが見つかりません");
+        }
+
+        // CuePlayが設定されていない場合は同じGameObjectから取得を試みる
+        if (cuePlay == null)
+        {
+            cuePlay = GetComponent<CuePlay>();
         }
     }
 
@@ -57,6 +68,12 @@ public class TitleButtonSlider : MonoBehaviour, IPointerEnterHandler, IPointerEx
         Vector2 targetPosition = originalPosition + new Vector2(-moveOffset, 0f);
         positionTween = rectTransform.DOAnchorPos(targetPosition, animationDuration)
             .SetEase(easing);
+
+        // ホバー時のSEを再生
+        if (cuePlay != null)
+        {
+            cuePlay.PlaySound();
+        }
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using DG.Tweening;
 
 /// <summary>
@@ -19,6 +20,7 @@ public class StageSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] private Ease easing = Ease.OutQuad;
 
     private RectTransform rectTransform;
+    private Button button;
     private Vector3 originalRotation;
     private Tween rotationTween;
     private bool isInitialized = false;
@@ -35,6 +37,9 @@ public class StageSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
             Debug.LogWarning("StageSelectButton: RectTransformが見つかりません");
         }
+
+        // 自身のButtonコンポーネントを取得
+        button = GetComponent<Button>();
     }
 
     private void OnDestroy()
@@ -49,6 +54,12 @@ public class StageSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!isInitialized) return;
+
+        // ボタンがdisabledのときは回転しない
+        if (button != null && !button.interactable)
+        {
+            return;
+        }
 
         // 既存のアニメーションを停止
         rotationTween?.Kill();
@@ -65,6 +76,12 @@ public class StageSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!isInitialized) return;
+
+        // ボタンがdisabledのときは回転しない
+        if (button != null && !button.interactable)
+        {
+            return;
+        }
 
         // 既存のアニメーションを停止
         rotationTween?.Kill();

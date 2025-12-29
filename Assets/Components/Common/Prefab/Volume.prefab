@@ -242,6 +242,7 @@ RectTransform:
   m_Children:
   - {fileID: 1603731074048596461}
   - {fileID: 4541417234752360217}
+  - {fileID: 5996887534587885196}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -261,15 +262,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352415c26897cdc4fb02782a1931cd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.Game.Canvas.Scripts.VolumeManager
-  audioMixer: {fileID: 0}
   bgmPrefKey: BGM
   sePrefKey: SE
   bgmSlider: {fileID: 2445990050743166538}
   bgmValueText: {fileID: 7028498620244772774}
+  bgmAtomSources:
+  - {fileID: 582994221996198750, guid: 7ddbb1a4ffbd1d84ea69999fe7d970b1, type: 3}
   seSlider: {fileID: 53996028250060311}
   seValueText: {fileID: 2102895733080727376}
-  sePreviewAudioSource: {fileID: 0}
-  sePreviewMinIntervalSeconds: 0.08
+  seAtomSources:
+  - {fileID: 5297673327379641630, guid: 33304c5be744ef442bcc026aa8f328d7, type: 3}
+  sliderPreviewAtomSource: {fileID: 265885905798053648}
+  sliderPreviewMinIntervalSeconds: 0.08
 --- !u!1 &2164250762438806964
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +806,71 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5803265229032842448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5996887534587885196}
+  - component: {fileID: 265885905798053648}
+  m_Layer: 0
+  m_Name: SECheck(CriAtomSource)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5996887534587885196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5803265229032842448}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -655.12177, y: -174.18602, z: 0}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 471499013125479845}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &265885905798053648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5803265229032842448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomSource
+  _playOnStart: 0
+  _regionOnStart: {fileID: 0}
+  _listenerOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _freezeOrientation: 0
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
+  _use3dRandomization: 0
+  _randomPositionListMaxLength: 0
+  randomize3dConfig:
+    followsOriginalSource: 0
+    calculationType: 0
+    calculationParameters:
+    - 0
+    - 0
+    - 0
+  _cueName: SECheck
+  _cueSheet: CueSheet
 --- !u!1 &5818421436885121081
 GameObject:
   m_ObjectHideFlags: 0
