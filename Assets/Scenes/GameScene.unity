@@ -5410,10 +5410,13 @@ MonoBehaviour:
   worldBGMList:
   - worldLabel: Glassland
     cuePlay: {fileID: 226192217}
+    maxStageIndex: 4
   - worldLabel: Cave
     cuePlay: {fileID: 407231188}
+    maxStageIndex: 9
   - worldLabel: Magma
     cuePlay: {fileID: 265680774}
+    maxStageIndex: 14
   currentGameStatus: {fileID: 1138846806}
 --- !u!1 &959616786
 GameObject:
