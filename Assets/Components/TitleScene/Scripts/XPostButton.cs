@@ -8,11 +8,15 @@ using UnityEngine.UI;
 public class XPostButton : MonoBehaviour
 {
     [Header("Post Settings")]
-    [Tooltip("Xに投稿する内容（改行は\\nで指定）")]
+    [Tooltip("Xに投稿する内容（改行は\\nで指定、{max}は最大到達ステージインデックスに置き換えられます）")]
     [TextArea(3, 10)]
-    [SerializeField] private string postText = @"『複製妖精コピペちゃん』をプレイしたよ
+    [SerializeField] private string postText = @"『複製妖精コピペちゃん』で{max}個のステージをクリアしました
 #複製妖精コピペちゃん
 https://unityroom.com/games/copipechan";
+
+    [Header("References")]
+    [Tooltip("CurrentGameStatus（未設定の場合は自動検索します）")]
+    [SerializeField] private CurrentGameStatus currentGameStatus;
 
     private Button button;
 
@@ -26,6 +30,15 @@ https://unityroom.com/games/copipechan";
         }
 
         button.onClick.AddListener(OnButtonClicked);
+    }
+
+    private void Start()
+    {
+        // CurrentGameStatusが設定されていない場合は自動検索
+        if (currentGameStatus == null)
+        {
+            currentGameStatus = FindFirstObjectByType<CurrentGameStatus>();
+        }
     }
 
     private void OnDestroy()
@@ -55,8 +68,26 @@ https://unityroom.com/games/copipechan";
             return;
         }
 
+        // CurrentGameStatusが未設定の場合は自動検索
+        if (currentGameStatus == null)
+        {
+            currentGameStatus = FindFirstObjectByType<CurrentGameStatus>();
+        }
+
         // 改行を実際の改行に変換
         string text = postText.Replace("\\n", "\n");
+
+        // {max}を最大到達ステージインデックスに置き換え
+        int maxReachedIndex = 0;
+        if (currentGameStatus != null)
+        {
+            maxReachedIndex = currentGameStatus.GetMaxReachedStageIndex();
+        }
+        else
+        {
+            Debug.LogWarning("XPostButton: CurrentGameStatus が見つかりませんでした。{max}は0に置き換えられます。");
+        }
+        text = text.Replace("{max}", maxReachedIndex.ToString());
 
         // URLエンコード
         string encodedText = System.Uri.EscapeDataString(text);

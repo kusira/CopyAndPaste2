@@ -3323,7 +3323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6a349e1a41c4647bf6fbe7f63e84ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::XPostButton
-  postText: "\u300E\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\u300F\u3092\u30D7\u30EC\u30A4\u3057\u307E\u3057\u305F\uFF01\n\r\n#\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\r\nhttps://unityroom.com/games/copipechan"
+  postText: "\u300E\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\u300F\u3067{max}\u500B\u306E\u30B9\u30C6\u30FC\u30B8\u3092\u30AF\u30EA\u30A2\u3057\u307E\u3057\u305F\uFF01\n\r\n#\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\r\nhttps://unityroom.com/games/copipechan"
+  currentGameStatus: {fileID: 0}
 --- !u!1 &851284502
 GameObject:
   m_ObjectHideFlags: 0

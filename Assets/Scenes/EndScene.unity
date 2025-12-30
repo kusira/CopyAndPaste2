@@ -378,7 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6a349e1a41c4647bf6fbe7f63e84ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::XPostButton
-  postText: "\u300E\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\u300F\u3092\u30AF\u30EA\u30A2\u3057\u307E\u3057\u305F\uFF01\u304A\u3081\u3067\u3068\u3046\uFF01\n\r\n#\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\r\nhttps://unityroom.com/games/copipechan"
+  postText: "\u300E\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\u300F\u309215\u30B9\u30C6\u30FC\u30B8\u3059\u3079\u3066\u30AF\u30EA\u30A2\u3057\u307E\u3057\u305F\uFF01\n\u304A\u3081\u3067\u3068\u3046\uFF01\n\r\n#\u8907\u88FD\u5996\u7CBE\u30B3\u30D4\u30DA\u3061\u3083\u3093\r\nhttps://unityroom.com/games/copipechan"
+  currentGameStatus: {fileID: 0}
 --- !u!114 &303881765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,6 +982,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1169,6 +1171,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1500,6 +1503,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
