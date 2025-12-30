@@ -1,4 +1,5 @@
 using UnityEngine;
+using unityroom.Api;
 
 public class CurrentGameStatus : MonoBehaviour
 {
@@ -188,6 +189,12 @@ public class CurrentGameStatus : MonoBehaviour
             maxReachedStageIndex = stageIndex;
             PlayerPrefs.SetInt(PREFS_KEY_MAX_REACHED_STAGE_INDEX, maxReachedStageIndex);
             PlayerPrefs.Save();
+
+            // Unityroomランキングを更新
+            if (Application.isPlaying)
+            {
+                UnityroomApiClient.Instance.SendScore(1, (float)maxReachedStageIndex, ScoreboardWriteMode.HighScoreDesc);
+            }
         }
     }
 
