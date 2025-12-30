@@ -45,6 +45,9 @@ public class StageSelectEnabler : MonoBehaviour
             return;
         }
 
+        // セーブデータを明示的に読み込む（初期化順序の問題を回避）
+        currentGameStatus.LoadMaxReachedStageIndex();
+
         // 到達したステージの最大値を取得
         int maxReachedIndex = currentGameStatus.GetMaxReachedStageIndex();
 
