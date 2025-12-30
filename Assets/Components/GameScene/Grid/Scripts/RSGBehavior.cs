@@ -457,6 +457,29 @@ public class RSGBehavior : MonoBehaviour
             Debug.Log($"マウスホイール：現在の回転インデックス={rotationIndex}");
             // RSG本体の見た目の向きも変更
             UpdateSelectorRotation();
+
+            // 回転後に位置をスナップ
+            if (rotationStep != 0 && gridWidth > 0 && gridHeight > 0)
+            {
+                // 現在の位置をdragOffsetを考慮してスナップ
+                Vector3 currentPos = transform.position;
+                Vector3 targetPos = currentPos + dragOffset;
+                
+                // RSGのサイズを取得
+                Vector3 selectorScale = transform.localScale;
+                int selectorW = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.x)));
+                int selectorH = Mathf.Max(1, Mathf.RoundToInt(Mathf.Abs(selectorScale.y)));
+                
+                // グリッドにスナップ
+                Vector3 snappedPos = RSGridHelper.SnapToGrid(targetPos, gridParentPosition, gridOffset, selectorW, selectorH, gridScale);
+                
+                // グリッド範囲内に収まるようにクランプ
+                transform.position = RSGridHelper.ClampToGrid(snappedPos, gridParentPosition, gridOffset, gridWidth, gridHeight, selectorW, selectorH, gridScale);
+                
+                // Selectionの位置も更新
+                SetupSelectionCorners();
+            }
+
             UpdateUITexts();
         }
     }

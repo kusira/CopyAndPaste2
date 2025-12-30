@@ -534,7 +534,7 @@ MonoBehaviour:
     massStatus:
     - columns:
       - .
-      - .
+      - .S
       - .
       - .
       - .
@@ -572,7 +572,7 @@ MonoBehaviour:
       - 
       - 
       - 
-      - 
+      - '#'
       - '#'
       - '#'
     - columns:
@@ -855,7 +855,7 @@ MonoBehaviour:
       width: 2
       type: 2
     gridParentScaleXY: 1.25
-    tutorialDisplayType: 1
+    tutorialDisplayType: 3
   - stageName: Stage 3-2
     worldLabel: Magma
     massStatus:
