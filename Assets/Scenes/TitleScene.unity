@@ -2286,7 +2286,7 @@ MonoBehaviour:
   stageButtons:
   - {fileID: 1116148737}
   - {fileID: 604235893}
-  - {fileID: 1766047038}
+  - {fileID: 1137576982}
   - {fileID: 1312203428}
   - {fileID: 967839305}
   - {fileID: 1948124657}
@@ -6842,7 +6842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CurrentGameStatus
   currentStageIndex: 0
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
-  maxReachedStageIndex: 5
+  maxReachedStageIndex: 0
 --- !u!4 &1638611067
 Transform:
   m_ObjectHideFlags: 0

@@ -1139,7 +1139,7 @@ MonoBehaviour:
     - height: 3
       width: 3
       type: 2
-    gridParentScaleXY: 1
+    gridParentScaleXY: 0.8333333
     tutorialDisplayType: 0
   - stageName: Stage 3-5
     worldLabel: Magma

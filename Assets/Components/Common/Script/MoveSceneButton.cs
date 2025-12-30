@@ -166,7 +166,9 @@ public class MoveSceneButton : MonoBehaviour
                 if (willIncrement && nextIndex >= stageCount)
                 {
                     sceneToLoad = endSceneName;
-                    Debug.Log($"MoveSceneButton: インクリメント後のステージインデックス({nextIndex})がステージ数({stageCount})以上なので、{endSceneName}に遷移します");
+                    // EndSceneに遷移する場合でも、最終ステージのインデックスを保存
+                    int finalStageIndex = stageCount;
+                    PlayerPrefs.SetInt(PREFS_KEY_NEXT_STAGE_INDEX, finalStageIndex);
                 }
                 else
                 {
