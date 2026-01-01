@@ -37,8 +37,8 @@ public class TutorialOperator : MonoBehaviour
             nextButton.onClick.AddListener(OnNextButtonClicked);
         }
 
-        // 初期ページを表示
-        ShowPage(0);
+        // 初期ページを表示（ページがまだ無い場合もあるため安全に）
+        ShowFirstPage();
     }
 
     private void OnDestroy()
@@ -89,12 +89,44 @@ public class TutorialOperator : MonoBehaviour
             return;
         }
 
-        // すべてのページを非表示にする
+        // 切替前に、非表示になるページの動画を「先頭停止＋マスク表示」に戻す
+        for (int i = 0; i < tutorialPages.Count; i++)
+        {
+            if (tutorialPages[i] != null)
+            {
+                if (i != pageIndex)
+                {
+                    var moviePlayers = tutorialPages[i].GetComponentsInChildren<MoviePlayer>(true);
+                    for (int m = 0; m < moviePlayers.Length; m++)
+                    {
+                        if (moviePlayers[m] != null)
+                        {
+                            moviePlayers[m].ResetToInitialState();
+                        }
+                    }
+                }
+            }
+        }
+
+        // すべてのページを非表示にする（指定ページのみ表示）
         for (int i = 0; i < tutorialPages.Count; i++)
         {
             if (tutorialPages[i] != null)
             {
                 tutorialPages[i].SetActive(i == pageIndex);
+            }
+        }
+
+        // 表示されたページも初期状態（マスク表示）に戻す
+        if (tutorialPages[pageIndex] != null)
+        {
+            var moviePlayers = tutorialPages[pageIndex].GetComponentsInChildren<MoviePlayer>(true);
+            for (int m = 0; m < moviePlayers.Length; m++)
+            {
+                if (moviePlayers[m] != null)
+                {
+                    moviePlayers[m].ResetToInitialState();
+                }
             }
         }
 
@@ -137,6 +169,44 @@ public class TutorialOperator : MonoBehaviour
         if (totalPageText != null)
         {
             totalPageText.text = tutorialPages.Count.ToString();
+        }
+    }
+
+    /// <summary>
+    /// チュートリアルページを追加します（HintPageGeneratorから呼び出されます）
+    /// </summary>
+    public void AddTutorialPage(GameObject page)
+    {
+        if (page != null && !tutorialPages.Contains(page))
+        {
+            tutorialPages.Add(page);
+            Debug.Log($"TutorialOperator: ページを追加しました（総数: {tutorialPages.Count}）");
+        }
+    }
+
+    /// <summary>
+    /// すべてのチュートリアルページをクリアします
+    /// </summary>
+    public void ClearTutorialPages()
+    {
+        tutorialPages.Clear();
+        Debug.Log("TutorialOperator: すべてのページをクリアしました");
+    }
+
+    /// <summary>
+    /// 1ページ目を表示します（ページが無ければ何もしません）
+    /// </summary>
+    public void ShowFirstPage()
+    {
+        if (tutorialPages.Count > 0)
+        {
+            ShowPage(0);
+        }
+        else
+        {
+            // ページがまだ無い場合でもUIは更新しておく
+            UpdateButtonStates();
+            UpdatePageText();
         }
     }
 }
