@@ -9,13 +9,28 @@ using UnityEngine.Video;
 /// </summary>
 public class HintPageGenerator : MonoBehaviour
 {
+    [System.Serializable]
+    public class StageVideoClipList
+    {
+        [Tooltip("このステージで使用する動画リスト")]
+        public List<VideoClip> clips = new List<VideoClip>();
+    }
+
     [Header("Prefab")]
     [Tooltip("HintPageのPrefab")]
     [SerializeField] private GameObject hintPagePrefab;
 
+    [Header("参照")]
+    [Tooltip("CurrentGameStatus（未設定の場合は自動検索します）")]
+    [SerializeField] private CurrentGameStatus currentGameStatus;
+
     [Header("動画ファイル")]
-    [Tooltip("再生する動画ファイルのリスト")]
-    [SerializeField] private List<VideoClip> videoClips = new List<VideoClip>();
+    [Tooltip("インデックス=ステージ番号。各要素の中に、そのステージの動画リストを入れてください")]
+    [SerializeField] private List<StageVideoClipList> stageVideoClips = new List<StageVideoClipList>();
+
+    [Header("動画ファイル（デフォルト）")]
+    [Tooltip("ステージ別リストが未設定/範囲外のときに使う動画リスト")]
+    [SerializeField] private List<VideoClip> defaultVideoClips = new List<VideoClip>();
 
     [Header("生成設定")]
     [Tooltip("生成するHintPageの座標（デフォルト: 0, -0.25）")]
@@ -29,8 +44,38 @@ public class HintPageGenerator : MonoBehaviour
 
     private void Start()
     {
+        // CurrentGameStatusが未設定なら自動検索（Unity6ルール: FindFirstObjectByType）
+        if (currentGameStatus == null)
+        {
+            currentGameStatus = Object.FindFirstObjectByType<CurrentGameStatus>();
+            if (currentGameStatus == null)
+            {
+                Debug.LogWarning("HintPageGenerator: CurrentGameStatusが見つかりませんでした（デフォルト動画リストを使用します）");
+            }
+        }
+
         // Start時に自動的にヒントページを生成
         GenerateHintPages();
+    }
+
+    private List<VideoClip> ResolveVideoClipsForCurrentStage()
+    {
+        int stageIndex = -1;
+        if (currentGameStatus != null)
+        {
+            stageIndex = currentGameStatus.GetCurrentStageIndex();
+        }
+
+        if (stageIndex >= 0 && stageIndex < stageVideoClips.Count)
+        {
+            var list = stageVideoClips[stageIndex];
+            if (list != null && list.clips != null && list.clips.Count > 0)
+            {
+                return list.clips;
+            }
+        }
+
+        return defaultVideoClips;
     }
 
     /// <summary>
@@ -48,7 +93,8 @@ public class HintPageGenerator : MonoBehaviour
             return;
         }
 
-        if (videoClips == null || videoClips.Count == 0)
+        List<VideoClip> clipsToUse = ResolveVideoClipsForCurrentStage();
+        if (clipsToUse == null || clipsToUse.Count == 0)
         {
             Debug.LogWarning("HintPageGenerator: 動画ファイルが設定されていません");
             return;
@@ -61,15 +107,15 @@ public class HintPageGenerator : MonoBehaviour
         }
 
         // 各動画ファイルに対してHintPageを生成
-        for (int i = 0; i < videoClips.Count; i++)
+        for (int i = 0; i < clipsToUse.Count; i++)
         {
-            if (videoClips[i] == null)
+            if (clipsToUse[i] == null)
             {
                 Debug.LogWarning($"HintPageGenerator: インデックス {i} の動画ファイルが設定されていません");
                 continue;
             }
 
-            CreateHintPage(i, videoClips[i]);
+            CreateHintPage(i, clipsToUse[i]);
         }
 
         // 最初のページだけ表示（それ以外は非表示のまま）
