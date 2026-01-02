@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -37,6 +38,7 @@ public class ProgressManager : MonoBehaviour
 
     private List<ProgressItemData> createdProgressItems = new List<ProgressItemData>();
     private HashSet<Vector2Int> currentlyGlowingRockPositions = new HashSet<Vector2Int>(); // 現在光っている岩の座標リスト
+    private Coroutine clearCheckCoroutine; // クリア判定用のコルーチン参照
 
     /// <summary>
     /// Progressアイテムのデータを保持するクラス
@@ -349,20 +351,13 @@ public class ProgressManager : MonoBehaviour
                 // すべてのProgressがAcquiredになったかチェック
                 if (IsAllAcquired())
                 {
-                    // ResultShowerがアサインされていない場合は自動検索
-                    if (resultShower == null)
+                    // 既存のコルーチンがあれば停止
+                    if (clearCheckCoroutine != null)
                     {
-                        resultShower = FindFirstObjectByType<ResultShower>();
+                        StopCoroutine(clearCheckCoroutine);
                     }
-
-                    if (resultShower != null)
-                    {
-                        resultShower.ShowResult();
-                    }
-                    else
-                    {
-                        Debug.LogWarning("ProgressManager: ResultShowerが見つかりません。リザルトを表示できません。");
-                    }
+                    // 0.1秒間クリア状態を維持するコルーチンを開始
+                    clearCheckCoroutine = StartCoroutine(CheckClearConditionCoroutine());
                 }
             }
         }
@@ -419,6 +414,36 @@ public class ProgressManager : MonoBehaviour
     public List<ProgressItemData> GetProgressItems()
     {
         return createdProgressItems;
+    }
+
+    /// <summary>
+    /// クリア状態を0.1秒間維持したらクリアと判定するコルーチン
+    /// </summary>
+    private IEnumerator CheckClearConditionCoroutine()
+    {
+        // 0.1秒待機
+        yield return new WaitForSeconds(0.1f);
+
+        // 再度クリア状態をチェック
+        if (IsAllAcquired())
+        {
+            // ResultShowerがアサインされていない場合は自動検索
+            if (resultShower == null)
+            {
+                resultShower = FindFirstObjectByType<ResultShower>();
+            }
+
+            if (resultShower != null)
+            {
+                resultShower.ShowResult();
+            }
+            else
+            {
+                Debug.LogWarning("ProgressManager: ResultShowerが見つかりません。リザルトを表示できません。");
+            }
+        }
+
+        clearCheckCoroutine = null;
     }
 }
 
