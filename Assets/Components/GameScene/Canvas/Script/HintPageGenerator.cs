@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Video;
 
 /// <summary>
 /// ヒントページを生成するスクリプト
@@ -12,8 +11,8 @@ public class HintPageGenerator : MonoBehaviour
     [System.Serializable]
     public class StageVideoClipList
     {
-        [Tooltip("このステージで使用する動画リスト")]
-        public List<VideoClip> clips = new List<VideoClip>();
+        [Tooltip("このステージで使用する動画ファイル名リスト（拡張子なし。例: \"1-1-1\"）")]
+        public List<string> videoFileNames = new List<string>();
     }
 
     [Header("Prefab")]
@@ -29,16 +28,23 @@ public class HintPageGenerator : MonoBehaviour
     [SerializeField] private List<StageVideoClipList> stageVideoClips = new List<StageVideoClipList>();
 
     [Header("動画ファイル（デフォルト）")]
-    [Tooltip("ステージ別リストが未設定/範囲外のときに使う動画リスト")]
-    [SerializeField] private List<VideoClip> defaultVideoClips = new List<VideoClip>();
+    [Tooltip("ステージ別リストが未設定/範囲外のときに使う動画ファイル名リスト（拡張子なし）")]
+    [SerializeField] private List<string> defaultVideoFileNames = new List<string>();
 
     [Header("生成設定")]
     [Tooltip("生成するHintPageの座標（デフォルト: 0, -0.25）")]
     [SerializeField] private Vector2 pagePosition = new Vector2(0f, -0.25f);
+    
+    [Tooltip("ページの親オブジェクト（未設定の場合はこのGameObjectが親になります）")]
+    [SerializeField] private Transform pageParent;
 
     [Header("TutorialOperator")]
     [Tooltip("TutorialOperator（設定すると生成したHintPageが自動的に登録されます）")]
     [SerializeField] private TutorialOperator tutorialOperator;
+    
+    [Header("ボタン")]
+    [Tooltip("動画がない場合に非活性にするボタン")]
+    [SerializeField] private Button hintButton;
 
     private List<GameObject> generatedPages = new List<GameObject>();
 
@@ -56,9 +62,32 @@ public class HintPageGenerator : MonoBehaviour
 
         // Start時に自動的にヒントページを生成
         GenerateHintPages();
+        
+        // ボタンの活性/非活性を設定
+        UpdateButtonState();
+    }
+    
+    /// <summary>
+    /// ボタンの活性/非活性を更新します
+    /// </summary>
+    private void UpdateButtonState()
+    {
+        if (hintButton == null)
+        {
+            return;
+        }
+        
+        List<string> videoFileNames = ResolveVideoFileNamesForCurrentStage();
+        bool hasVideos = videoFileNames != null && videoFileNames.Count > 0;
+        
+        hintButton.gameObject.SetActive(hasVideos);
+        Debug.Log($"HintPageGenerator: ボタンの状態を更新しました（動画数: {videoFileNames?.Count ?? 0}, 活性: {hasVideos}）");
     }
 
-    private List<VideoClip> ResolveVideoClipsForCurrentStage()
+    /// <summary>
+    /// 動画ファイル名リストを取得します
+    /// </summary>
+    private List<string> ResolveVideoFileNamesForCurrentStage()
     {
         int stageIndex = -1;
         if (currentGameStatus != null)
@@ -69,13 +98,13 @@ public class HintPageGenerator : MonoBehaviour
         if (stageIndex >= 0 && stageIndex < stageVideoClips.Count)
         {
             var list = stageVideoClips[stageIndex];
-            if (list != null && list.clips != null && list.clips.Count > 0)
+            if (list != null && list.videoFileNames != null && list.videoFileNames.Count > 0)
             {
-                return list.clips;
+                return list.videoFileNames;
             }
         }
 
-        return defaultVideoClips;
+        return defaultVideoFileNames;
     }
 
     /// <summary>
@@ -93,8 +122,9 @@ public class HintPageGenerator : MonoBehaviour
             return;
         }
 
-        List<VideoClip> clipsToUse = ResolveVideoClipsForCurrentStage();
-        if (clipsToUse == null || clipsToUse.Count == 0)
+        List<string> videoFileNamesToUse = ResolveVideoFileNamesForCurrentStage();
+        
+        if (videoFileNamesToUse == null || videoFileNamesToUse.Count == 0)
         {
             Debug.LogWarning("HintPageGenerator: 動画ファイルが設定されていません");
             return;
@@ -107,15 +137,17 @@ public class HintPageGenerator : MonoBehaviour
         }
 
         // 各動画ファイルに対してHintPageを生成
-        for (int i = 0; i < clipsToUse.Count; i++)
+        for (int i = 0; i < videoFileNamesToUse.Count; i++)
         {
-            if (clipsToUse[i] == null)
+            string videoFileName = videoFileNamesToUse[i];
+            
+            if (string.IsNullOrEmpty(videoFileName))
             {
-                Debug.LogWarning($"HintPageGenerator: インデックス {i} の動画ファイルが設定されていません");
+                Debug.LogWarning($"HintPageGenerator: インデックス {i} の動画ファイル名が設定されていません");
                 continue;
             }
 
-            CreateHintPage(i, clipsToUse[i]);
+            CreateHintPage(i, videoFileName);
         }
 
         // 最初のページだけ表示（それ以外は非表示のまま）
@@ -140,10 +172,13 @@ public class HintPageGenerator : MonoBehaviour
     /// <summary>
     /// ヒントページを1つ作成します
     /// </summary>
-    private void CreateHintPage(int index, VideoClip videoClip)
+    private void CreateHintPage(int index, string videoFileName)
     {
+        // 親オブジェクトを決定
+        Transform parentTransform = pageParent != null ? pageParent : transform;
+        
         // Prefabをインスタンス化
-        GameObject hintPage = Instantiate(hintPagePrefab, transform);
+        GameObject hintPage = Instantiate(hintPagePrefab, parentTransform);
         hintPage.name = $"HintPage_{index + 1}";
 
         // 座標を設定
@@ -192,7 +227,7 @@ public class HintPageGenerator : MonoBehaviour
             MoviePlayer moviePlayer = movieWrapperTransform.GetComponent<MoviePlayer>();
             if (moviePlayer != null)
             {
-                SetMoviePlayerVideo(moviePlayer, movieWrapperTransform, videoClip);
+                SetMoviePlayerVideo(moviePlayer, movieWrapperTransform, videoFileName);
             }
             else
             {
@@ -219,7 +254,7 @@ public class HintPageGenerator : MonoBehaviour
     /// <summary>
     /// MoviePlayerに動画を設定します
     /// </summary>
-    private void SetMoviePlayerVideo(MoviePlayer moviePlayer, Transform movieWrapperTransform, VideoClip videoClip)
+    private void SetMoviePlayerVideo(MoviePlayer moviePlayer, Transform movieWrapperTransform, string videoFileName)
     {
         // MovieとMaskを取得
         Transform movieTransform = movieWrapperTransform.Find("Movie");
@@ -241,7 +276,7 @@ public class HintPageGenerator : MonoBehaviour
         }
 
         // MoviePlayerのSetupVideoメソッドを呼び出し
-        moviePlayer.SetupVideo(videoClip, movieRawImage, maskGameObject);
+        moviePlayer.SetupVideo(null, movieRawImage, maskGameObject, videoFileName);
     }
 
     /// <summary>

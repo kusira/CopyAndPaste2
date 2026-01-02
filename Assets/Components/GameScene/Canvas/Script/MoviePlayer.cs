@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -214,13 +215,40 @@ public class MoviePlayer : MonoBehaviour
     /// <summary>
     /// 動画を設定します（HintPageGeneratorから呼び出されます）
     /// </summary>
-    public void SetupVideo(VideoClip clip, RawImage movieRawImage, GameObject maskGameObject)
+    /// <param name="clip">VideoClip（エディタやその他のプラットフォーム用）</param>
+    /// <param name="movieRawImage">動画を表示するRawImage</param>
+    /// <param name="maskGameObject">マスクGameObject</param>
+    /// <param name="videoFileName">動画ファイル名（WebGL用、拡張子なし。例: "1-1-1"）</param>
+    public void SetupVideo(VideoClip clip, RawImage movieRawImage, GameObject maskGameObject, string videoFileName = null)
     {
-        if (clip == null || movieRawImage == null || maskGameObject == null)
+        if (movieRawImage == null || maskGameObject == null)
         {
-            Debug.LogWarning("MoviePlayer: SetupVideoの引数が無効です");
+            Debug.LogWarning("MoviePlayer: SetupVideoの引数が無効です（movieRawImageまたはmaskGameObjectがnull）");
             return;
         }
+        
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        // WebGLでは動画ファイル名が必須
+        if (string.IsNullOrEmpty(videoFileName))
+        {
+            if (clip != null)
+            {
+                videoFileName = clip.name;
+            }
+            else
+            {
+                Debug.LogWarning("MoviePlayer: WebGLでは動画ファイル名が必要です");
+                return;
+            }
+        }
+        #else
+        // エディタやその他のプラットフォームではVideoClipが優先
+        if (clip == null && string.IsNullOrEmpty(videoFileName))
+        {
+            Debug.LogWarning("MoviePlayer: VideoClipまたは動画ファイル名が必要です");
+            return;
+        }
+        #endif
 
         hintMovie = movieRawImage;
         hintMask = maskGameObject;
@@ -232,10 +260,20 @@ public class MoviePlayer : MonoBehaviour
             videoPlayer = null;
         }
 
+        // 動画ファイル名を決定
+        string finalVideoFileName = videoFileName;
+        if (string.IsNullOrEmpty(finalVideoFileName) && clip != null)
+        {
+            finalVideoFileName = clip.name;
+        }
+        
         // VideoPlayerを取得または作成（自分の子にぶら下げる）
         if (videoPlayer == null)
         {
-            GameObject videoPlayerObj = new GameObject("VideoPlayer_" + clip.name);
+            string playerName = !string.IsNullOrEmpty(finalVideoFileName) 
+                ? $"VideoPlayer_{finalVideoFileName}" 
+                : (clip != null ? $"VideoPlayer_{clip.name}" : "VideoPlayer");
+            GameObject videoPlayerObj = new GameObject(playerName);
             videoPlayerObj.transform.SetParent(transform);
             videoPlayer = videoPlayerObj.AddComponent<VideoPlayer>();
         }
@@ -249,16 +287,45 @@ public class MoviePlayer : MonoBehaviour
         }
 
         // RenderTextureを作成（ARGB32フォーマットで不透明に）
-        int w = (int)clip.width;
-        int h = (int)clip.height;
+        int w = 1920;
+        int h = 1080;
+        if (clip != null)
+        {
+            w = (int)clip.width;
+            h = (int)clip.height;
+        }
         if (w <= 0) w = 1920;
         if (h <= 0) h = 1080;
         runtimeRenderTexture = new RenderTexture(w, h, 0, RenderTextureFormat.ARGB32);
-        runtimeRenderTexture.name = "RenderTexture_" + clip.name;
+        runtimeRenderTexture.name = !string.IsNullOrEmpty(finalVideoFileName) 
+            ? $"RenderTexture_{finalVideoFileName}" 
+            : (clip != null ? $"RenderTexture_{clip.name}" : "RenderTexture");
         runtimeRenderTexture.Create();
 
         // VideoPlayerの設定
-        videoPlayer.clip = clip;
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        // WebGLではURLソースを使用（VideoClipは使用できない）
+        videoPlayer.source = VideoSource.Url;
+        // StreamingAssets/Movie/フォルダから動画ファイルを読み込む
+        string videoPath = Path.Combine(Application.streamingAssetsPath, "Movie", finalVideoFileName + ".mp4");
+        videoPlayer.url = videoPath;
+        Debug.Log($"MoviePlayer: WebGL用の動画パスを設定しました: {videoPath}");
+        #else
+        // エディタやその他のプラットフォームではVideoClipを使用
+        if (clip != null)
+        {
+            videoPlayer.clip = clip;
+        }
+        else if (!string.IsNullOrEmpty(finalVideoFileName))
+        {
+            // VideoClipがない場合はURLソースを使用（フォールバック）
+            videoPlayer.source = VideoSource.Url;
+            string videoPath = Path.Combine(Application.streamingAssetsPath, "Movie", finalVideoFileName + ".mp4");
+            videoPlayer.url = videoPath;
+            Debug.Log($"MoviePlayer: 動画ファイル名からパスを設定しました: {videoPath}");
+        }
+        #endif
+        
         videoPlayer.renderMode = VideoRenderMode.RenderTexture;
         videoPlayer.targetTexture = runtimeRenderTexture;
         videoPlayer.playOnAwake = false;
