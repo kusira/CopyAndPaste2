@@ -1997,7 +1997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HintPageGenerator
   hintPagePrefab: {fileID: 3784358449218221902, guid: a09608ba29dcae3489902877d502c768, type: 3}
-  currentGameStatus: {fileID: 0}
+  currentGameStatus: {fileID: 1138846806}
   stageVideoClips:
   - clips:
     - {fileID: 32900000, guid: e15622b97dc546745b8dcfbda2a2ca23, type: 3}
@@ -9201,7 +9201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CurrentGameStatus
   currentStageIndex: 0
   stageDatabase: {fileID: 11400000, guid: 499e28cd13eeeeb4b816e8ff22457605, type: 2}
-  maxReachedStageIndex: 10
+  maxReachedStageIndex: 0
 --- !u!4 &1138846807
 Transform:
   m_ObjectHideFlags: 0
@@ -10431,7 +10431,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3675728329477958583, guid: aa6c83074fac4784ba5ca72f35824c9b, type: 3}
+  m_Sprite: {fileID: 7233969532671586833, guid: 08d6a554e23a9814e99b65bf5620d673, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12363,7 +12363,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8517472572110314250, guid: ae7738348c5a1374bbe2291dc6c83777, type: 3}
+  m_Sprite: {fileID: 7041369108972787063, guid: cae20abca42e65846ad100a0b9c89603, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

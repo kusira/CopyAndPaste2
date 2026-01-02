@@ -164,7 +164,7 @@ public class HintPageGenerator : MonoBehaviour
             TextMeshProUGUI headingText = headingTransform.GetComponent<TextMeshProUGUI>();
             if (headingText != null)
             {
-                headingText.text = $"{index + 1}手目";
+                headingText.text = $"■ 解答動画: {index + 1}手目";
             }
             else
             {
